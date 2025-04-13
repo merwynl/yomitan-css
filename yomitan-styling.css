@@ -5,23 +5,18 @@
 
 /* --------------- GENERAL --------------- */
 
-:root[data-theme="dark"] {
-    /* --background-color: #212228; */
-    /* --background-color: #282828; */
-    --background-color: #26282c;
-    --tag-dictionary-background-color: #294be3;
-}
-
 body {
-    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
+    font-family: "Noto Sans JP", "Hiragino Mincho ProN", "Noto Serif JP","ヒラギノ明朝 ProN", system-ui;
     font-size: clamp(0.7rem, 3vw, 0.9rem);
 }
 
+/* --- Term --- */
 .headword {
     font-family: "Noto Serif JP", system-ui;
     font-size: 110%;
 }
 
+/* --- Furigana --- */
 .headword-reading  {
     font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
     font-size: clamp(0.7rem, 3vw, 0.9rem);
@@ -60,6 +55,76 @@ body {
 
 .frequency-item {
     font-family: 'noka-mono', 'Courier New', monospace; 
+}
+
+/* --------------- DICTIONARY SPECIFIC --------------- */
+
+:root[data-theme="dark"] {
+    /* --background-color: #212228; */
+    /* --background-color: #282828; */
+    --background-color: #26282c;
+    --tag-dictionary-background-color: #294be3;
+
+    .definition-item[data-dictionary='三省堂 全訳読解古語辞典'] {
+        --skogo-black: #DDDDDD;
+        --skogo-white: #000000;
+        --skogo-blue: #00AAFF;
+        --skogo-red: #FF6666;
+        --skogo-light-red: #A54447;
+        --skogo-extra-light-red: #481D1E;
+        --skogo-hinshi-mark: #CCCCCC;
+        --skogo-shubetsu-mark: #CCCCCC;
+        --skogo-gendai-mark: #CCCCCC;
+    }
+
+    .definition-item[data-dictionary='旺文社 全訳古語辞典'] {
+        --ozk5-black: #DDDDDD;
+        --ozk5-white: #000000;
+        --ozk5-blue: #00AAFF;
+        --ozk5-red: #FF6666;
+        --ozk5-light-red: #B24747;
+        --ozk5-gray: #888;
+        --ozk5-hinshi-mark: #CCCCCC;
+        --ozk5-kakomi-border: #888;
+        --ozk5-metadata-background: #888;
+        --ozk5-example-katsuyou-mark: #AAAAAA;
+        --ozk5-mark-border: #ACAC04;
+        --ozk5-gogi-panel-header: #331414;
+        --ozk5-ruigo-panel-background: #CCCCCC;
+        --ozk5-ruigo-panel-border: #777;
+        --ozk5-appendix-title-background: #BF6666;
+        --ozk5-gendai-mark: #CCCCCC;
+    }
+
+    .definition-item[data-dictionary='大辞泉 第二版'] {
+        --daijisen-black: #FFFFFF;
+        --daijisen-white: #000000;
+        --daijisen-blue: #00AAFF;
+        --daijisen-header-djs: #A0484F;
+        --daijisen-header-djsp: #7A7A7A;
+        --daijisen-header-text: #000000;
+        --daijisen-logo-color: #DDDDDD;
+        --daijisen-background-l3: #C0C0C0;
+        --daijisen-accent-mark: #FF6666;
+        --daijisen-accent-slash: #A0A0A0;
+    }
+
+    .definition-item[data-dictionary='明鏡国語辞典 第三版'] {
+        --meikyo-white: #000000;
+        --meikyo-black: #CCCCCC;
+        --meikyo-red: #FF3333;
+        --meikyo-gray: #BBBBBB;
+        --meikyo-pink: #CC6666;
+        --meikyo-dark-red: #993333;
+        --meikyo-fbox-white: #FFFFFF;
+        --meikyo-fbox-gray: #CCCCCC;
+        --meikyo-box-gray: #663333;
+
+        .gloss-sc-span[data-sc-class="gaiji"] .gloss-image {
+            -webkit-filter: invert(90%);
+            filter: invert(90%);
+        }
+    }
 }
 
 /* --------------- FREQUENCY DICT COLORS --------------- */
@@ -212,7 +277,7 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     content: "🌸";
 }
 
-/* --------------- DEFINITIONS --------------- */
+/* ---------------DEFINITIONS ---------------*/
 
 .definition-list {
     padding: 0;
@@ -252,6 +317,251 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     display: block;
     margin: 4px;
     content: " ";
+}
+
+/* ---------------DICT: 三省堂 ---------------*/
+.definition-item[data-dictionary="三省堂国語辞典　第八版"] 
+{
+    --dict-color: #6e5cc4;
+
+    /* background-color: #6d5cc41a; */
+    font-size: 90%;
+    color: #aba7bf;
+
+    .tag[data-details^="三省堂国語辞典　第八版"] {
+        --tag-color: #6e5cc4;
+    }
+
+    .gloss-content {
+        line-height: 110%;
+    }
+
+    .gloss-sc-span[data-sc-name="homophone"] {
+        margin-right: 0.3em;
+    }
+
+    .gloss-sc-span[data-sc-name="見出部"],
+    .gloss-sc-span[data-sc-name="子見出部"] {
+        font-size: 110%;
+        color: #ffffff;
+    }
+
+    /* word: 面 */
+    .gloss-sc-span[data-sc-name="見出部要素"] {
+        font-size: 110%;
+        color: #c6baff;
+    }
+
+    .gloss-sc-span[data-sc-name="品詞G"] {
+        font-size: 90%;
+        color: #6e5cc4;
+    }
+
+    .gloss-sc-span[data-sc-name="語釈"] {
+        color: white;
+    }
+
+    .gloss-content > .gloss-sc-div:first-of-type {
+        padding-top: 0.4em;
+    }
+
+    .gloss-content > .gloss-sc-div:last-of-type {
+        padding-bottom: 0.4em;
+    }
+
+    .gloss-sc-div[data-sc-name="語義"]:not(:last-child) {
+        margin-bottom: 0.5em;
+    }
+
+    .gloss-sc-div:not(:last-child) {
+        margin-bottom: 0.5em;
+    }
+
+    .gloss-sc-span[data-sc-name="語義番号"] {
+        margin-right: 0.3em;
+        font-size: 120%;
+        color: #bf87ff;
+    }
+
+    .gloss-sc-div[data-sc-name="用例G"] {
+        margin-left: 1.1em;
+        font-size: 92%;
+        color: #8676e0;
+    }
+
+    /* word: 面 */
+    .gloss-sc-span[data-sc-name="対義語G"] {
+        margin-left: 1.1em;
+    }
+
+    .gloss-sc-span[data-sc-name="注記"] {
+        color: #d5cdff;
+    }
+
+    .gloss-sc-span[data-sc-name="ルビ"] {
+        color: #a19cb5;
+    }
+
+    /* .gloss-sc-div[data-sc-name="共通"],
+    .gloss-sc-div[data-sc-name="自動詞形G"],
+    .gloss-sc-div[data-sc-name="可能形G"] {
+        color: #9d95c2;
+    }
+
+    .gloss-sc-span[data-sc-name="使用域G"] {
+        color: #9d95c2;
+    } */
+}
+
+/* --------------- DICT: 三省堂 全訳読解古語辞典 --------------- */
+.definition-item[data-dictionary='三省堂 全訳読解古語辞典'] {
+    /* ----------- */
+    /* -- Fonts -- */
+    /* ----------- */
+    [data-sc-body],
+    span[data-sc見出歴史仮名],
+    span[data-sc見出現代仮名],
+    span[data-sc段落歴史仮名],
+    span[data-sc段落現代仮名],
+    span[data-sc中黒語義],
+    span[data-sc-em][data-sc小書き],
+    span[data-scルビ],
+    span[data-sc返り点] {
+        font-family: "Hiragino Mincho ProN";
+    }
+
+    span[data-sc見出G],
+    span[data-sc絵巻タイトル],
+    span[data-scGendai見出],
+    span[data-sc活用分節],
+    span[data-sc語構成],
+    span[data-sc-f-w-hyphen],
+    span[data-sc活用表-label],
+    span[data-sc詩歌全形],
+    span[data-sc見出相当部],
+    span[data-sc詩歌技法ロゴ],
+    span[data-sc用例訳注ロゴ],
+    span[data-sc参考ロゴ],
+    span[data-sc注釈ロゴ],
+    span[data-sc冒頭文ロゴテキスト],
+    span[data-sc作品例ロゴテキスト],
+    span[data-sc-em][data-sc-gothic],
+    span[data-sc-em][data-sc赤],
+    span[data-sc補説小見出],
+    span[data-sc読解見出],
+    span[data-sc現代見出],
+    span[data-sc読解小見出],
+    span[data-sc現代小見出],
+    span[data-scチャート見出],
+    span[data-sc付録参照ロゴ],
+    span[data-sc絵巻図版],
+    span[data-sc識別見出],
+    td[data-sc識別ヘッダ項],
+    span[data-sc識別説明],
+    span[data-sc-gendai-ref品詞],
+    span[data-sc-gendai-ref-品詞],
+    span[data-sc-gendai-ref-desc],
+    span[data-sc-gendai-ref-desc],
+    span[data-sc-rectr] {
+        font-family: "Hiragino Kaku Gothic ProN";
+    }
+}
+
+/* ---------------DICT: 大辞泉 第二版 ---------------*/
+.definition-item[data-dictionary='大辞泉 第二版'] {
+    /* ----------- */
+    /* -- Fonts -- */
+    /* ----------- */
+    div[data-sc-headertitle],
+    div[data-sc-header-title],
+    span[data-sc-headword][data-sc見出],
+    span[data-sc-hhyphen],
+    span[data-sc-l4],
+    span[data-sc-rect],
+    span[data-sc-circle],
+    span[data-sc補足ロゴ-g],
+    span[data-sc季語-m],
+    span[data-sc-bold],
+    span[data-sc常外音訓-m],
+    span[data-sc常外-m],
+    span[data-sc付表有-m],
+    span[data-sc付表無-m],
+    div[data-sc-contents],
+    span[data-sc季語],
+    span[data-sc歌枕-m],
+
+    span[data-sc-italic],
+
+    span[data-sc-gaiji][data-sc-keigashira] {
+        font-family: "Heiti TC";
+    }
+
+    /* ----------------------- */
+    /* -- Optional settings -- */
+    /* ----------------------- */
+
+    /* Uncomment to show the 類語 section with links to other entries (Hidden by default)*/
+    /*
+    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ruigo"]),
+    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ssgo"]) {
+        display: block;
+    }
+    */
+
+    /* Uncomment to show the Pitch accent element (Hidden by default)*/
+    /*
+    div[data-sc-m-accent-audio-g] {
+        display: block;
+    }
+    */
+}
+
+/* --------------- DICT: 明鏡国語辞典 第三版 --------------- */
+
+.definition-item[data-dictionary="明鏡国語辞典 第三版"] {
+    [data-sc-body],
+    span[data-sc-rect],
+    span[data-sc-katsuyo],
+    span[data-sc-headword][data-sc-class="旧かな"],
+    span[data-sc-fbox0],
+    span[data-sc-fbox],
+    span[data-sc-e-m],
+    span[data-sc-em],
+    div[data-sc-class="shikiri"] div[data-sc-meaning],
+    span[data-sc-meaning][data-sc-class="columntitle"],
+    div[data-sc-meaning][data-sc-class="columntitle"],
+    span[data-sc-b],
+    a,
+    span[data-sc-bc]  {
+        font-family: "Hiragino Kaku Gothic ProN";
+    }
+
+    div[data-sc-example],
+    span[data-sc-fbox][data-sc-class="品格"],
+    span[data-sc-headword][data-sc-class="表記"],
+    span[data-sc-headword][data-sc-class="原綴"],
+    span[data-sc-zoomkanji] {
+        font-family: "Hiragino Mincho ProN";
+    }
+
+    span[data-sc-pron] {
+        font-family: "Doulos SIL";
+    }
+}
+
+/* --------------- DICT: デジタル大辞泉 --------------- */
+
+.definition-item[data-dictionary="デジタル大辞泉"] {
+    --dict-color: #587B7F;
+
+    font-size: 90%;
+
+    background-color: color-mix(in oklab, var(--dict-color) 10%, transparent);
+    color: color-mix(in oklab, var(--dict-color) 20%, white);
+
+    .tag[data-details^="デジタル大辞泉"] {
+        --tag-color: var(--dict-color);
+    }
 }
 
 /* --------------- PITCH --------------- */
