@@ -1,0 +1,337 @@
+/* --------------------------------- */
+/* ----- YOMITAN POPUP STYLING ----- */
+/* ---- Last Updated 2025-04-13 ---- */
+/* --------------------------------- */
+
+/* --------------- GENERAL --------------- */
+
+:root[data-theme="dark"] {
+    /* --background-color: #212228; */
+    /* --background-color: #282828; */
+    --background-color: #26282c;
+    --tag-dictionary-background-color: #294be3;
+}
+
+body {
+    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
+    font-size: clamp(0.7rem, 3vw, 0.9rem);
+}
+
+.headword {
+    font-family: "Noto Serif JP", system-ui;
+    font-size: 110%;
+}
+
+.headword-reading  {
+    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
+    font-size: clamp(0.7rem, 3vw, 0.9rem);
+}
+
+.headword ruby rt {
+    color: aquamarine;
+}
+
+.headword-list-tag-list .tag {
+    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
+}
+
+.headword-list-tag-list .tag {
+    margin: 2.5px;
+    margin-top: 6px;
+}
+
+.headword-list-tag-list .tag:first-child {
+    margin-left: 1em;
+}
+
+.headword-list-tag-list .tag .tag-label {
+    --tag-color: #4B6F56;
+}
+
+.headword-list-tag-list {
+    margin-left: -2.5px;
+}
+
+.entry-body-section {
+    margin: 4px 0;
+}
+
+.frequency-item {
+    font-family: 'noka-mono', 'Courier New', monospace; 
+}
+
+/* --------------- FREQUENCY DICT COLORS --------------- */
+
+.frequency-group-item[data-details="CC100"]>.tag {
+    --tag-color: #6E5CC4;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="JPDBv2㋕"]>.tag {
+    --tag-color: #F1A208;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="JLPT"]>.tag {
+    --tag-color: #FF8360;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="BCCWJ"]>.tag {
+    --tag-color: #4b83e4;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="VN Freq"]>.tag {
+    --tag-color: #E7F9A9;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="Narou Freq"]>.tag {
+    --tag-color: #c14343;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="Novels"]>.tag {
+    --tag-color: #13824e;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="Innocent Ranked"]>.tag {
+    --tag-color: #821368;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="Anime & J-drama"]>.tag {
+    --tag-color: #72ac15;
+    --tag-text-color: black;
+}
+
+.frequency-group-item[data-details="Wikipedia"]>.tag {
+    --tag-color: #343434;
+    --tag-text-color: #d3d3d3;
+}
+.frequency-group-item[data-details="Netflix"]>.tag {
+    --tag-color: #232323;
+    --tag-text-color: #d41b1b;
+}
+.frequency-group-item[data-details="Youtube"]>.tag {
+    --tag-color: #e70101;
+    --tag-text-color: #d7d7d7;
+}
+
+/* --------------- PITCH DICT COLORS --------------- */
+
+.tag[data-details="アクセント辞典"] {
+    --tag-color: #97EAD2;
+    --tag-text-color: black;
+}
+
+/* --------------- TMW DICT --------------- */
+
+span.frequency-group-tag:has(span[data-display-value="Owner"]) {
+    --tag-color: #F8DBA6;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Immortal Idol"]) {
+    --tag-color: #53D9AF;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Eternal Idol"]) {
+    --tag-color: #4188e7;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Divine Idol"]) {
+    --tag-color: #4b54d9;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Prima Idol"]) {
+    --tag-color: #876be0;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Major Idol"]) {
+    --tag-color: #d275e1;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Debut Idol"]) {
+    --tag-color: #ff6a8f;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Trainee"]) {
+    --tag-color: #819d5c;
+    --tag-text-color: black;
+}
+
+span.frequency-group-tag:has(span[data-display-value="Student"]) {
+    --tag-color: #997d44;
+    --tag-text-color: black;
+}
+
+/* --------------- FREQUENCIES --------------- */
+
+.frequency-group-list {
+    margin-left: -1.75px;
+}
+
+.frequency-group-item .tag {
+    margin: 1.75px;
+}
+
+/* --------------- INFLECTIONS --------------- */
+
+.inflection {
+    font-weight: bold;
+    font-size: 70%;
+}
+
+.inflection::before {
+    font-weight: normal;
+    font-size: 70%;
+}
+
+.inflection-list>.inflection+.inflection-separator+.inflection::before {
+    content: "|";
+}
+
+.inflection-source-icon[data-inflection-source="algorithm"]::after {
+    content: "🌸";
+}
+
+/* --------------- DEFINITIONS --------------- */
+
+.definition-list {
+    padding: 0;
+}
+
+.definition-tag-list {
+    float: left;
+    line-height: 1;
+    height: 1em;
+    margin-top: -2px;
+}
+
+.definition-item {
+    display: inline-block;
+    margin-bottom: 10px;
+    margin: 0 calc(0px - var(--entry-horizontal-padding));
+    width: 100%;
+    padding: 4px calc(var(--entry-horizontal-padding)) 4px calc(var(--entry-horizontal-padding));
+
+    --small-border: 1px solid rgba(255, 255, 255, 0.15);
+    --big-border: 0.14rem solid color-mix(in oklab, var(--dict-color) 50%, transparent);
+
+    &:has(.tag[data-category='dictionary']) {
+        border-top: var(--small-border);
+    }
+
+    &:has(.tag[data-category='dictionary']:first-child) {
+        border-top: var(--big-border);
+    }
+
+    &:last-child {
+        border-bottom: var(--small-border);
+    }
+}
+
+.gloss-content br {
+    display: block;
+    margin: 4px;
+    content: " ";
+}
+
+/* --------------- PITCH --------------- */
+
+.pronunciation-group-list {
+    padding-left: 0.7em !important;
+}
+
+li.pronunciation-group {
+    list-style-type: none;
+}
+
+.pronunciation-text-container {
+    font-family: "Noto Sans JP", system-ui;
+    font-size: 110%;
+}
+
+.pronunciation-downstep-notation {
+    margin-left: 0.2em;
+    /* color: #7190be; */
+    color: #37e3b2cc;
+    /* font-weight: bold; */
+}
+
+.pronunciation:nth-child(n+2) {
+    margin-left: 0.2em;
+}
+
+
+ /* --------------- KANJI DICTS --------------- */
+
+/* remove misc dict classifications/codepoints/stats */
+.kanji-glyph-data>tbody>tr:nth-child(n + 3) {
+    display: none;
+}
+
+/* remove stroke diagram, freq, header for next entries */
+div.entry[data-type='kanji']:nth-child(n + 2) .kanji-glyph-container,
+div.entry[data-type='kanji']:nth-child(n + 2) [data-section-type='frequencies'],
+div.entry[data-type='kanji']:nth-child(n + 2) table.kanji-glyph-data>tbody>tr:first-child {
+    display: none;
+}
+
+/* remove 'No data found' */
+.kanji-info-table-item-value-empty {
+    display: none;
+}
+
+/* reduce extra padding */
+.kanji-glyph-data,
+div.entry[data-type='kanji'],
+div.entry[data-type='kanji']:nth-child(n + 2) .kanji-glyph-data>tbody>tr>*,
+.kanji-glyph-data dl.kanji-readings-japanese,
+div.entry[data-type='kanji']:nth-child(n + 2) .kanji-glyph-data dl.kanji-readings-chinese[data-count='0'] {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0em;
+    margin-top: 0 !important;
+}
+
+/* remove horizontal lines */
+.entry+.entry[data-type='kanji'],
+div#dictionary-entries>div.entry:nth-child(n + 2) .kanji-glyph-data>tbody>tr>* {
+    border-top: none !important;
+}
+
+/* change decimal list */
+.kanji-gloss-list {
+    list-style-type: circle;
+}   
+
+/* --------------- FREQUENCY BOLD SIGNIFICANT DIGITS --------------- */
+
+@font-face {
+    font-family: "noka-mono";
+    src: local("noka-comma");
+    unicode-range: U+32d5;
+}
+
+/* --------------- OPTIONAL AUXILARY OPTIONS --------------- */
+
+/* Only shows the first 7 frequency lists */
+span.frequency-group-item:nth-child(n+9) {
+    display: none;
+}
+
+/* Hides the add reading button */
+button[title^="Add reading"] 
+{
+    display:none;
+}
