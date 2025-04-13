@@ -19,7 +19,7 @@ body {
 /* --- Furigana --- */
 .headword-reading  {
     font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
-    font-size: clamp(0.7rem, 3vw, 0.9rem);
+    font-size: 110%;
 }
 
 .headword ruby rt {
@@ -64,37 +64,6 @@ body {
     /* --background-color: #282828; */
     --background-color: #26282c;
     --tag-dictionary-background-color: #294be3;
-
-    .definition-item[data-dictionary='三省堂 全訳読解古語辞典'] {
-        --skogo-black: #DDDDDD;
-        --skogo-white: #000000;
-        --skogo-blue: #00AAFF;
-        --skogo-red: #FF6666;
-        --skogo-light-red: #A54447;
-        --skogo-extra-light-red: #481D1E;
-        --skogo-hinshi-mark: #CCCCCC;
-        --skogo-shubetsu-mark: #CCCCCC;
-        --skogo-gendai-mark: #CCCCCC;
-    }
-
-    .definition-item[data-dictionary='旺文社 全訳古語辞典'] {
-        --ozk5-black: #DDDDDD;
-        --ozk5-white: #000000;
-        --ozk5-blue: #00AAFF;
-        --ozk5-red: #FF6666;
-        --ozk5-light-red: #B24747;
-        --ozk5-gray: #888;
-        --ozk5-hinshi-mark: #CCCCCC;
-        --ozk5-kakomi-border: #888;
-        --ozk5-metadata-background: #888;
-        --ozk5-example-katsuyou-mark: #AAAAAA;
-        --ozk5-mark-border: #ACAC04;
-        --ozk5-gogi-panel-header: #331414;
-        --ozk5-ruigo-panel-background: #CCCCCC;
-        --ozk5-ruigo-panel-border: #777;
-        --ozk5-appendix-title-background: #BF6666;
-        --ozk5-gendai-mark: #CCCCCC;
-    }
 
     .definition-item[data-dictionary='大辞泉 第二版'] {
         --daijisen-black: #FFFFFF;
@@ -324,9 +293,9 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
 {
     --dict-color: #6e5cc4;
 
-    /* background-color: #6d5cc41a; */
+    background-color: #6d5cc41a;
     font-size: 90%;
-    color: #aba7bf;
+    color: #b8b5c3;
 
     .tag[data-details^="三省堂国語辞典　第八版"] {
         --tag-color: #6e5cc4;
@@ -411,60 +380,6 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     .gloss-sc-span[data-sc-name="使用域G"] {
         color: #9d95c2;
     } */
-}
-
-/* --------------- DICT: 三省堂 全訳読解古語辞典 --------------- */
-.definition-item[data-dictionary='三省堂 全訳読解古語辞典'] {
-    /* ----------- */
-    /* -- Fonts -- */
-    /* ----------- */
-    [data-sc-body],
-    span[data-sc見出歴史仮名],
-    span[data-sc見出現代仮名],
-    span[data-sc段落歴史仮名],
-    span[data-sc段落現代仮名],
-    span[data-sc中黒語義],
-    span[data-sc-em][data-sc小書き],
-    span[data-scルビ],
-    span[data-sc返り点] {
-        font-family: "Hiragino Mincho ProN";
-    }
-
-    span[data-sc見出G],
-    span[data-sc絵巻タイトル],
-    span[data-scGendai見出],
-    span[data-sc活用分節],
-    span[data-sc語構成],
-    span[data-sc-f-w-hyphen],
-    span[data-sc活用表-label],
-    span[data-sc詩歌全形],
-    span[data-sc見出相当部],
-    span[data-sc詩歌技法ロゴ],
-    span[data-sc用例訳注ロゴ],
-    span[data-sc参考ロゴ],
-    span[data-sc注釈ロゴ],
-    span[data-sc冒頭文ロゴテキスト],
-    span[data-sc作品例ロゴテキスト],
-    span[data-sc-em][data-sc-gothic],
-    span[data-sc-em][data-sc赤],
-    span[data-sc補説小見出],
-    span[data-sc読解見出],
-    span[data-sc現代見出],
-    span[data-sc読解小見出],
-    span[data-sc現代小見出],
-    span[data-scチャート見出],
-    span[data-sc付録参照ロゴ],
-    span[data-sc絵巻図版],
-    span[data-sc識別見出],
-    td[data-sc識別ヘッダ項],
-    span[data-sc識別説明],
-    span[data-sc-gendai-ref品詞],
-    span[data-sc-gendai-ref-品詞],
-    span[data-sc-gendai-ref-desc],
-    span[data-sc-gendai-ref-desc],
-    span[data-sc-rectr] {
-        font-family: "Hiragino Kaku Gothic ProN";
-    }
 }
 
 /* ---------------DICT: 大辞泉 第二版 ---------------*/
