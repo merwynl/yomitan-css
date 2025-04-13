@@ -28,6 +28,8 @@ body {
 }
 
 .headword ruby rt {
+    margin-top: -5px;
+    margin-bottom: -5px;
     color: aquamarine;
 }
 
@@ -122,6 +124,12 @@ body {
 
 /* --------------- PITCH DICT COLORS --------------- */
 
+.tag[data-details="大辞泉"] {
+    --tag-color: #97EAD2;
+    --tag-text-color: black;
+    --margin-left: -2.5px;
+}
+
 .tag[data-details="アクセント辞典"] {
     --tag-color: #97EAD2;
     --tag-text-color: black;
@@ -170,7 +178,7 @@ span.frequency-group-tag:has(span[data-display-value="Trainee"]) {
 }
 
 span.frequency-group-tag:has(span[data-display-value="Student"]) {
-    --tag-color: #997d44;
+    --tag-color: #d04d4d;
     --tag-text-color: black;
 }
 
@@ -273,7 +281,7 @@ li.pronunciation-group {
 }
 
 
- /* --------------- KANJI DICTS --------------- */
+/* --------------- KANJI DICTS --------------- */
 
 /* remove misc dict classifications/codepoints/stats */
 .kanji-glyph-data>tbody>tr:nth-child(n + 3) {
@@ -315,18 +323,10 @@ div#dictionary-entries>div.entry:nth-child(n + 2) .kanji-glyph-data>tbody>tr>* {
     list-style-type: circle;
 }   
 
-/* --------------- FREQUENCY BOLD SIGNIFICANT DIGITS --------------- */
-
-@font-face {
-    font-family: "noka-mono";
-    src: local("noka-comma");
-    unicode-range: U+32d5;
-}
-
 /* --------------- OPTIONAL AUXILARY OPTIONS --------------- */
 
 /* Only shows the first 7 frequency lists */
-span.frequency-group-item:nth-child(n+9) {
+span.frequency-group-item:nth-child(n+4) {
     display: none;
 }
 
