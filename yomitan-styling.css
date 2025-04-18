@@ -1,35 +1,35 @@
 /* --------------------------------- */
 /* ----- YOMITAN POPUP STYLING ----- */
-/* ---- Last Updated 2025-04-13 ---- */
+/* ---- Last Updated 2025-04-17 ---- */
 /* --------------------------------- */
 
 /* --------------- GENERAL --------------- */
 
 body {
-    font-family: "Noto Sans JP", "Hiragino Mincho ProN", "Noto Serif JP","ヒラギノ明朝 ProN", system-ui;
+    font-family: "Noto Sans JP", "游教科書体", "UD デジタル 教科書体 NP", "UDDigiKyokashoN-R", "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", "Noto Serif JP", system-ui;
     font-size: clamp(0.7rem, 3vw, 0.9rem);
 }
 
 /* --- Term --- */
 .headword {
-    font-family: "Noto Serif JP", system-ui;
+    font-family: "UD デジタル 教科書体 NP", "UDDigiKyokashoN-R", "Noto Serif JP", system-ui;
     font-size: 110%;
 }
 
 /* --- Furigana --- */
 .headword-reading  {
-    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
+    font-family: "UD デジタル 教科書体 NP", "UDDigiKyokashoN-R", "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
     font-size: 110%;
 }
 
 .headword ruby rt {
-    margin-top: -5px;
-    margin-bottom: -5px;
+    margin-top: 8px;
+    margin-bottom: 6.5px;
     color: aquamarine;
 }
 
 .headword-list-tag-list .tag {
-    font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
+    font-family: "UD デジタル 教科書体 NP", "UDDigiKyokashoN-R", "Hiragino Mincho ProN", "ヒラギノ明朝 ProN", system-ui;
 }
 
 .headword-list-tag-list .tag {
@@ -67,7 +67,7 @@ body {
 
     .definition-item[data-dictionary='大辞泉 第二版'] {
         --daijisen-black: #FFFFFF;
-        --daijisen-white: #000000;
+        --daijisen-white: #cdcdcd;
         --daijisen-blue: #00AAFF;
         --daijisen-header-djs: #A0484F;
         --daijisen-header-djsp: #7A7A7A;
@@ -79,7 +79,7 @@ body {
     }
 
     .definition-item[data-dictionary='明鏡国語辞典 第三版'] {
-        --meikyo-white: #000000;
+        --meikyo-white: #cdcdcd;
         --meikyo-black: #CCCCCC;
         --meikyo-red: #FF3333;
         --meikyo-gray: #BBBBBB;
@@ -288,7 +288,111 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     content: " ";
 }
 
-/* ---------------DICT: 三省堂 ---------------*/
+/* --------------- DICT:  例解学習国語辞典 第十一版 ---------------*/
+.definition-item[data-dictionary="例解学習国語辞典 第十一版"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+/* --------------- DICT:  旺文社国語辞典 第十一版 ---------------*/
+.definition-item[data-dictionary="旺文社国語辞典 第十一版"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+
+    .tag[data-details^="旺文社国語辞典 第十一版"] {
+        --tag-color: #6e5cc4;
+    }
+
+    .gloss-content {
+        line-height: 110%;
+    }
+
+    .gloss-sc-span[data-sc-name="homophone"] {
+        margin-right: 0.3em;
+    }
+
+    .gloss-sc-span[data-sc-name="見出部"],
+    .gloss-sc-span[data-sc-name="子見出部"] {
+        font-size: 110%;
+        color: #ffffff;
+    }
+
+    /* word: 面 */
+    .gloss-sc-span[data-sc-name="見出部要素"] {
+        font-size: 110%;
+        color: #c6baff;
+    }
+
+    .gloss-sc-span[data-sc-name="品詞G"] {
+        font-size: 90%;
+        color: #6e5cc4;
+    }
+
+    .gloss-sc-span[data-sc-name="語釈"] {
+        color: white;
+    }
+
+    .gloss-content > .gloss-sc-div:first-of-type {
+        padding-top: 0.4em;
+    }
+
+    .gloss-content > .gloss-sc-div:last-of-type {
+        padding-bottom: 0.4em;
+    }
+
+    .gloss-sc-div[data-sc-name="語義"]:not(:last-child) {
+        margin-bottom: 0.5em;
+    }
+
+    .gloss-sc-div:not(:last-child) {
+        margin-bottom: 0.5em;
+    }
+
+    .gloss-sc-span[data-sc-name="語義番号"] {
+        margin-right: 0.3em;
+        font-size: 120%;
+        color: #bf87ff;
+    }
+
+    .gloss-sc-div[data-sc-name="用例G"] {
+        margin-left: 1.1em;
+        font-size: 92%;
+        color: #8676e0;
+    }
+
+    /* word: 面 */
+    .gloss-sc-span[data-sc-name="対義語G"] {
+        margin-left: 1.1em;
+    }
+
+    .gloss-sc-span[data-sc-name="注記"] {
+        color: #d5cdff;
+    }
+
+    .gloss-sc-span[data-sc-name="ルビ"] {
+        color: #a19cb5;
+    }
+
+    /* .gloss-sc-div[data-sc-name="共通"],
+    .gloss-sc-div[data-sc-name="自動詞形G"],
+    .gloss-sc-div[data-sc-name="可能形G"] {
+        color: #9d95c2;
+    }
+
+    .gloss-sc-span[data-sc-name="使用域G"] {
+        color: #9d95c2;
+    } */
+}
+
+/* --------------- DICT: 三省堂 ---------------*/
 .definition-item[data-dictionary="三省堂国語辞典　第八版"] 
 {
     --dict-color: #6e5cc4;
@@ -382,55 +486,6 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     } */
 }
 
-/* ---------------DICT: 大辞泉 第二版 ---------------*/
-.definition-item[data-dictionary='大辞泉 第二版'] {
-    /* ----------- */
-    /* -- Fonts -- */
-    /* ----------- */
-    div[data-sc-headertitle],
-    div[data-sc-header-title],
-    span[data-sc-headword][data-sc見出],
-    span[data-sc-hhyphen],
-    span[data-sc-l4],
-    span[data-sc-rect],
-    span[data-sc-circle],
-    span[data-sc補足ロゴ-g],
-    span[data-sc季語-m],
-    span[data-sc-bold],
-    span[data-sc常外音訓-m],
-    span[data-sc常外-m],
-    span[data-sc付表有-m],
-    span[data-sc付表無-m],
-    div[data-sc-contents],
-    span[data-sc季語],
-    span[data-sc歌枕-m],
-
-    span[data-sc-italic],
-
-    span[data-sc-gaiji][data-sc-keigashira] {
-        font-family: "Heiti TC";
-    }
-
-    /* ----------------------- */
-    /* -- Optional settings -- */
-    /* ----------------------- */
-
-    /* Uncomment to show the 類語 section with links to other entries (Hidden by default)*/
-    /*
-    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ruigo"]),
-    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ssgo"]) {
-        display: block;
-    }
-    */
-
-    /* Uncomment to show the Pitch accent element (Hidden by default)*/
-    /*
-    div[data-sc-m-accent-audio-g] {
-        display: block;
-    }
-    */
-}
-
 /* --------------- DICT: 明鏡国語辞典 第三版 --------------- */
 
 .definition-item[data-dictionary="明鏡国語辞典 第三版"] {
@@ -464,6 +519,55 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     }
 }
 
+/* --------------- DICT: 大辞泉 第二版 ---------------*/
+.definition-item[data-dictionary='大辞泉 第二版'] {
+    /* ----------- */
+    /* -- Fonts -- */
+    /* ----------- */
+    div[data-sc-headertitle],
+    div[data-sc-header-title],
+    span[data-sc-headword][data-sc見出],
+    span[data-sc-hhyphen],
+    span[data-sc-l4],
+    span[data-sc-rect],
+    span[data-sc-circle],
+    span[data-sc補足ロゴ-g],
+    span[data-sc季語-m],
+    span[data-sc-bold],
+    span[data-sc常外音訓-m],
+    span[data-sc常外-m],
+    span[data-sc付表有-m],
+    span[data-sc付表無-m],
+    div[data-sc-contents],
+    span[data-sc季語],
+    span[data-sc歌枕-m],
+
+    span[data-sc-italic],
+
+    span[data-sc-gaiji][data-sc-keigashira] {
+        font-family: "Heiti TC";
+    }
+
+    /* ----------------------- */
+    /* -- Optional settings -- */
+    /* ----------------------- */
+
+    /* Uncomment to show the 類語 section with links to other entries (Hidden by default)*/
+    
+    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ruigo"]),
+    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ssgo"]) {
+        display: block;
+    }
+   
+
+    /* Uncomment to show the Pitch accent element (Hidden by default)*/
+    
+    div[data-sc-m-accent-audio-g] {
+        display: block;
+    }
+   
+}
+
 /* --------------- DICT: デジタル大辞泉 --------------- */
 
 .definition-item[data-dictionary="デジタル大辞泉"] {
@@ -472,11 +576,82 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     font-size: 90%;
 
     background-color: color-mix(in oklab, var(--dict-color) 10%, transparent);
-    color: color-mix(in oklab, var(--dict-color) 20%, white);
+    color: #d6d6d6;
 
     .tag[data-details^="デジタル大辞泉"] {
         --tag-color: var(--dict-color);
     }
+}
+
+/* --------------- DICT:   新明解国語辞典　第八版  ---------------*/
+.definition-item[data-dictionary="新明解国語辞典　第八版"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+
+/* --------------- DICT:  現代国語例解辞典　第五版 ---------------*/
+.definition-item[data-dictionary="現代国語例解辞典　第五版"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+/* --------------- DICT:  使い方の分かる 類語例解辞典 ---------------*/
+.definition-item[data-dictionary="使い方の分かる 類語例解辞典"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+/* --------------- DICT:  使い方の分かる 類語例解辞典 ---------------*/
+.definition-item[data-dictionary="使い方の分かる 類語例解辞典"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+/* --------------- DICT:  JMdict [2025-04-13] ---------------*/
+.definition-item[data-dictionary="JMdict [2025-04-13]"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+/* --------------- DICT:  新和英 ---------------*/
+.definition-item[data-dictionary="新和英"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
+}
+
+/* --------------- DICT:  漢検漢字辞典　第二版 ---------------*/
+.definition-item[data-dictionary="漢検漢字辞典　第二版"] 
+{
+    --dict-color: #6e5cc4;
+
+    background-color: #6d5cc41a;
+    font-size: 90%;
+    color: #d6d6d6;
 }
 
 /* --------------- PITCH --------------- */
@@ -551,7 +726,7 @@ div#dictionary-entries>div.entry:nth-child(n + 2) .kanji-glyph-data>tbody>tr>* {
 /* --------------- OPTIONAL AUXILARY OPTIONS --------------- */
 
 /* Only shows the first 7 frequency lists */
-span.frequency-group-item:nth-child(n+4) {
+span.frequency-group-item:nth-child(n+8) {
     display: none;
 }
 
