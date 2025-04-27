@@ -1,6 +1,6 @@
 /* --------------------------------- */
 /* ----- YOMITAN POPUP STYLING ----- */
-/* ---- Last Updated 2025-04-17 ---- */
+/* ---- Last Updated 2025-04-27 ---- */
 /* --------------------------------- */
 
 /* --------------- GENERAL --------------- */
@@ -60,6 +60,10 @@ body {
 /* --------------- DICTIONARY SPECIFIC --------------- */
 
 :root[data-theme="dark"] {
+    --atamadaka-color: #F5436D;
+    --heiban-color: #39C1FF;
+    --nakadaka-color: #fca311;
+    --odaka-color: #40D4A6;
     /* --background-color: #212228; */
     /* --background-color: #282828; */
     --background-color: #26282c;
@@ -735,3 +739,99 @@ button[title^="Add reading"]
 {
     display:none;
 }
+
+/* --------------- COLOURED PITCH ACCENT V1.3  --------------- */
+/* ------------------ Credit to koiyakiya -------------------- */
+/* Do note this will highlight the word according to the first entry in the first pitch dictionary that you have displayed. 
+There is no better way to do this without modifying Yomitan's internal code (Javascript). */
+
+/* Atamadaka highlighting for headword */
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="1"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="1"]) .headword-term {
+    color: var(--atamadaka-color);
+    --headword-current-kanji-border-color: var(--atamadaka-color);
+}
+/* Atamadaka highlighting for border top on pronunciation list */
+.pronunciation[data-pitch-accent-downstep-position="1"] {
+    --pronunciation-annotation-color: var(--atamadaka-color);
+}
+/* ---Heiban--- */
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="0"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="0"]) .headword-term {
+    color: var(--heiban-color);
+    --headword-current-kanji-border-color: var(--heiban-color);
+}
+.pronunciation[data-pitch-accent-downstep-position="0"] {
+    --pronunciation-annotation-color: var(--heiban-color);
+}
+/* ---End Heiban--- */
+
+/* ---Kifuku Section--- */
+
+/* Everything will be initially colored as nakadaka if in the kifuku category */
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="2"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="2"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="3"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="3"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="4"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="4"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="5"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="5"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="6"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="6"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="7"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="7"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="8"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="8"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="9"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="9"]) .headword-term,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="10"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child[data-pitch-accent-downstep-position="10"]) .headword-term {
+	color: var(--nakadaka-color);
+    --headword-current-kanji-border-color: var(--nakadaka-color);
+}
+
+.pronunciation[data-pitch-accent-downstep-position="2"],
+.pronunciation[data-pitch-accent-downstep-position="3"],
+.pronunciation[data-pitch-accent-downstep-position="4"],
+.pronunciation[data-pitch-accent-downstep-position="5"],
+.pronunciation[data-pitch-accent-downstep-position="6"],
+.pronunciation[data-pitch-accent-downstep-position="7"],
+.pronunciation[data-pitch-accent-downstep-position="8"],
+.pronunciation[data-pitch-accent-downstep-position="9"],
+.pronunciation[data-pitch-accent-downstep-position="10"] {
+    --pronunciation-annotation-color: var(--nakadaka-color);
+}
+
+/* ---End nakadaka--- */
+
+/* Now, we check manually if the first entry in the first pitch accent dict
+   is odaka 尾高 */
+.entry:has(.pronunciation-list li:first-child .pronunciation-mora:last-child[data-pitch="high"][data-pitch-next="low"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child .pronunciation-mora:last-child[data-pitch="high"][data-pitch-next="low"]) .headword-term {
+    color: var(--odaka-color) !important;
+    --headword-current-kanji-border-color: var(--odaka-color) !important;
+}
+.pronunciation:has(.pronunciation-mora:last-child[data-pitch="high"][data-pitch-next="low"]) {
+    --pronunciation-annotation-color: var(--odaka-color) !important;
+}
+
+/* ---End kifuku--- */
+
+/* Check if word only has one mora. If that single mora is high while the next 
+   (nonexistent) mora is low, that means it's atamadaka, and thus we set it as such.*/
+.entry:has(.pronunciation-list li:first-child .pronunciation-mora:last-child[data-position="0"][data-pitch="high"][data-pitch-next="low"]) .headword-term *,
+.entry:has(.pronunciation-list li:first-child .pronunciation-mora:last-child[data-position="0"][data-pitch="high"][data-pitch-next="low"]) .headword-term {
+    color: var(--atamadaka-color) !important;
+    --headword-current-kanji-border-color: var(--atamadaka-color) !important;
+}
+.pronunciation:has(.pronunciation-mora:last-child[data-position="0"][data-pitch="high"][data-pitch-next="low"]) {
+    --pronunciation-annotation-color: var(--atamadaka-color) !important;
+}
+
+/* Increase border top width to make it look nicer */
+.pronunciation-mora[data-pitch=high]>.pronunciation-mora-line {
+    border-top-width: 0.15em;
+}
+
+/* Colored Pitch Accent 終わり */
