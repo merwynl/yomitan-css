@@ -1,6 +1,6 @@
 /* --------------------------------- */
 /* ----- YOMITAN POPUP STYLING ----- */
-/* ---- Last Updated 2025-04-27 ---- */
+/* ---- Last Updated 2025-07-26 ---- */
 /* --------------------------------- */
 
 /* --------------- GENERAL --------------- */
@@ -160,13 +160,16 @@ body {
     --tag-text-color: #d7d7d7;
 }
 
+
+
 /* --------------- PITCH DICT COLORS --------------- */
 
-.tag[data-details="大辞泉"] {
+/*.tag[data-details="大辞泉"] {
     --tag-color: #97EAD2;
     --tag-text-color: black;
     --margin-left: -2.5px;
 }
+*/
 
 .tag[data-details="アクセント辞典"] {
     --tag-color: #97EAD2;
@@ -492,7 +495,7 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
 
 /* --------------- DICT: 明鏡国語辞典 第三版 --------------- */
 
-.definition-item[data-dictionary="明鏡国語辞典 第三版"] {
+/* .definition-item[data-dictionary="明鏡国語辞典 第三版"] {
     [data-sc-body],
     span[data-sc-rect],
     span[data-sc-katsuyo],
@@ -521,125 +524,10 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
     span[data-sc-pron] {
         font-family: "Doulos SIL";
     }
-}
-
-/* --------------- DICT: 大辞泉 第二版 ---------------*/
-.definition-item[data-dictionary='大辞泉 第二版'] {
-    /* ----------- */
-    /* -- Fonts -- */
-    /* ----------- */
-    div[data-sc-headertitle],
-    div[data-sc-header-title],
-    span[data-sc-headword][data-sc見出],
-    span[data-sc-hhyphen],
-    span[data-sc-l4],
-    span[data-sc-rect],
-    span[data-sc-circle],
-    span[data-sc補足ロゴ-g],
-    span[data-sc季語-m],
-    span[data-sc-bold],
-    span[data-sc常外音訓-m],
-    span[data-sc常外-m],
-    span[data-sc付表有-m],
-    span[data-sc付表無-m],
-    div[data-sc-contents],
-    span[data-sc季語],
-    span[data-sc歌枕-m],
-
-    span[data-sc-italic],
-
-    span[data-sc-gaiji][data-sc-keigashira] {
-        font-family: "Heiti TC";
-    }
-
-    /* ----------------------- */
-    /* -- Optional settings -- */
-    /* ----------------------- */
-
-    /* Uncomment to show the 類語 section with links to other entries (Hidden by default)*/
-    
-    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ruigo"]),
-    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ssgo"]) {
-        display: block;
-    }
-   
-
-    /* Uncomment to show the Pitch accent element (Hidden by default)*/
-    
-    div[data-sc-m-accent-audio-g] {
-        display: block;
-    }
-   
-}
-
-/* --------------- DICT: デジタル大辞泉 --------------- */
-
-.definition-item[data-dictionary="デジタル大辞泉"] {
-    --dict-color: #587B7F;
-
-    font-size: 90%;
-
-    background-color: color-mix(in oklab, var(--dict-color) 10%, transparent);
-    color: #d6d6d6;
-
-    .tag[data-details^="デジタル大辞泉"] {
-        --tag-color: var(--dict-color);
-    }
-}
-
-/* --------------- DICT:   新明解国語辞典　第八版  ---------------*/
-.definition-item[data-dictionary="新明解国語辞典　第八版"] 
-{
-    --dict-color: #6e5cc4;
-
-    background-color: #6d5cc41a;
-    font-size: 90%;
-    color: #d6d6d6;
-}
-
-
-/* --------------- DICT:  現代国語例解辞典　第五版 ---------------*/
-.definition-item[data-dictionary="現代国語例解辞典　第五版"] 
-{
-    --dict-color: #6e5cc4;
-
-    background-color: #6d5cc41a;
-    font-size: 90%;
-    color: #d6d6d6;
-}
-
-/* --------------- DICT:  使い方の分かる 類語例解辞典 ---------------*/
-.definition-item[data-dictionary="使い方の分かる 類語例解辞典"] 
-{
-    --dict-color: #6e5cc4;
-
-    background-color: #6d5cc41a;
-    font-size: 90%;
-    color: #d6d6d6;
-}
-
-/* --------------- DICT:  使い方の分かる 類語例解辞典 ---------------*/
-.definition-item[data-dictionary="使い方の分かる 類語例解辞典"] 
-{
-    --dict-color: #6e5cc4;
-
-    background-color: #6d5cc41a;
-    font-size: 90%;
-    color: #d6d6d6;
-}
+} */
 
 /* --------------- DICT:  JMdict [2025-04-13] ---------------*/
-.definition-item[data-dictionary="JMdict [2025-04-13]"] 
-{
-    --dict-color: #6e5cc4;
-
-    background-color: #6d5cc41a;
-    font-size: 90%;
-    color: #d6d6d6;
-}
-
-/* --------------- DICT:  新和英 ---------------*/
-.definition-item[data-dictionary="新和英"] 
+.definition-item[data-dictionary="JMdict [2025-07-26]"] 
 {
     --dict-color: #6e5cc4;
 
@@ -730,7 +618,7 @@ div#dictionary-entries>div.entry:nth-child(n + 2) .kanji-glyph-data>tbody>tr>* {
 /* --------------- OPTIONAL AUXILARY OPTIONS --------------- */
 
 /* Only shows the first 7 frequency lists */
-span.frequency-group-item:nth-child(n+8) {
+span.frequency-group-item:nth-child(n+4) {
     display: none;
 }
 
