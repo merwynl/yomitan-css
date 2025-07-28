@@ -1,9 +1,10 @@
 /* --------------------------------- */
 /* ----- YOMITAN POPUP STYLING ----- */
-/* ---- Last Updated 2025-07-27 ---- */
+/* ---- Last Updated 2025-07-29 ---- */
 /* --------------------------------- */
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"] 
+{
   --background-color: #26282c;
   --dict-color-opacity: 100%;
   --dict-color: var(--tag-dictionary-background-color);
@@ -52,6 +53,29 @@
   /* --font-sans: klee one; */
   --font-sans: UD デジタル 教科書体 NP;
   --font-serif: klee one;
+
+.definition-item[data-dictionary='大辞泉 第二版'] 
+{
+    --daijisen-blue: #00AAFF;
+    --daijisen-header-djs: #A0484F;
+    --daijisen-header-djsp: #7A7A7A;
+    --daijisen-header-text: #000000;
+    --daijisen-logo-color: #DDDDDD;
+    --daijisen-background-l3: #C0C0C0;
+    --daijisen-accent-mark: #FF6666;
+    --daijisen-accent-slash: #A0A0A0;
+}
+.definition-item[data-dictionary='大辞泉 第二版'] 
+{
+    --daijisen-blue: #4a8ade;
+    --daijisen-header-djs: #B65058;
+    --daijisen-header-djsp: #999999;
+    --daijisen-header-text: #FFFFFF;
+    --daijisen-logo-color: #000000;
+    --daijisen-background-l3: #606060;
+    --daijisen-accent-mark: #CC0000;
+    --daijisen-accent-slash: #808080;
+}
 }
 
 /* Base Settings */
@@ -176,9 +200,75 @@ rt.query-parser-segment-reading {
   --tag-text-color: black;
 }
 
-.definition-item[data-dictionary^="明鏡国語辞典 第二版"] {
-  --dict-color: rgb(51, 51, 221);
+.definition-item[data-dictionary^="明鏡国語辞典　第二版"] {
+  --dict-color: rgb(23, 96, 83);
   --dict-bg-opacity: 0.03;
+}
+.definition-item[data-dictionary^="大辞泉 第二版"] {
+    --dict-color: rgb(11, 81, 116);
+    --dict-bg-opacity: 0.03;
+    /* ----------- */
+    /* -- Fonts -- */
+    /* ----------- */
+    div[data-sc-headertitle],
+    div[data-sc-header-title],
+    span[data-sc-headword][data-sc見出],
+    span[data-sc-hhyphen],
+    span[data-sc-l4],
+    span[data-sc-rect],
+    span[data-sc-circle],
+    span[data-sc補足ロゴ-g],
+    span[data-sc季語-m],
+    span[data-sc-bold],
+    span[data-sc常外音訓-m],
+    span[data-sc常外-m],
+    span[data-sc付表有-m],
+    /* span[data-sc付表無-m] {
+        font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴシック";
+    } */
+
+    div[data-sc-contents],
+    span[data-sc季語],
+    /* span[data-sc歌枕-m] {
+        font-family: "Hiragino Mincho ProN", "ヒラギノ明朝 ProN";
+    } */
+
+    span[data-sc-italic] {
+        font-family: Georgia;
+    }
+
+    /* span[data-sc-gaiji][data-sc-keigashira] {
+        font-family: "Heiti TC";
+    } */
+
+    /* ----------------------- */
+    /* -- Optional settings -- */
+    /* ----------------------- */
+
+    /* Uncomment to show the 類語 section with links to other entries (Hidden by default)*/
+    
+    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ruigo"]),
+    div[data-sc-meaning][data-sc-c][data-sc-class="C"]:has(span[data-sc-href="$c-ssgo"]) {
+        display: block;
+    }
+    
+
+    /* Uncomment to show the Pitch accent element (Hidden by default)*/
+    
+    div[data-sc-m-accent-audio-g] {
+        display: block;
+    }
+    
+}
+
+html[data-glossary-layout-mode="compact"] {
+    .definition-item[data-dictionary="大辞泉 第二版"] {
+        [data-sc見出-g],
+        [data-sc-contents] {
+            display: inline;
+        }
+    }
+
 }
 
 .definition-item[data-dictionary^="岩波国語辞典　第八版"] {
@@ -348,7 +438,7 @@ rt.query-parser-segment-reading {
 }
 
 .definition-item[data-dictionary^="例解学習国語辞典"] {
-  --dict-color: #faa72f;
+  --dict-color: #076230;
   --dict-bg-opacity: 0.05;
 }
 
@@ -379,7 +469,7 @@ rt.query-parser-segment-reading {
 }
 
 /* Pitch Accent */
-.tag[data-category="pronunciation-dictionary"][data-details="NHK"] {
+.tag[data-category="pronunciation-dictionary"][data-details="アクセント辞典"] {
   --tag-color: #0076d0;
 }
 
@@ -387,71 +477,18 @@ rt.query-parser-segment-reading {
   --tag-color: rgb(170, 0, 0);
 }
 
-.tag[data-category="pronunciation-dictionary"][data-details^="大辞林"] {
+.tag[data-category="pronunciation-dictionary"][data-details^="大辞林第四版"] {
   --tag-color: rgb(85, 34, 85);
+}
+.tag[data-category="pronunciation-dictionary"][data-details^="新明解第八版"] {
+  --tag-color: rgb(170, 122, 0);
+}
+
+.tag[data-category="pronunciation-dictionary"][data-details^="三省堂国語辞典第八番"] {
+  --tag-color: rgb(123, 57, 12);
 }
 
 /* Frequency Dicts (Also Kanji Dicts) */
-/* .frequency-group-item[data-details="CC100"]>.tag {
-    --tag-color: #6E5CC4;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="JPDB"]>.tag {
-    --tag-color: #F1A208;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="JLPT"]>.tag {
-    --tag-color: #FF8360;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="BCCWJ"]>.tag {
-    --tag-color: #4b83e4;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="VN Freq"]>.tag {
-    --tag-color: #E7F9A9;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="Novels"]>.tag {
-    --tag-color: #13824e;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="Innocent Ranked"]>.tag {
-    --tag-color: #821368;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="Anime & J-drama"]>.tag {
-    --tag-color: #72ac15;
-    --tag-text-color: black;
-}
-
-.frequency-group-item[data-details="Wikipedia"]>.tag {
-    --tag-color: #343434;
-    --tag-text-color: #d3d3d3;
-}
-
-.frequency-group-item[data-details="Netflix"]>.tag {
-    --tag-color: #232323;
-    --tag-text-color: #d41b1b;
-}
-
-.frequency-group-item[data-details="Youtube"]>.tag {
-    --tag-color: #e70101;
-    --tag-text-color: #d7d7d7;
-}
-
-.frequency-group-item[data-details="青空文庫"]>.tag {
-    --tag-color: #0178e7;
-    --tag-text-color: #d7d7d7;
-}
-*/
 .frequency-group-item[data-details^="JPDB"] {
   --tag-frequency-background-color: #ff3e3d;
 }
@@ -491,6 +528,15 @@ rt.query-parser-segment-reading {
 .frequency-group-item[data-details="JLPT"]>.tag {
     --tag-color: #6088ff;
 }
+
+.frequency-group-item[data-details^="VN"] {
+  --tag-frequency-background-color: #0d4867;
+}
+
+.frequency-group-item[data-details="Anime & J-drama"]>.tag {
+    --tag-color: #166a5a;
+}
+
 
 /* --------------- TMW DICT --------------- */
 
