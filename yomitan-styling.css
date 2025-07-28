@@ -428,7 +428,7 @@ html[data-glossary-layout-mode="compact"] {
 }
 
 .definition-item[data-dictionary*="Wikipedia"] {
-  --dict-color: #447ff5;
+  --dict-color: #f5b444;
   --dict-bg-opacity: 0.03;
 }
 
@@ -522,11 +522,11 @@ html[data-glossary-layout-mode="compact"] {
 }
 
 .frequency-group-item[data-details^="Wikipedia"] {
-  --tag-frequency-background-color: #447ff5;
+  --tag-frequency-background-color: #4f4f4f;
 }
 
 .frequency-group-item[data-details="JLPT"]>.tag {
-    --tag-color: #6088ff;
+    --tag-color: #d2610a;
 }
 
 .frequency-group-item[data-details^="VN"] {
