@@ -50,12 +50,32 @@
 
 {{#*inline "expression"}}
     {{~#if merge~}}
-        {{~#each definition.expression~}}
-            {{{.}}}
-            {{~#unless @last}}、{{/unless~}}
-        {{~/each~}}
+        {{~#if modeTermKana~}}
+            {{~#each definition.reading~}}
+                {{{.}}}
+                {{~#unless @last}}、{{/unless~}}
+            {{~else~}}
+                {{~#each definition.expression~}}
+                    {{{.}}}
+                    {{~#unless @last}}、{{/unless~}}
+                {{~/each~}}
+            {{~/each~}}
+        {{~else~}}
+            {{~#each definition.expression~}}
+                {{{.}}}
+                {{~#unless @last}}、{{/unless~}}
+            {{~/each~}}
+        {{~/if~}}
     {{~else~}}
-        {{definition.expression}}
+        {{~#if modeTermKana~}}
+            {{~#if definition.reading~}}
+                {{definition.reading}}
+            {{~else~}}
+                {{definition.expression}}
+            {{~/if~}}
+        {{~else~}}
+            {{definition.expression}}
+        {{~/if~}}
     {{~/if~}}
 {{/inline}}
 
@@ -184,14 +204,16 @@
 {{/inline}}
 
 {{#*inline "reading"}}
-    {{~#if merge~}}
-        {{~#each definition.reading~}}
-            {{{.}}}
-            {{~#unless @last}}、{{/unless~}}
-        {{~/each~}}
-    {{~else~}}
-        {{~definition.reading~}}
-    {{~/if~}}
+    {{~#unless modeTermKana~}}
+        {{~#if merge~}}
+            {{~#each definition.reading~}}
+                {{{.}}}
+                {{~#unless @last}}、{{/unless~}}
+            {{~/each~}}
+        {{~else~}}
+            {{~definition.reading~}}
+        {{~/if~}}
+    {{~/unless~}}
 {{/inline}}
 
 {{#*inline "sentence"}}
@@ -265,7 +287,11 @@
 {{/inline}}
 
 {{#*inline "pitch-accents"}}
-    {{~> pitch-accent-list format='text'~}}
+    {{#if (op ">" pitchCount 0)}}
+        {{~> pitch-accent-list format='text'~}}
+    {{else}}
+        {{~definition.reading~}}
+    {{/if}}
 {{/inline}}
 
 {{#*inline "pitch-accent-graphs"}}
@@ -632,5 +658,4 @@
         {{~/if~}}
     {{~/if~}}
 {{/inline}}
-
 {{~> (lookup . "marker") ~}}
