@@ -871,3 +871,134 @@ html:has(.entry-current .headword[data-is-primary="true"][data-pronunciation-cat
 .pronunciation-mora[data-devoice="true"] {
   color: var(--devoiced-color);
 }
+
+
+/* This part goes in the inner "Popup CSS" */
+/*========== MISC ==========*/
+
+/* Prevent selecting furigana when selecting the headword */
+.headword-term ruby rt {
+  user-select: none;
+}
+
+/* Add a subtle border between dictionary entries */
+.definition-item-content {
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  padding: 8px 0;
+}
+
+/* Remove top border from consecutive entries */
+.entry + .entry {
+  border-top: none;
+}
+
+/* Hide scrollbars but keep scrolling functional */
+.scrollbar {
+  scrollbar-color: transparent transparent !important; /* Firefox */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+/* Remove default underline from kanji links, add dashed underline on hover */
+.headword-kanji-link {
+  text-decoration: none;
+}
+.headword-kanji-link:hover {
+  text-decoration: underline dashed #888 2px;
+}
+
+/* Inflection rule display */
+.inflection-rule-chain {
+  font-size: 14px;
+  color: #979797;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+/* Replace inflection icon */
+.inflection-source-icon[data-inflection-source="algorithm"]::after {
+  content: "🔸";
+}
+
+/* Action buttons (hover effect) */
+.actions {
+  font-size: 14px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.actions:hover {
+  opacity: 1;
+}
+
+/*========== COLORS ==========*/
+/* Glassy effect background */
+body {
+  background: transparent !important; 
+  color: #dfdfdf; /* default text color */
+}
+
+/* Links: change color and remove underline, add hover color */
+.definition-list a {
+  text-decoration: none;
+  color: #ff6247;
+}
+.definition-list a:hover {
+  text-decoration: underline;
+  color: #ff624780;
+}
+
+/* Current entry indicator color */
+.entry-current-indicator {
+  background-color: #ff6247;
+}
+
+/* Headword color and font */
+/* .headword-term, 
+.headword-kanji-link {
+  color: white;
+  font-family: "Noto Sans JP Regular";
+} */
+
+/* Numbered markers color */
+.definition-item::marker,
+.gloss-item::marker {
+  color: #979797;
+}
+
+/* Furigana color */
+.headword-term > ruby > rt {
+  color: #979797;
+}
+
+/* Remove background from specific tables */
+.gloss-sc-thead,
+.gloss-sc-tfoot,
+.gloss-sc-th {
+  background-color: transparent;
+}
+
+/*========== TAGS ==========*/
+/* Change tag size */
+.tag { 
+  font-size: 14px; 
+}
+
+/* Hide all tags except frequency tags */
+/* .tag:not([data-category="frequency"]) {
+  display: none !important;
+} */
+
+/* Hide the label content inside frequency tags */
+/* .tag-label-content {
+  display: none;
+}
+ */
+
+/* This part goes in the "Popup outer CSS" */
+/*========== Glassy efect ==========*/
+ iframe.yomitan-popup {
+  background: rgba(45, 45, 55, 0.85) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
