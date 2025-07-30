@@ -1,0 +1,9 @@
+/* This part goes in the "Popup outer CSS" */
+/*========== Glassy efect ==========*/
+ iframe.yomitan-popup {
+  background: rgba(45, 45, 55, 0.85) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
