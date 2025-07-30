@@ -983,7 +983,10 @@ body {
 }
 
 /* Hide all tags except frequency tags */
-.tag:not([data-category="frequency"]) {
+/* .tag[data-category="default"] {
+  display: none !important;
+} */
+.tag[data-category="dictionary"] {
   display: none !important;
 }
 
