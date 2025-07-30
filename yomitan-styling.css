@@ -344,7 +344,7 @@ html[data-glossary-layout-mode="compact"] {
   --dict-bg-opacity: 0.03;
 }
 
-.definition-item[data-dictionary^="Pixiv"] {
+.definition-item[data-dictionary^="PixivLight"] {
   --dict-color: rgb(0, 151, 250);
   --dict-bg-opacity: 0.03;
 }
