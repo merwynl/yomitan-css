@@ -8,7 +8,7 @@
   --background-color: #26282c;
   --dict-color-opacity: 100%;
   --dict-color: var(--tag-dictionary-background-color);
-  --dict-bg-opacity: 0;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: #d3d3d3;
   --tag-border-color: transparent --tag-default-background-color: rgba(0, 0, 0, 0.4);
   --tag-name-background-color: #88C0D0;
@@ -91,8 +91,8 @@ body {
 
 .headword {
   font-family: var(--font-serif);
-  font-weight: bold;
   font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .headword-kanji-link {
@@ -196,17 +196,17 @@ rt.query-parser-segment-reading {
 
 .definition-item[data-dictionary^="JMdict"] {
   --dict-color: rgb(221, 221, 238);
-  --dict-bg-opacity: 0.06;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary^="明鏡国語辞典　第二版"] {
   --dict-color: rgb(23, 96, 83);
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 .definition-item[data-dictionary^="大辞泉 第二版"] {
     --dict-color: rgb(11, 81, 116);
-    --dict-bg-opacity: 0.03;
+    --dict-bg-opacity: 0.01;
     /* ----------- */
     /* -- Fonts -- */
     /* ----------- */
@@ -271,173 +271,172 @@ html[data-glossary-layout-mode="compact"] {
 
 }
 
-
 .definition-item[data-dictionary*="新明解国語辞典　第八版"] {
   --dict-color: rgb(255, 0, 0);
-  --dict-bg-opacity: 0.025;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="大辞林　第四版"] {
   --dict-color: rgb(85, 34, 85);
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="デジタル大辞泉"] {
   --dict-color: rgb(170, 0, 0);
-  --dict-bg-opacity: 0.04;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="精選版　日本国語大辞典"] {
   --dict-color: rgb(238, 238, 204);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary="小学館例解学習国語 第十二版"] {
   --dict-color: rgb(221, 221, 238);
-  --dict-bg-opacity: 0.15;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary^="広辞苑 第七版"] {
   --dict-color: rgb(51, 51, 51);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="故事・ことわざ・慣用句オンライン"] {
   --dict-color: rgb(255, 227, 124);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary="実用日本語表現辞典"] {
   --dict-color: rgb(99, 108, 141);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="三省堂国語辞典"] {
   --dict-color: rgb(229, 107, 57);
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="JMnedict"],
 .definition-item[data-dictionary^="Jitendex"] {
   --dict-color: rgb(0, 132, 255);
-  --dict-bg-opacity: 0.02;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="NEW斎藤和英大辞典"] {
   --dict-color: rgb(244, 225, 254);
-  --dict-bg-opacity: 0.15;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary="新和英"] {
   --dict-color: rgb(21, 70, 51);
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="PixivLight"] {
   --dict-color: rgb(0, 151, 250);
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="漢字源"] {
   --dict-color: rgb(201, 149, 93);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="日本語俗語辞書"] {
   --dict-color: rgb(176, 4, 157);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="旺文社国語辞典 第十一版"] {
   --dict-color: rgb(193, 123, 148);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="語源由来辞典"] {
   --dict-color: rgb(206, 169, 47);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="学研 四字熟語辞典"] {
   --dict-color: rgb(180, 192, 152);
-  --dict-bg-opacity: 0.08;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary="故事ことわざの辞典"] {
   --dict-color: rgb(117, 87, 85);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="日本語文法辞典"] {
   --dict-color: rgb(23, 59, 173);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="絵でわかる日本語"] {
   --dict-color: rgb(207, 76, 110);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="JLPT文法解説まとめ"] {
   --dict-color: rgb(244, 66, 54);
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="どんなときどう使う 日本語表現文型辞典"] {
   --dict-color: rgb(126, 168, 232);
-  --dict-bg-opacity: 0.08;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="毎日のんびり日本語教師"] {
   --dict-color: rgb(255, 216, 228);
-  --dict-bg-opacity: 0.12;
+  --dict-bg-opacity: 0.01;
   --tag-text-color: black;
 }
 
 .definition-item[data-dictionary^="新選国語辞典　第十版"] {
   --dict-color: #E5007F !important;
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="使い方の分かる 類語例解辞典"],
 .definition-item[data-dictionary="全国方言辞典"] {
   --dict-color: #9c4836;
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="新語時事用語辞典"] {
   --dict-color: #6e9ac6;
-  --dict-bg-opacity: 0.07;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary="漢字ペディア同訓異義"] {
   --dict-color: #b7b7b7;
-  --dict-bg-opacity: 0.12;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary*="Wikipedia"] {
   --dict-color: #f5b444;
-  --dict-bg-opacity: 0.03;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="漢検漢字辞典"] {
   --dict-color: #e7a93a;
-  --dict-bg-opacity: 0.08;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="例解学習国語辞典"] {
   --dict-color: #076230;
-  --dict-bg-opacity: 0.05;
+  --dict-bg-opacity: 0.01;
 }
 
 .definition-item[data-dictionary^="現代国語例解辞典"] {
   --dict-color: #e3323a;
-  --dict-bg-opacity: 0.04;
+  --dict-bg-opacity: 0.01;
 }
 
 .tag[data-category="dictionary"][data-details="漢字辞典オンライン"] {
