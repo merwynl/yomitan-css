@@ -1,6 +1,6 @@
 /* --------------------------------- */
 /* ----- YOMITAN POPUP STYLING ----- */
-/* ---- Last Updated 2025-07-30 ---- */
+/* ---- Last Updated 2025-11-24 ---- */
 /* --------------------------------- */
 
 :root[data-theme="dark"] 
@@ -271,10 +271,6 @@ html[data-glossary-layout-mode="compact"] {
 
 }
 
-.definition-item[data-dictionary^="岩波国語辞典　第八版"] {
-  --dict-color: rgb(51, 85, 51);
-  --dict-bg-opacity: 0.05;
-}
 
 .definition-item[data-dictionary*="新明解国語辞典　第八版"] {
   --dict-color: rgb(255, 0, 0);
@@ -493,6 +489,10 @@ html[data-glossary-layout-mode="compact"] {
   --tag-frequency-background-color: #ff3e3d;
 }
 
+.frequency-group-item[data-details^="Jiten"] {
+  --tag-frequency-background-color: #63a581;
+}
+
 .frequency-group-item[data-details^="Innocent"] {
   --tag-frequency-background-color: #e82c9c;
 }
@@ -537,54 +537,6 @@ html[data-glossary-layout-mode="compact"] {
     --tag-frequency-background-color: #166a5a;
 }
 
-
-/* --------------- TMW DICT --------------- */
-
-span.frequency-group-tag:has(span[data-display-value="Owner"]) {
-    --tag-frequency-background-color: #F8DBA6;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Immortal Idol"]) {
-    --tag-frequency-background-color: #53D9AF;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Eternal Idol"]) {
-    --tag-frequency-background-color: #4188e7;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Divine Idol"]) {
-   --tag-frequency-background-colorr: #4b54d9;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Prima Idol"]) {
-    --tag-frequency-background-color: #876be0;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Major Idol"]) {
-    --tag-frequency-background-color: #d275e1;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Debut Idol"]) {
-    --tag-frequency-background-color: #ff6a8f;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Trainee"]) {
-    --tag-frequency-background-color: #819d5c;
-    /* --tag-text-color: black; */
-}
-
-span.frequency-group-tag:has(span[data-display-value="Student"]) {
-    --tag-frequency-background-color: #d04d4d;
-    /* --tag-text-color: black; */
-}
-
 /* Frequency hover (average enabled) */
 [data-average-frequency="true"] [data-section-type="frequencies"]:hover .frequency-group-item:not([data-details="Average"]) {
   display: inline-block;
@@ -595,7 +547,7 @@ span.frequency-group-tag:has(span[data-display-value="Student"]) {
 }
 
 /* Frequency hover (average disabled) */
-[data-average-frequency="false"] span.frequency-group-item:nth-child(n + 5) {
+[data-average-frequency="false"] span.frequency-group-item:nth-child(n + 6) {
   display: none;
 }
 
@@ -641,10 +593,10 @@ button.action-button[title="Add reading (Alt + R)"] {
   display: none;
 }
 
-/* Changes for Jitendex */
+/* Changes for Jitendex
 .definition-item[data-dictionary*="Jitendex"] *[data-sc-content="example-sentence-a"] {
   font-size: 1em !important;
-}
+} */
 
 [data-glossary-layout-mode="default"] [data-sc-content="glossary"] {
   display: flex;
@@ -667,6 +619,14 @@ span[data-sc-content="example-keyword"] {
 
 /* Example Sentences */
 [data-sc-content|="example-sentence"] {
+  display: none;
+}
+
+[data-sc-content|="examples"] {
+  display: none;
+}
+
+/* [data-sc-content|="example-sentence"] {
   opacity: 0.5;
   display: block;
   transition: opacity 0.3s ease;
@@ -679,15 +639,15 @@ span[data-sc-content="example-keyword"] {
 
 [data-sc-content="example-sentence-a"] {
   transition: opacity 0.3s ease;
-}
+} */
 
-[data-sc-content="example-sentence-b"] {
+/* Collapse height initially & Hide overflow */
+/* [data-sc-content="example-sentence-b"] {
   opacity: 0;
   display: none;
   transition: opacity 0.3s ease;
-  /* Collapse height initially */
   overflow: hidden;
-  /* Hide overflow */
+ 
 }
 
 [data-sc-content="example-sentence-a"]:hover+[data-sc-content="example-sentence-b"] {
@@ -710,7 +670,7 @@ span[data-sc-content="example-keyword"] {
 
 [data-sc-content="example-sentence"] span {
   color: #FCFF61 !important;
-}
+} */
 
 /* Hidden */
 [data-sc-content="forms"] {
@@ -922,7 +882,7 @@ html:has(.entry-current .headword[data-is-primary="true"][data-pronunciation-cat
 /* Action buttons (hover effect) */
 .actions {
   font-size: 14px;
-  opacity: 0.5;
+  opacity: 0.8;
   transition: opacity 0.2s ease;
 }
 .actions:hover {
@@ -952,11 +912,11 @@ body {
 }
 
 /* Headword color and font */
-/* .headword-term, 
+.headword-term, 
 .headword-kanji-link {
   color: white;
   font-family: "Noto Sans JP Regular";
-} */
+}
 
 /* Numbered markers color */
 .definition-item::marker,
@@ -985,13 +945,19 @@ body {
 /* Hide all tags except frequency tags */
 /* .tag[data-category="default"] {
   display: none !important;
-} */
+
 .tag[data-category="dictionary"] {
   display: none !important;
 }
+} */
 
 /* Hide the label content inside frequency tags */
 /* .tag-label-content {
   display: none;
 }
  */
+
+
+[data-dictionary='NEW斎藤和英大辞典'] ul.gloss-sc-ul > li:nth-child(n + 5) {
+  display: none;
+}
