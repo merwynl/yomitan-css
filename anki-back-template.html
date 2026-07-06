@@ -1,572 +1,2389 @@
-<!---------- Header ------------->
-<header>
-    <div class="top-container">
-        <!-- Show the frequency number -->
-        {{FreqSort}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        <!-- The frequency list -->
-        {{#Frequency}}
-        <span class="freq-dropdown">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" class="dropdown-arrow-svg"
-                viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                <path d="M 12.7,6.5 H 3.3 L 8,11 Z"></path>
-            </svg>
-            <div class="freq-list-container">{{Frequency}}</div>
+<!-- BACK -->
+<div class="back">
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <!-- Custom Dark Mode Toggle -->
+    <span class="toggle-custom-dark-mode tappable">
+      <i class="fas fa-sun sun-icon"></i>
+      <i class="fas fa-moon moon-icon"></i>
+    </span>
+
+    <!-- Settings Toggle -->
+    <span class="toggle-settings-btn tappable">
+      <i class="fas fa-cog"></i>
+    </span>
+
+    <!-- Audios -->
+    {{#wordAudio}}
+    <div class="{{Tags}}"><span class="audio">{{wordAudio}}</span></div>
+    {{/wordAudio}}
+
+    {{#sentenceAudio}}
+    <div class="{{Tags}}"><span class="sentenceaudio">{{sentenceAudio}}</span></div>
+    {{/sentenceAudio}}
+
+    <!-- Notes Toggle -->
+    {{#notes}}
+    <span class="toggle-notes tappable">
+      <div class="toggle-notes-svg"></div>
+    </span>
+    {{/notes}}
+
+    <!-- Image Toggle -->
+    <span class="toggle-image-visibility show-btn tappable" style="display: none;">
+      <i class="fas fa-image"></i>
+    </span>
+
+    <!-- Frequency Dropdown -->
+    <div id="frequency">
+      <div class="frequency-box tappable">
+        <label class="freqbt" data-freq="{{freqSort}}">
+          {{freqSort}} <i class="fas fa-chevron-down arrow"></i>
+        </label>
+        {{#frequencies}}
+        <div class="frequency-content">
+          {{frequencies}}
+        </div>
+        {{/frequencies}}
+      </div>
+    </div>
+  </div>
+  <!-- /HEADER -->
+
+  <!-- GRID LAYOUT -->
+  <div class="grid-container">
+
+    <!-- Word -->
+    <div class="background-box tappable">
+      <div id="word" class="pitch card-a">
+        <span class="{{pitchCategories}} {{Tags}}">
+          <ruby>{{word}}<rt>{{#pitchAccents}}{{pitchAccents}}{{/pitchAccents}}{{^pitchAccents}}{{reading}}{{/pitchAccents}}</rt></ruby>
+          <div id="position">{{pitchPositions}}</div>
+          <div id="categories" class="tappable">{{pitchCategories}}</div>
         </span>
-        {{/Frequency}}
+      </div>
+      <div class="scene-indicator"><i class="fas fa-clone"></i></div>
     </div>
-</header>
 
-<main lang="ja">
-    <div class="template">
+    <!-- Picture -->
+    <div class="picture-container {{Tags}} clickable-image tappable">
+      {{picture}}
 
-        <!-- The first row (vocab box+picture) -->
-        <div class="def-header">
-            <div class="dh-left">
-                <div class="show-furigana vocab">
-                    {{#ExpressionFurigana}}{{furigana:ExpressionFurigana}}{{/ExpressionFurigana}}
-                    {{^ExpressionFurigana}}{{Expression}}{{/ExpressionFurigana}}
-                </div>
+      <div class="toggle-image-visibility hide-btn tappable">
+        <i class="fas fa-times"></i>
+      </div>
 
-                <!-- Reading + Pitch Accent -->
-                <div class="info">
-                    <div class="pitch">
-                        {{#ExpressionFurigana}}{{kana:ExpressionFurigana}}{{/ExpressionFurigana}}
-                        {{^ExpressionFurigana}}{{ExpressionReading}}{{/ExpressionFurigana}}
-                    </div>
-
-                    <!-- Pitch Accent -->
-                    {{#PitchPosition}}
-                    <span id="pitch-tags" class="tags"> {{PitchPosition}} </span>
-                    {{/PitchPosition}}
-                    <br />
-                    <div class="audio-buttons">{{ExpressionAudio}} {{SentenceAudio}}</div>
-                </div>
-            </div>
-
-            <!-- Image -->
-            {{#Picture}}
-            <div class="dh-right">
-                <div class="image tappable {{Tags}}">{{Picture}}</div>
-            </div>
-            {{/Picture}}
-        </div>
-
-        <br>
-        <div class="sentence">
-            {{#SentenceFurigana}} {{furigana:SentenceFurigana}} {{/SentenceFurigana}}
-            {{^SentenceFurigana}} {{furigana:Sentence}} {{/SentenceFurigana}}
-        </div>
-
-        <!-- The entire definition blockquote -->
-        <div class="def-info-container">
-            <div class="def-info"></div>
-        </div>
-        <blockquote class="main-def def-blockquote">
-            {{#DefinitionPicture}}
-            <div class="def-image tappable">{{DefinitionPicture}}</div>
-            {{/DefinitionPicture}}
-            <div class="definition">
-                {{#SelectionText}}
-                <div id="selection" data-display-name="Text Selection">{{SelectionText}}</div>
-                {{/SelectionText}}
-                {{#MainDefinition}}
-                <div id="primary" data-display-name="Primary Definition">{{MainDefinition}}</div>
-                {{/MainDefinition}}
-                <div id="glossaries" data-display-name="Glossaries">{{Glossary}}</div>
-            </div>
-        </blockquote>
-
-        <!-- This is for the sentence that you see on mobile (positioned under definition), on Desktop, the sentence goes above the definition box, and this is hidden -->
-        <div class="sentence-mobile">
-            {{#SentenceFurigana}} {{furigana:SentenceFurigana}} {{/SentenceFurigana}}
-            {{^SentenceFurigana}} {{furigana:Sentence}} {{/SentenceFurigana}}
-        </div>
-
-        <!------- Image modal --------->
-        <div class="modal-bg tappable">
-            <div class="img-popup"></div>
-        </div>
-
-        {{#MiscInfo}}
-        <div style="text-align: center">
-            <div>
-                <details>
-                    <summary>Misc. info</summary>
-                    <div class="misc-info popup">
-                        === Details ===
-                        <br />
-                        {{MiscInfo}}
-                    </div>
-                </details>
-            </div>
-        </div>
-        {{/MiscInfo}}
-</main>
-
-<!----------- Footer ------------->
-<footer lang="ja">
-    <br>
-    <div class="bot-container">
-        {{#Tags}}
-        <div class="tags-container">
-            <div class="tags">{{Tags}}</div>
-        </div>
-        {{/Tags}}
+      <div class="nav-arrow left tappable"></div>
+      <div class="nav-arrow right tappable"></div>
+      <div class="picture-counter"></div>
     </div>
-</footer>
+  </div>
+  <!-- /GRID LAYOUT -->
 
-<!----------- Scripts ------------>
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img">
+    <a href="#" class="close tappable"></a>
+    <div class="lightbox-nav left tappable"></div>
+    <div class="lightbox-nav right tappable"></div>
+    <button id="show-all" class="lightbox-grid-toggle tappable">Show All</button>
+  </div>
+
+  <!-- Sentence -->
+  <div class="sentence-container">
+    <div id="sentence">
+      <span id="formattedSentence" class="{{pitchCategories}} tappable"></span>
+    </div>
+    <div id="sentenceEng" class="is-collapsed">
+      {{sentenceTranslation}}
+    </div>
+    <div class="picture-counter"></div>
+  </div>
+
+  <!-- Notes -->
+  {{#notes}}
+  <div class="notes is-collapsed">{{notes}}</div>
+  {{/notes}}
+
+  <!-- Selection Text -->
+  {{#selectionText}}
+  <div id="selectionText" class="card-b" data-type="selectionText">
+    <div class="definition-box">
+      <div class="dictionary-title">Selected Text</div>
+      <div class="dictionary-counter"></div>
+      <div class="toggle-area left-larger tappable"></div>
+      <div class="toggle-area right-larger tappable"></div>
+      <div class="toggle-area left tappable"></div>
+      <div class="toggle-area right tappable"></div>
+      <span>{{selectionText}}</span>
+    </div>
+  </div>
+  {{/selectionText}}
+
+  <!-- Definition -->
+  <div id="definition" class="card-b" data-type="definition">
+    <div class="dictionary-counter"></div>
+    <div class="toggle-area left-larger tappable"></div>
+    <div class="toggle-area right-larger tappable"></div>
+    <div class="toggle-area left tappable"></div>
+    <div class="toggle-area right tappable"></div>
+    <div class="definition-box">
+      <span>{{definition}}</span>
+    </div>
+  </div>
+
+  <!-- Glossary -->
+  <div id="glossary" class="card-b yomitan-glossary" data-type="glossary">
+    <div class="dictionary-counter"></div>
+    <div class="toggle-area left-larger tappable"></div>
+    <div class="toggle-area right-larger tappable"></div>
+    <div class="toggle-area left tappable"></div>
+    <div class="toggle-area right tappable"></div>
+    <div class="glossary-box">
+      <span>{{glossary}}</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="tags-and-links-wrapper">
+
+    <!-- Tags -->
+    <div class="tags-container"></div>
+
+    <!-- External Links -->
+    <div class="external-links">
+      <!-- Jpdb -->
+      <a data-details="jpdb.io" href="https://jpdb.io/search?q={{text:word}}">
+        <img class="light-icon" src="_icon_jpdb_lightmode.png">
+        <img class="dark-icon" src="_icon_jpdb_darkmode.png">
+      </a>
+
+      <!-- Jisho -->
+      <a data-details="jisho.org" href="https://jisho.org/search/{{text:word}}">
+        <img class="light-icon" src="_icon_jisho_lightmode.png">
+        <img class="dark-icon" src="_icon_jisho_darkmode.png">
+      </a>
+
+      <!-- Google Images -->
+      <a data-details="image_search" href="https://www.google.co.jp/search?q={{text:word}}&amp;tbm=isch">
+        <img class="light-icon" src="_icon_image_black.svg">
+        <img class="dark-icon" src="_icon_image_white.svg">
+      </a>
+
+      <!-- Nadeshiko -->
+      <a data-details="nadeshiko.co" href="https://nadeshiko.co/search/sentence?query={{text:word}}">
+        <img class="light-icon" src="_icon_nadeshiko.ico">
+        <img class="dark-icon" src="_icon_nadeshiko.ico">
+      </a>
+
+      <!-- Immersion Kit -->
+      <a data-details="immersionkit.com" href="https://immersionkit.com/dictionary?keyword={{text:word}}">
+        <img class="light-icon" src="_icon_immersion_kit.ico">
+        <img class="dark-icon" src="_icon_immersion_kit.ico">
+      </a>
+    </div>
+  </div>
+
+  <!-- Misc Info -->
+  <div class="misc-info">{{miscInfo}}</div>
+  <!-- /FOOTER -->
+
+  <div id="dictionaryPreference" style="display: none;">{{dictionaryPreference}}</div>
+  <div id="kanji-tooltip"></div>
+</div>
+<!-- /BACK -->
+
+<!-- Hidden field to let JS calculate audio delay based on reading length -->
+<div id="hiddenReading" style="display: none;">{{#pitchAccents}}{{pitchAccents}}{{/pitchAccents}}{{^pitchAccents}}{{reading}}{{/pitchAccents}}</div>
+
 <script>
-    // This code is concerned with calculating the Pitch Accent and constructing the pitch accent graphs
-    function isOdaka(pitchNumber) {
-        const kana = `{{kana:ExpressionFurigana}}` || `{{ExpressionReading}}`;
-        return (
-            kana !== null &&
-            kana.replace(/[ァィゥェォャュョヮぁぃぅぇぉゃゅょゎ]/g, "").length === pitchNumber
-        );
+  var senrenConfig = {};
+
+  // Helper functions for shortcuts
+  window.parseKeyConfig = function (configStr) {
+    if (!configStr) return null;
+    const parts = configStr.toLowerCase().split(/[\s+]+/).filter(p => p);
+    if (parts.length === 0) return null;
+
+    const key = parts.pop();
+    return {
+      key: key,
+      ctrl: parts.includes('ctrl') || parts.includes('control'),
+      alt: parts.includes('alt'),
+      shift: parts.includes('shift'),
+      meta: parts.includes('meta') || parts.includes('cmd')
+    };
+  }
+
+  window.isKeyMatch = function (event, config) {
+    if (!config) return false;
+    return (
+      event.key.toLowerCase() === config.key &&
+      event.ctrlKey === config.ctrl &&
+      event.altKey === config.alt &&
+      event.shiftKey === config.shift &&
+      event.metaKey === config.meta
+    );
+  }
+
+  window.isKeyMatchPair = function (event, configStr) {
+    if (!configStr) return { match: false };
+    const parts = configStr.toLowerCase().split(/[\s+]+/).filter(p => p);
+    if (parts.length === 0) return { match: false };
+
+    const keyConfig = parts.pop();
+    const ctrl = parts.includes('ctrl') || parts.includes('control');
+    const alt = parts.includes('alt');
+    const shift = parts.includes('shift');
+    const meta = parts.includes('meta') || parts.includes('cmd');
+
+    if (event.ctrlKey !== ctrl || event.altKey !== alt || event.shiftKey !== shift || event.metaKey !== meta) {
+      return { match: false };
     }
 
-    function getPitchCategories() {
-        const validTypes = "(heiban|atamadaka|nakadaka|odaka|kifuku)";
-        return [...`{{PitchCategories}}`.matchAll(validTypes)].map(m => m[0]);
+    const eventKey = event.key.toLowerCase();
+    if (keyConfig.includes('/')) {
+      const pair = keyConfig.split('/');
+      const leftKey = pair[0] === 'left' ? 'arrowleft' : pair[0];
+      const rightKey = pair[1] === 'right' ? 'arrowright' : pair[1];
+
+      if (eventKey === leftKey) return { match: true, direction: 'left' };
+      if (eventKey === rightKey) return { match: true, direction: 'right' };
     }
 
-    function hasVerbOrAdjEnding() {
-        const endings = ["い", "う", "く", "す", "つ", "ぶ", "む", "る"];
-        return endings.some(ending => `{{Expression}}`.replace("</div>","").endsWith(ending));
+    if (eventKey === (keyConfig === 'right' ? 'arrowright' : keyConfig)) return { match: true, direction: 'right' };
+    if (eventKey === (keyConfig === 'left' ? 'arrowleft' : keyConfig)) return { match: true, direction: 'left' };
+    return { match: false };
+  }
+
+  // Custom dark mode
+  function darkMode() {
+    const button = document.querySelector(".toggle-custom-dark-mode");
+    const body = document.querySelector("html");
+    const sunIcon = document.querySelector(".sun-icon");
+    const moonIcon = document.querySelector(".moon-icon");
+
+    const applyDarkMode = () => {
+      const isDarkMode = localStorage.getItem("darkMode") === "enabled";
+      body.classList.toggle("custom-dark-mode", isDarkMode);
+      button.classList.toggle("dark-mode", isDarkMode);
+
+      sunIcon.style.display = isDarkMode ? "inline" : "none";
+      moonIcon.style.display = isDarkMode ? "none" : "inline";
+    };
+
+    requestAnimationFrame(applyDarkMode);
+
+    if (button && !button.dataset.hasClickListener) {
+      button.addEventListener("click", () => {
+        const isCurrentlyDark = body.classList.contains("custom-dark-mode");
+        localStorage.setItem("darkMode", isCurrentlyDark ? "disabled" : "enabled");
+        requestAnimationFrame(applyDarkMode);
+      });
+      button.dataset.hasClickListener = 'true';
+    }
+  }
+
+  // Collect images from the glossary and add them to the picture container
+  function collectGlossaryImages(deferred = false) {
+    if (senrenConfig.collectGlossaryImages !== 'true') return;
+
+    const glossaryItems = document.querySelectorAll("#glossary img, #definition img");
+    const pictureContainer = ELS.pictureContainer;
+
+    if (!glossaryItems.length || !pictureContainer) return;
+
+    if (!deferred && pictureContainer.querySelector('img')) {
+      return;
     }
 
-    function getPitchType(pitchPosition) {
-        const pitchCategories = getPitchCategories();
-        const kifukuTags = ["adj-i", "v1", "v2", "v4", "v5", "vs-", "vz", "vk", "vn", "vr"];
-        let canBeKifuku = pitchCategories.includes("kifuku");
-        canBeKifuku ||= kifukuTags.some(tag => `{{PitchCategories}}`.includes(tag));
-        if (canBeKifuku || (pitchCategories.length == 0 && hasVerbOrAdjEnding())) {
-            return pitchPosition === 0 ? "heiban" : "kifuku";
+    const existingSrcs = new Set(
+      Array.from(pictureContainer.querySelectorAll('img')).map(img => img.src)
+    );
+
+    const fragment = document.createDocumentFragment();
+    let addedCount = 0;
+
+    glossaryItems.forEach(img => {
+      const src = img.src;
+      if (!src || existingSrcs.has(src)) return;
+
+      if (src === window.location.href ||
+        src.toLowerCase().endsWith('.svg') ||
+        img.closest('span[data-sc-pixiv="read-more-link"] a') ||
+        img.closest('[data-dictionary*="漢字でGo!"], [data-dictionary*="現代国語例解辞典"]')
+      ) {
+        return;
+      }
+
+      existingSrcs.add(src);
+
+      const newImg = new Image();
+      newImg.src = src;
+      newImg.loading = "lazy";
+
+      newImg.onload = () => {
+        const w = newImg.naturalWidth;
+        const h = newImg.naturalHeight;
+        const finalAspectRatio = w / h;
+
+        if (w >= 120 && h >= 180 && finalAspectRatio >= 0.7 && finalAspectRatio <= 1.6) {
+          newImg.classList.add('tappable');
+        }
+      };
+
+      fragment.appendChild(newImg);
+      addedCount++;
+    });
+
+    if (addedCount > 0) {
+      pictureContainer.appendChild(fragment);
+
+      updatePictureCounter();
+
+      if (window.senrenRefreshImageNavigation) {
+        window.senrenRefreshImageNavigation();
+      }
+    }
+  }
+
+  // Manages cycling between Selection Text, Definition, and Glossary
+  function toggleDefinition() {
+    const toggleAreas = document.querySelectorAll('.toggle-area');
+    const selectionText = ELS.selectionText;
+    const definition = ELS.definition;
+    const glossary = ELS.glossary;
+    const allGlossaryListItems = [
+    ...document.querySelectorAll("#glossary > .glossary-box > span > div li[data-dictionary], #glossary > div > span > div > i"),
+    ...document.querySelectorAll('#glossary div[style*="margin-bottom: 12px"][style*="display: flex"]') 
+    ];
+
+    const dictionaryPreference = document.getElementById('dictionaryPreference')?.textContent.trim() || '';
+
+    function updateBackgroundColor(element) {
+      const backDiv = document.querySelector('.back');
+      if (!backDiv || !element) return;
+
+      const computed = getComputedStyle(element);
+      const color = computed.getPropertyValue('--dict-color').trim();
+      const rgb = computed.getPropertyValue('--dict-color-rgb').trim();
+
+      if (color) backDiv.style.setProperty('--dict-color', color);
+      if (rgb) backDiv.style.setProperty('--dict-color-rgb', rgb);
+    }
+
+    function getDictionaryName(element) {
+      if (element.tagName === 'LI' && element.hasAttribute('data-dictionary')) {
+        return element.getAttribute('data-dictionary');
+      }
+      return null;
+    }
+
+    const hasSelectionText = !!selectionText && selectionText.textContent.trim() !== '';
+    const hasDefinition = !!definition && definition.textContent.trim() !== '';
+    let definitionDictName = null;
+
+    if (hasDefinition) {
+      const definitionLi = definition.querySelector('.definition-box li[data-dictionary]');
+      if (definitionLi) {
+        definitionDictName = definitionLi.getAttribute('data-dictionary');
+      }
+    }
+
+    const visibleGlossaryItems = allGlossaryListItems.filter(li => {
+      const parentDiv = li.closest('div');
+      if (parentDiv && parentDiv.classList.contains('ignore')) {
+        return false;
+      }
+
+      if (hasDefinition && definitionDictName) {
+        const glossaryDictName = getDictionaryName(li);
+        if (glossaryDictName && glossaryDictName === definitionDictName) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    const currentVisibleItems = [];
+    if (hasSelectionText) currentVisibleItems.push({ type: 'selectionText', element: selectionText, container: selectionText });
+    if (hasDefinition) {
+      const defLi = definition.querySelector('.definition-box li[data-dictionary]');
+      currentVisibleItems.push({
+        type: 'definition',
+        element: defLi || definition,
+        container: definition
+      });
+    }
+
+    if (visibleGlossaryItems.length > 0) {
+      visibleGlossaryItems.forEach((li) => {
+        currentVisibleItems.push({ type: 'glossary', element: li, container: glossary });
+      });
+    }
+
+    const totalVisibleItemsCount = currentVisibleItems.length;
+
+    toggleAreas.forEach(area => {
+      if (totalVisibleItemsCount <= 1) {
+        area.style.display = 'none';
+      } else {
+        area.style.display = '';
+      }
+    });
+
+    function updateCounters(activeIndex) {
+      const counterText = totalVisibleItemsCount > 0 ? `${activeIndex + 1} / ${totalVisibleItemsCount}` : '';
+
+      [selectionText, definition, glossary].forEach(container => {
+        if (container) {
+          const counterDiv = container.querySelector('.dictionary-counter');
+          if (counterDiv) {
+            counterDiv.textContent = '';
+          }
+        }
+      });
+
+      if (activeIndex !== -1 && totalVisibleItemsCount > 0) {
+        const activeItem = currentVisibleItems[activeIndex];
+        if (activeItem && activeItem.container) {
+          const activeCounterDiv = activeItem.container.querySelector('.dictionary-counter');
+          if (activeCounterDiv) {
+            activeCounterDiv.textContent = counterText;
+          }
+        }
+      }
+    }
+
+    function getCurrentIndex() {
+      let activeIndex = -1;
+      if (selectionText && selectionText.classList.contains('show')) {
+        activeIndex = currentVisibleItems.findIndex(item => item.type === 'selectionText');
+      } else if (definition && definition.classList.contains('show')) {
+        activeIndex = currentVisibleItems.findIndex(item => item.type === 'definition');
+      } else if (glossary && glossary.classList.contains('show')) {
+        const currentGlossaryLi = visibleGlossaryItems.find(li => li.style.display === 'block');
+        if (currentGlossaryLi) {
+          activeIndex = currentVisibleItems.findIndex(item => item.type === 'glossary' && item.element === currentGlossaryLi);
+        } else if (currentVisibleItems.some(item => item.type === 'glossary')) {
+          activeIndex = currentVisibleItems.findIndex(item => item.type === 'glossary');
+        }
+      }
+      return activeIndex;
+    }
+
+    function getDictionaryMap() {
+      const map = new Map();
+      allGlossaryListItems.forEach(li => {
+        const dictionaryName = getDictionaryName(li);
+        if (dictionaryName) {
+          map.set(dictionaryName, li);
+        }
+      });
+      return map;
+    }
+
+    let initialIndex = -1;
+
+    allGlossaryListItems.forEach(li => (li.style.display = 'none'));
+    if (selectionText) selectionText.classList.remove('show');
+    if (definition) definition.classList.remove('show');
+    if (glossary) glossary.classList.remove('show');
+
+    if (totalVisibleItemsCount > 0) {
+      const permanentLastSelected = localStorage.getItem("lastSelectedDictionary");
+      const permanentDictionaryName = localStorage.getItem("lastDictionaryName");
+      const dictionaryMap = getDictionaryMap();
+      let initialStateSet = false;
+
+      if (!initialStateSet) {
+
+        // Priority 1: Selection Text
+        if (hasSelectionText) {
+          initialIndex = currentVisibleItems.findIndex(item => item.type === 'selectionText');
+          if (initialIndex !== -1) {
+            initialStateSet = true;
+          }
         }
 
-        if (pitchPosition === 0) {
-            return "heiban";
-        } else if (pitchPosition === 1) {
-            return "atamadaka";
-        } else if (pitchPosition > 1) {
-            return isOdaka(pitchPosition) ? "odaka" : "nakadaka";
-        }
-    }
-
-    // Show the color
-    function paintTargetWord() {
-        const pitchPositions = `{{PitchPosition}}`.match(/^\d+|\d+\b|\d+(?=\w)/g);
-        if (pitchPositions === null) return;
-
-        const pitchType = getPitchType(Number(pitchPositions[0]));
-        const sentences = Array.from(
-            document.querySelectorAll(".sentence, .definition, .sentence-mobile"),
-        );
-        for (const sentence of sentences) {
-            for (const targetWord of sentence.getElementsByTagName("b")) {
-                targetWord.classList.add(pitchType);
+        // Priority 2: Local Storage
+        if (!initialStateSet && permanentLastSelected === "glossary" && visibleGlossaryItems.length > 0) {
+          let foundDictionaryFromStorage = false;
+          if (permanentDictionaryName && dictionaryMap.has(permanentDictionaryName)) {
+            const specificLiElement = dictionaryMap.get(permanentDictionaryName);
+            if (visibleGlossaryItems.includes(specificLiElement)) {
+              initialIndex = currentVisibleItems.findIndex(item => item.type === 'glossary' && item.element === specificLiElement);
+              if (initialIndex !== -1) {
+                specificLiElement.style.display = 'block';
+                foundDictionaryFromStorage = true;
+                initialStateSet = true;
+              }
             }
-        }
+          }
 
-        const vocabElement = document.querySelector(".vocab");
-        if (vocabElement !== null) {
-            vocabElement.classList.add(pitchType);
-        }
-    }
-
-    // Seperate Tags by space, and show them in their own boxes
-    function tweakHTML() {
-        // Split tags
-        const tagsContainer = document.querySelector(".tags-container");
-        const tags = `{{Tags}}`.split(" ");
-        if (tagsContainer) {
-            tagsContainer.innerHTML = "";
-            for (tag of tags) {
-                const tagElem = document.createElement("div");
-                tagElem.className = "tags";
-                tagElem.innerText = tag;
-                tagsContainer.appendChild(tagElem);
+          // fallback
+          if (!foundDictionaryFromStorage) {
+            initialIndex = currentVisibleItems.findIndex(item => item.type === 'glossary');
+            if (initialIndex !== -1) {
+              currentVisibleItems[initialIndex].element.style.display = 'block';
+              initialStateSet = true;
             }
+          }
         }
+
+        // Priority 3: Dictionary Preference
+        if (!initialStateSet && dictionaryPreference && visibleGlossaryItems.length > 0) {
+          const lowerCasePref = dictionaryPreference.toLowerCase();
+
+          if (lowerCasePref === 'glossary') {
+            // Preference is "glossary", show the first available one
+            initialIndex = currentVisibleItems.findIndex(item => item.type === 'glossary');
+            if (initialIndex !== -1) {
+              currentVisibleItems[initialIndex].element.style.display = 'block';
+              initialStateSet = true;
+            }
+          } else {
+            // Preference is a specific dictionary name
+            let preferredLiElement = null;
+
+            for (const [name, li] of dictionaryMap) {
+              if (name.toLowerCase().includes(lowerCasePref)) {
+                preferredLiElement = li;
+                break;
+              }
+            }
+
+            if (preferredLiElement && visibleGlossaryItems.includes(preferredLiElement)) {
+              initialIndex = currentVisibleItems.findIndex(item => item.type === 'glossary' && item.element === preferredLiElement);
+              if (initialIndex !== -1) {
+                preferredLiElement.style.display = 'block';
+                initialStateSet = true;
+              }
+            }
+          }
+        }
+
+        // Priority 4: Definition
+        if (!initialStateSet && hasDefinition) {
+          initialIndex = currentVisibleItems.findIndex(item => item.type === 'definition');
+          if (initialIndex !== -1) {
+            initialStateSet = true;
+          }
+        }
+
+        // Priority 5: Glossary
+        if (!initialStateSet && visibleGlossaryItems.length > 0) {
+          initialIndex = currentVisibleItems.findIndex(item => item.type === 'glossary');
+          if (initialIndex !== -1) {
+            currentVisibleItems[initialIndex].element.style.display = 'block';
+            initialStateSet = true;
+          }
+        }
+
+        if (!initialStateSet) {
+          if (currentVisibleItems.length > 0) initialIndex = 0;
+        }
+      }
+
+      if (initialIndex !== -1) {
+        const initialItem = currentVisibleItems[initialIndex];
+        if (initialItem.container) {
+          initialItem.container.classList.add('show');
+          // For collapsed dictionary entries 1
+          collapseDictionary(initialItem.container.querySelector('.definition-box, .glossary-box'));
+          // For dictionary colorizer 1
+          updateBackgroundColor(initialItem.element);
+        }
+      }
     }
 
-    function groupMoras(kana) {
-        let currentChar = "";
-        let nextChar = "";
-        const groupedMoras = [];
-        const check = ["ァ", "ィ", "ゥ", "ェ", "ォ", "ャ", "ュ", "ョ", "ヮ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ", "ゃ", "ゅ", "ょ", "ゎ"];
+    updateCounters(initialIndex);
 
-        for (let i = 0; i < kana.length; i++) {
-            currentChar = kana[i];
-            nextChar = i < kana.length - 1 && kana[i + 1];
-            if (check.includes(nextChar)) {
-                groupedMoras.push(currentChar + nextChar);
-                i += 1;
+    const handleToggle = (direction) => {
+      const currentIndex = getCurrentIndex();
+      if (currentIndex === -1 || totalVisibleItemsCount <= 1) return;
+
+      const currentItem = currentVisibleItems[currentIndex];
+      if (currentItem.type === 'selectionText' || currentItem.type === 'definition') {
+        if (currentItem.container) currentItem.container.classList.remove('show');
+      } else if (currentItem.type === 'glossary') {
+        currentItem.element.style.display = 'none';
+      }
+
+      let nextIndex;
+      if (direction === 'right') {
+        nextIndex = (currentIndex + 1) % totalVisibleItemsCount;
+      } else {
+        nextIndex = (currentIndex - 1 + totalVisibleItemsCount) % totalVisibleItemsCount;
+      }
+
+      const nextItem = currentVisibleItems[nextIndex];
+
+      if (currentItem.type === 'glossary' && nextItem.type !== 'glossary') {
+        if (currentItem.container) currentItem.container.classList.remove('show');
+      }
+
+      if (nextItem.type === 'selectionText' || nextItem.type === 'definition') {
+        if (nextItem.container) nextItem.container.classList.add('show');
+      } else if (nextItem.type === 'glossary') {
+        if (nextItem.container) nextItem.container.classList.add('show');
+        nextItem.element.style.display = 'block';
+      }
+
+      // For collapsed dictionary entries 2
+      collapseDictionary(nextItem.container.querySelector('.definition-box, .glossary-box'));
+      // For collapsed dictionary colorizer 2
+      updateBackgroundColor(nextItem.element);
+
+      if (nextItem.type === 'selectionText') {
+        localStorage.setItem("lastSelectedDictionary", "selectionText");
+        localStorage.removeItem("lastDictionaryName");
+      } else if (nextItem.type === 'definition') {
+        localStorage.setItem("lastSelectedDictionary", "definition");
+        localStorage.removeItem("lastDictionaryName");
+      } else if (nextItem.type === 'glossary') {
+        localStorage.setItem("lastSelectedDictionary", "glossary");
+        const dictionaryName = getDictionaryName(nextItem.element);
+        if (dictionaryName) {
+          localStorage.setItem("lastDictionaryName", dictionaryName);
+        } else {
+          localStorage.removeItem("lastDictionaryName");
+        }
+      }
+
+      updateCounters(nextIndex);
+
+      const backElement = document.querySelector('.back');
+      if (backElement && !backElement.classList.contains('dict-toggled-once')) {
+        backElement.classList.add('dict-toggled-once');
+      }
+    };
+
+    toggleAreas.forEach(area => {
+      area.onclick = (e) => {
+        if (totalVisibleItemsCount <= 1) return;
+        if (area.classList.contains('right') || area.classList.contains('right-larger')) {
+          handleToggle('right');
+        } else if (area.classList.contains('left') || area.classList.contains('left-larger')) {
+          handleToggle('left');
+        }
+      };
+    });
+
+    window.senrenToggleDictionary = handleToggle;
+  }
+
+  // Enables interaction effects
+  function enableInteractions() {
+
+    function applyClickToggleEffect(triggerSelector, targetSelector, extraPadding = 0) {
+      const trigger = document.querySelector(triggerSelector);
+      const target = document.querySelector(targetSelector);
+
+      if (trigger && target) {
+        const clickable = 'is-clickable';
+
+        if (target.innerHTML.trim() !== "") {
+          trigger.classList.add(clickable);
+        } else {
+          trigger.classList.remove(clickable);
+        }
+        if (trigger.dataset.hasToggleListener) return;
+        trigger.dataset.hasToggleListener = 'true';
+
+        trigger.addEventListener("click", () => {
+          if (!trigger.classList.contains(clickable)) {
+            return;
+          }
+
+          requestAnimationFrame(() => {
+            const isCollapsed = target.classList.contains("is-collapsed");
+
+            if (isCollapsed) {
+              target.classList.remove("is-collapsed");
+              target.style.maxHeight = target.scrollHeight + extraPadding + "px";
+              if (extraPadding) {
+                target.style.opacity = "1";
+                target.style.paddingTop = extraPadding + "px";
+              }
             } else {
-                groupedMoras.push(currentChar);
+              target.classList.add("is-collapsed");
+              target.style.maxHeight = "0";
+              if (extraPadding) {
+                target.style.opacity = "0";
+                target.style.paddingTop = "0px";
+              }
             }
-        }
-        return groupedMoras;
-    }
-
-    function getPitchPattern(pitchPosition) {
-        // 0 = low
-        // 1 = high
-        // 2 = high to low
-
-        const kana = `{{kana:ExpressionFurigana}}` || `{{ExpressionReading}}`;
-        const moras = groupMoras(kana);
-        let pattern = [];
-
-        if (pitchPosition === 0) {
-            // 平板
-            pattern = [
-                ...Array(moras[0].length).fill("0"),
-                ...Array(kana.length - moras[0].length).fill("1"),
-            ];
-        } else if (pitchPosition === 1) {
-            // 頭高
-            pattern = [
-                ...(moras[0].length === 2 ? ["1", "2"] : ["2"]),
-                ...Array(kana.length - moras[0].length).fill("0"),
-            ];
-        } else if (pitchPosition > 1) {
-            if (isOdaka(pitchPosition)) {
-                // 尾高
-                pattern = [
-                    ...Array(moras[0].length).fill("0"),
-                    ...Array(kana.length - moras[0].length - 1).fill("1"),
-                    "2",
-                ];
-            } else {
-                // 中高
-                let afterDrop = false;
-                for (let i = 0; i < moras.length; i++) {
-                    if (i === 0) {
-                        pattern = Array(moras[0].length).fill("0");
-                    } else if (i + 1 === pitchPosition) {
-                        pattern =
-                            moras[i].length === 2
-                                ? [...pattern, "1", "2"]
-                                : [...pattern, "2"];
-                        afterDrop = true;
-                    } else if (afterDrop) {
-                        pattern = [...pattern, ...Array(moras[i].length).fill("0")];
-                    } else {
-                        pattern = [...pattern, ...Array(moras[i].length).fill("1")];
-                    }
-                }
-            }
-        }
-        return pattern;
-    }
-
-    function constructPitch() {
-        const pitchPositions = `{{PitchPosition}}`.match(/^\d+|\d+\b|\d+(?=\w)/g);
-        if (!pitchPositions) return;
-
-        const kana = `{{kana:ExpressionFurigana}}` || `{{ExpressionReading}}`;
-        const pitch = document.querySelector(".pitch");
-        const pitchTags = document.querySelector("#pitch-tags");
-
-        const createPitchSpan = (pitchClass, pitchChar) => {
-            const pitchSpan = document.createElement("span");
-            const charSpan = document.createElement("span");
-            const lineSpan = document.createElement("span");
-
-            pitchSpan.classList.add(pitchClass);
-            charSpan.classList.add("pitch-char");
-            charSpan.innerText = pitchChar;
-            lineSpan.classList.add("pitch-line");
-
-            pitchSpan.appendChild(charSpan);
-            pitchSpan.appendChild(lineSpan);
-
-            return pitchSpan;
-        };
-
-        pitch.innerHTML = "";
-        pitchTags.innerHTML = "";
-        pitchTags.style.display = "inline-block";
-        let uniquePitchPositions = [...new Set(pitchPositions)];
-
-        const pitchList = document.createElement("ul");
-        const pitchTagList = document.createElement("ul");
-
-        for (let pitchPosition of uniquePitchPositions) {
-            const pitchTag = document.createElement("li");
-            pitchTag.textContent = pitchPosition;
-
-            const pattern = getPitchPattern(Number(pitchPosition));
-
-            const pitchItem = document.createElement("li");
-            pitchItem.classList.add("pitch-item");
-            pitchItem.classList.add(getPitchType(Number(pitchPosition)));
-
-            for (let i = 0; i < kana.length; i++) {
-                if (pattern[i] === "0")
-                    pitchItem.appendChild(createPitchSpan("pitch-low", kana[i]));
-                else if (pattern[i] === "1")
-                    pitchItem.appendChild(createPitchSpan("pitch-high", kana[i]));
-                else if (pattern[i] === "2")
-                    pitchItem.appendChild(createPitchSpan("pitch-to-drop", kana[i]));
-                else
-                    console.error(
-                        "pattern[i] found undefined value. pattern is",
-                        pattern,
-                    );
-            }
-            pitchTagList.appendChild(pitchTag);
-            pitchList.appendChild(pitchItem);
-        }
-
-        pitch.appendChild(pitchList);
-        pitchTags.appendChild(pitchTagList);
-    }
-
-    // Returns the dictionary content, without the dictionary name.
-    function getDictionaryContent(dictionarySelector) {
-        const dictionary = document.querySelector(dictionarySelector);
-        if (!dictionary) return null;
-        const contentInSpan = dictionary.querySelector(":scope > span");
-        if (contentInSpan) return contentInSpan;
-
-        const hasDictName = dictionary.querySelector(":scope > i");
-        if (!hasDictName) return dictionary;
-
-        let dictionaryCopy = dictionary.cloneNode(true);
-        dictName = dictionaryCopy.querySelector(":scope > i");
-        dictName.remove();
-        return dictionaryCopy;
-    }
-
-    function isPrimaryEqualToGloss() {
-        const isJPMNConverted = document.querySelector(".definition li[data-details]");
-        if (isJPMNConverted) return false;
-        // single dict formatting
-        const isSingleDict = document.querySelectorAll("#glossaries > div > ol").length === 0;
-        if (isSingleDict) {
-            const primaryDictName = document.querySelector("#primary > div > i");
-            const glossariesDictName = document.querySelector("#glossaries > div > i");
-            // Compare dicts names if present
-            if (primaryDictName && glossariesDictName) {
-                return primaryDictName.textContent === glossariesDictName.textContent;
-            }
-            // Compare content otherwise
-            const primaryDict = getDictionaryContent("#primary > div");
-            const glossariesDict = getDictionaryContent("#glossaries > div");
-            if (!primaryDict || !glossariesDict ) return false;
-            return primaryDict.innerHTML.trim() === glossariesDict.innerHTML.trim();
-        }
-
-        // multiple dicts
-        const primaryDicts = document.querySelectorAll("#primary li[data-dictionary]");
-        const glossariesDicts = document.querySelectorAll("#glossaries li[data-dictionary]");
-        return primaryDicts.length === glossariesDicts.length
-    }
-
-    // Removes Unnecessary definitions
-    function cleanUpDefinitions() {
-        let selection = document.getElementById("selection");
-        let primary = document.getElementById("primary");
-        let glossaries = document.getElementById("glossaries");
-        if (selection && selection.textContent === "") {
-            selection.remove();
-        }
-        if (primary && primary.textContent === "") {
-            primary.remove();
-            primary = null;
-        }
-        if (glossaries && glossaries.textContent === "") {
-            glossaries.remove();
-            glossaries = null;
-        }
-        else if (primary && glossaries && isPrimaryEqualToGloss()) {
-            glossaries.remove();
-        }
-    }
-
-    // Display definition corresponding to index
-    function updateDefDisplay() {
-        const definitions = document.querySelectorAll(
-            ".main-def > .definition > div"
-        );
-
-        let n_defs = definitions.length;
-        if (n_defs === 1) definitions[0].classList.remove("hidden");
-        if (n_defs <= 1) return;
-
-        let currentIndex = document.head.getAttribute("data-def-index");
-        currentIndex = currentIndex % n_defs;
-        while (currentIndex < 0) currentIndex += n_defs;
-
-        for (let idx = 0; idx < n_defs; idx++) {
-            definitions[idx].classList.add("hidden");
-        }
-        definitions[currentIndex].classList.remove("hidden");
-
-        const defDisplayName = definitions[currentIndex].getAttribute("data-display-name")
-        const indexDisplay = document.querySelector(".def-info");
-        indexDisplay.style.opacity = 1;
-        indexDisplay.innerText = `${defDisplayName} ${currentIndex + 1}/${n_defs}`;
-    }
-
-    function setUpDefToggle() {
-        document.head.setAttribute("data-def-index", 0);
-        cleanUpDefinitions();
-
-        // hide all but first definition
-        let definitions = document.querySelectorAll(".main-def > .definition > div");
-        Array.from(definitions).slice(1).forEach(def => { def.classList.add("hidden"); });
-        // no need for toggling on less than 2 definitions
-        if (definitions.length < 2) return;
-
-        let mainDefContainer = document.querySelector(".main-def");
-        const leftEdge = document.createElement("div");
-        const rightEdge = document.createElement("div");
-        leftEdge.classList.add("left-edge");
-        leftEdge.classList.add("tappable");
-        rightEdge.classList.add("right-edge");
-        rightEdge.classList.add("tappable");
-        mainDefContainer.appendChild(leftEdge);
-        mainDefContainer.appendChild(rightEdge);
-
-        const changeIndex = (value) => {
-            // sync index between clicks and arrowkeys
-            index = Number(document.head.getAttribute("data-def-index"));
-            index += value;
-            document.head.setAttribute("data-def-index", index);
-            updateDefDisplay();
-        };
-
-        leftEdge.addEventListener("click", (e) => changeIndex(-1));
-        rightEdge.addEventListener("click", (e) => changeIndex(1));
-
-        // Add key listener only once per session
-        if (document.head.classList.contains("has-listener")) return;
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowLeft") changeIndex(-1);
-            else if (e.key === "ArrowRight") changeIndex(1);
+          });
         });
-
-        document.head.classList.add("has-listener");
+      }
     }
 
-    // This just handles clicking and showing images
-    function clickImages() {
-        const modalBg = document.querySelector(".modal-bg");
-        const imgPopup = document.querySelector(".img-popup");
-        const images = Array.from(document.querySelectorAll(".image img, .def-image img"));
+    function applyHoverEffect(containerSelector, targetSelector, extraPadding = 0) {
+      const containers = document.querySelectorAll(containerSelector);
+      const target = document.querySelector(targetSelector);
+      const marginTopValue = "5px";
+      const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
-        if (images.length < 1) return;
+      if (containers.length > 0 && target) {
+        containers.forEach(container => {
+          if (container.dataset.hasHoverListener) return;
+          container.dataset.hasHoverListener = 'true';
 
-        for (let image of images) {
-            image.addEventListener("click", () => {
-                const imgPopupContainer = document.createElement("div");
-                const imgPopupImg = document.createElement("img");
+          if (isTouch) {
+            container.classList.add('tappable');
+          }
 
-                imgPopupContainer.classList.add("img-popup-container");
-                imgPopupImg.src = image.src;
-                imgPopupImg.classList.add("img-popup-img");
-
-                if (image.height > image.width) {
-                    imgPopupContainer.style.height = "calc(100% - 20px)";
-                    imgPopupContainer.style.width = "max-content";
+          const expand = () => {
+            requestAnimationFrame(() => {
+              if (target.textContent.trim() !== "") {
+                target.style.maxHeight = target.scrollHeight + (extraPadding * 2) + "px";
+                if (extraPadding) {
+                  target.style.opacity = "1";
+                  target.style.paddingTop = extraPadding + "px";
+                  target.style.paddingBottom = extraPadding + "px";
+                  target.style.marginTop = marginTopValue;
                 }
-                imgPopup.innerHTML = "";
-                imgPopup.appendChild(imgPopupContainer);
-                imgPopupContainer.appendChild(imgPopupImg);
-
-                document.body.classList.add("img-popup");
-                modalBg.style.display = "block";
-                imgPopupContainer.style.display = "flex";
+              }
             });
-        }
+          };
 
-        modalBg.addEventListener("click", () => {
-            document.body.classList.remove("img-popup");
-            modalBg.style.display = "none";
-            imgPopup.innerHTML = "";
+          const collapse = () => {
+            requestAnimationFrame(() => {
+              target.style.maxHeight = "0";
+              if (extraPadding) {
+                target.style.opacity = "0";
+                target.style.paddingTop = "0px";
+                target.style.paddingBottom = "0px";
+                target.style.marginTop = "0px";
+              }
+            });
+          };
+
+          // Mouse Hover
+          container.addEventListener("pointerenter", (e) => {
+            if (e.pointerType === 'mouse') expand();
+          });
+
+          container.addEventListener("pointerleave", (e) => {
+            if (e.pointerType === 'mouse') collapse();
+          });
+
+          // Touch Interaction
+          container.addEventListener("click", (e) => {
+            if (e.pointerType === 'touch' || isTouch) {
+              if (e.target.closest('a, button, .tappable') && e.target.closest('a, button, .tappable') !== container) {
+                return;
+              }
+
+              const isCollapsed = !target.style.maxHeight || target.style.maxHeight === "0px";
+              if (isCollapsed) {
+                expand();
+              } else {
+                collapse();
+              }
+            }
+          });
         });
+      }
     }
 
-    // Format plaintext frequencies into a list
-    function formatFrequencyList() {
-        const frequency = document.querySelector('.freq-list-container');
-        if (!frequency) return;
-        const frequencyList = frequency.querySelector('ul');
-        // Already a list; nothing to do
-        if (frequencyList) return;
+    const notesElement = document.querySelector('.back .notes');
+    const sentenceEng = document.querySelector('#sentenceEng');
 
-        const freqs = frequency.innerText.split(',');
-        const freqHtml = `<ul>${freqs.map(freq => `<li>${freq.trim()}</li>`).join('')}</ul>`
-        frequency.innerHTML = freqHtml;
-    }
+    if (notesElement) {
+      const expandByDefault = senrenConfig.notesDefaultExpanded;
 
-    // Sets the height of dhLeft, dhRight, defHeader as a whole
-    function setDHHeight() {
-        var dhLeft = document.querySelector('.dh-left');
-        var dhRight = document.querySelector('.dh-right .image img');
-        var defHeader = document.querySelector('.def-header')
+      if (expandByDefault === 'true') {
+        if (notesElement.classList.contains('is-collapsed')) {
+          notesElement.style.transition = 'none';
+          notesElement.classList.remove('is-collapsed');
+          notesElement.style.maxHeight = notesElement.scrollHeight + 'px';
 
-        if (dhLeft && dhRight) {
-            var dhLeftHeight = dhLeft.offsetHeight;
-            dhRight.style.maxHeight = `${dhLeftHeight}px`;
-            defHeader.style.maxHeight = `${dhLeftHeight}px`;
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              notesElement.style.transition = '';
+            });
+          });
         }
+      }
     }
 
-    // Hides the dictionaries user selected in MainDefinition in Glossary field, if any
-    function hideCorrectDefinition() {
-        // Do nothing if css rule already exists
-        if (document.querySelector("style#hide-main-def")) return;
+    if (sentenceEng) {
+      const expandByDefault = senrenConfig.translationDefaultExpanded;
 
-        let primaryDicts = document.querySelectorAll("#primary li[data-dictionary]");
-        if (primaryDicts.length === 0) return;
+      if (expandByDefault === 'true') {
+        sentenceEng.style.transition = 'none';
+        sentenceEng.classList.remove('is-collapsed');
+        sentenceEng.style.maxHeight = sentenceEng.scrollHeight + 'px';
 
-        let style = document.createElement('style');
-        style.type = 'text/css';
-        style.id = "hide-main-def";
-
-        const cssSelector = Array.from(primaryDicts).map((dict) =>
-            `#glossaries li[data-dictionary="${dict.getAttribute("data-dictionary")}"]`
-        ).join(", ");
-        const cssRules = `${cssSelector} { display:none !important; }`;
-        style.appendChild(document.createTextNode(cssRules));
-
-        let defContainer = document.querySelector("blockquote.main-def");
-        defContainer.appendChild(style);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            sentenceEng.style.transition = '';
+          });
+        });
+      }
     }
 
-    // Moves Primary Dicts into the same list
-    function movePrimaryDicts() {
-        let primaryDicts = document.querySelectorAll("#primary li[data-dictionary]");
-        let firstList = document.querySelector("#primary .yomitan-glossary > ol:has( li[data-dictionary])");
-        for (let idx = 1; idx < primaryDicts.length; idx++) {
-            firstList.appendChild(primaryDicts[idx]);
+    applyClickToggleEffect("#formattedSentence", "#sentenceEng");
+    applyClickToggleEffect(".toggle-notes", ".notes");
+
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    const pictureContainer = document.querySelector('.picture-container');
+    const hasPicture = pictureContainer && pictureContainer.querySelector('img');
+    const backdropEnabled = senrenConfig.enableBackdropLayout === '1';
+    const backdropStyle = senrenConfig.backdropStyle;
+
+    let pictureHoverTriggerSelector;
+
+    if (backdropEnabled && backdropStyle === '0') {
+      let selectors = [".background-box", ".picture-container", ".sentence-container", ".tags-and-links-wrapper", ".misc-info"];
+
+      if (window.matchMedia("(max-width: 1050px)").matches) {
+        selectors.unshift(".header");
+      }
+
+      pictureHoverTriggerSelector = selectors.join(", ");
+    } else {
+      pictureHoverTriggerSelector = (isTouchDevice || !hasPicture)
+        ? ".background-box"
+        : ".picture-container";
+    }
+
+    const miscExpanded = senrenConfig.miscInfoDefaultExpanded;
+    const miscInfoEl = document.querySelector(".misc-info");
+
+    if (miscInfoEl) {
+      if (miscInfoEl.textContent.trim() !== "") {
+        miscInfoEl.classList.add("has-content");
+      } else {
+        miscInfoEl.classList.remove("has-content");
+      }
+    }
+
+    if (miscExpanded !== 'true') {
+      applyHoverEffect(pictureHoverTriggerSelector, ".misc-info", 10);
+    }
+  }
+
+  // Adjusts word size based on character length
+  function dynamicWordSize() {
+    const wordElement = document.querySelector("#word");
+    if (wordElement) {
+      const wordSpan = wordElement.querySelector('span');
+      if (wordSpan) {
+        const rubyElement = wordSpan.querySelector('ruby');
+        const content = rubyElement ? rubyElement.firstChild.textContent.trim() : wordSpan.textContent.trim();
+        const contentLength = content.length;
+
+        const classNumber = Math.min(contentLength, 9);
+        wordElement.classList.add(`length-${classNumber}`);
+      }
+    }
+  }
+
+  // Enables NSFW options
+  function nsfw() {
+    if (senrenConfig.muteNsfwAudio !== 'true' && senrenConfig.blurNsfwPicture !== 'true') return;
+
+    if (!window.IS_NSFW) return;
+
+    if (senrenConfig.muteNsfwAudio === 'true') {
+      const wordAudioButton = document.querySelector(".audio .soundLink, .audio .replaybutton");
+      if (wordAudioButton) {
+        wordAudioButton.click();
+      }
+    }
+
+    if (senrenConfig.blurNsfwPicture === 'true') {
+      document.querySelectorAll('.picture-container').forEach(container => {
+        if (container.classList.contains('nsfw')) {
+          container.querySelectorAll('img').forEach(img => {
+            img.addEventListener('click', () => {
+              img.classList.add('clicked');
+            });
+          });
         }
+      });
+    }
+  }
+
+  // Mutes the sentence audio playback based on CSS variables
+  function muteSentence() {
+    if (senrenConfig.muteSentenceAudio !== 'true') return;
+
+    const muteAudio = senrenConfig.muteSentenceAudio;
+
+    if (muteAudio === 'true') {
+      const wordAudioButton = document.querySelector(".audio .soundLink, .audio .replaybutton");
+
+      if (wordAudioButton) {
+        wordAudioButton.click();
+      }
+    }
+  }
+
+  // Adds titles to dictionaries
+  function dictionaryTitle() {
+    let processedDictionaries = new Set();
+
+    document.querySelectorAll('.yomitan-glossary li').forEach(li => {
+      let dictionaryName = li.getAttribute('data-dictionary');
+      if (dictionaryName && !processedDictionaries.has(dictionaryName)) {
+        let titleElement = document.createElement('div');
+        titleElement.textContent = dictionaryName;
+        titleElement.classList.add('dictionary-title');
+        li.prepend(titleElement);
+        processedDictionaries.add(dictionaryName);
+      }
+    });
+  }
+
+  // Splits tags into separate elements
+  function splitTags() {
+    const tagsContainer = ELS.tagsContainer;
+    if (tagsContainer) {
+      const tags = `{{Tags}}`.split(" ");
+      const elements = tags.map(tag => {
+        const tagElem = document.createElement("div");
+        tagElem.className = "tags";
+        tagElem.innerText = tag;
+        return tagElem;
+      });
+      tagsContainer.replaceChildren(...elements);
+    }
+  }
+
+  // Helper function to determine pitch type
+  function getPitchType(number, readingElement) {
+    if (!readingElement) return 'unknown';
+
+    const firstLi = readingElement.querySelector('li');
+    const targetElement = firstLi || readingElement;
+
+    const readingText = (targetElement.textContent || targetElement.innerText || "")
+      .replace(/<[^>]+>/g, '')
+      .replace(REGEX.COMBINING_MARK, '$1゙')
+      .normalize("NFC")
+      .replace(REGEX.SMALL_KANA, '')
+      .replace(/[・〜～]/g, '')
+      .replace(/\s+/g, '');
+
+    const moraCount = readingText.length;
+
+    if (moraCount === 0) {
+      return 'unknown';
     }
 
-    // Initialize all functions!!!
-    function initialize() {
-        tweakHTML();
-        paintTargetWord();
-        constructPitch();
-        setUpDefToggle();
-        clickImages();
-        formatFrequencyList();
-        setDHHeight();
-        hideCorrectDefinition();
-        movePrimaryDicts();
+    let resultType = 'unknown';
+    if (number === 0) resultType = 'heiban';
+    if (number === 1) resultType = 'atamadaka';
+    if (moraCount > 1 && number === moraCount) resultType = 'odaka';
+    if (number > 1 && number < moraCount && resultType === 'unknown') {
+      resultType = 'nakadaka';
     }
 
-    initialize();
-</script>
-<script>
-/* AJT Japanese JS 24.10.8.1 */
-/* DO NOT EDIT! This code will be overwritten by AJT Japanese. */
-function ajt__kana_to_moras(text) { return text.match(/.[°゚]?[ァィゥェォャュョぁぃぅぇぉゃゅょ]?/gu); } function ajt__norm_handakuten(text) { return text.replace(/\u{b0}/gu, "\u{309a}"); } function ajt__make_pattern(kana, pitch_type, pitch_num) { const moras = ajt__kana_to_moras(ajt__norm_handakuten(kana)); switch (pitch_type) { case "atamadaka": return ( `<span class="ajt__HL">${moras[0]}</span>` + `<span class="ajt__L">${moras.slice(1).join("")}</span>` + `<span class="ajt__pitch_number_tag">1</span>` ); break; case "heiban": return ( `<span class="ajt__LH">${moras[0]}</span>` + `<span class="ajt__H">${moras.slice(1).join("")}</span>` + `<span class="ajt__pitch_number_tag">0</span>` ); break; case "odaka": return ( `<span class="ajt__LH">${moras[0]}</span>` + `<span class="ajt__HL">${moras.slice(1).join("")}</span>` + `<span class="ajt__pitch_number_tag">${moras.length}</span>` ); break; case "nakadaka": return ( `<span class="ajt__LH">${moras[0]}</span>` + `<span class="ajt__HL">${moras.slice(1, Number(pitch_num)).join("")}</span>` + `<span class="ajt__L">${moras.slice(Number(pitch_num)).join("")}</span>` + `<span class="ajt__pitch_number_tag">${pitch_num}</span>` ); break; } } function ajt__format_new_ruby(kanji, readings) { if (readings.length > 1) { return `<ruby>${ajt__format_new_ruby(kanji, readings.slice(0, -1))}</ruby><rt>${readings.slice(-1)}</rt>`; } else { return `${kanji}<rt>${readings.join("")}</rt>`; } } function ajt__zip(array1, array2) { let zipped = []; const size = Math.min(array1.length, array2.length); for (let i = 0; i < size; i++) { zipped.push([array1[i], array2[i]]); } return zipped; } function ajt__make_accent_list_item(kana_reading, pitch_accent) { const list_item = document.createElement("li"); for (const [reading_part, pitch_part] of ajt__zip(kana_reading.split("・"), pitch_accent.split(","))) { const [pitch_type, pitch_num] = pitch_part.split("-"); const pattern = ajt__make_pattern(reading_part, pitch_type, pitch_num); list_item.insertAdjacentHTML("beforeend", `<span class="ajt__downstep_${pitch_type}">${pattern}</span>`); } return list_item; } function ajt__make_accents_list(ajt_span) { const accents = document.createElement("ul"); for (const accent_group of ajt_span.getAttribute("pitch").split(" ")) { accents.appendChild(ajt__make_accent_list_item(...accent_group.split(":"))); } return accents; } function ajt__make_popup_div(content) { const frame_top = document.createElement("div"); frame_top.classList.add("ajt__frame_title"); frame_top.innerText = "Information"; const frame_bottom = document.createElement("div"); frame_bottom.classList.add("ajt__frame_content"); frame_bottom.appendChild(content); const popup = document.createElement("div"); popup.classList.add("ajt__info_popup"); popup.appendChild(frame_top); popup.appendChild(frame_bottom); return popup; } function ajt__find_word_info_popup(word_span) { return word_span.querySelector(".ajt__info_popup"); } function ajt__find_popup_x_corners(popup_div) { const elem_rect = popup_div.getBoundingClientRect(); const right_corner_x = elem_rect.x + elem_rect.width; return { x_start: elem_rect.x, x_end: right_corner_x, shifted_x_start: elem_rect.x + elem_rect.width / 2, shifted_x_end: right_corner_x + elem_rect.width / 2, }; } function ajt__word_info_on_mouse_enter(word_span) { const popup_div = ajt__find_word_info_popup(word_span); if (popup_div) { ajt__word_info_on_mouse_leave(word_span); const x_pos = ajt__find_popup_x_corners(popup_div); if (x_pos.x_start < 0) { popup_div.classList.add("ajt__left-corner"); popup_div.style.setProperty("--shift-x", `${Math.ceil(-x_pos.x_start)}px`); } else if (x_pos.shifted_x_end < window.innerWidth) { popup_div.classList.add("ajt__in-middle"); } } } function ajt__word_info_on_mouse_leave(word_span) { const popup_div = ajt__find_word_info_popup(word_span); if (popup_div) { popup_div.classList.remove("ajt__left-corner", "ajt__in-middle"); } } function ajt__adjust_popup_position_on_mouse_enter(word_info_span) { word_info_span.addEventListener("mouseenter", (event) => ajt__word_info_on_mouse_enter(event.currentTarget)); word_info_span.addEventListener("mouseleave", (event) => ajt__word_info_on_mouse_leave(event.currentTarget)); } function ajt__format_readings_as_list(readings) { const readings_items = readings.map((reading) => `<li>${reading}</li>`).join(""); const list_elem = document.createElement("ol"); list_elem.classList.add("ajt__readings_list"); list_elem.insertAdjacentHTML("beforeend", readings_items); return list_elem; } function ajt__find_kanji_readings(ruby_tag) { const separators = /[\s;,.、・。]+/iu; const kanji = (ruby_tag.querySelector("rb") || ruby_tag.firstChild).textContent.trim(); const readings = ruby_tag .querySelector("rt") .textContent.split(separators) .map((str) => str.trim()) .filter((str) => str.length); return { kanji: kanji, readings: readings }; } function ajt__reformat_multi_furigana() { const max_inline = 2; document.querySelectorAll("ruby:not(ruby ruby):not(.ajt__furigana_list ruby)").forEach((ruby) => { try { const { kanji, readings } = ajt__find_kanji_readings(ruby); if (readings.length > 1) { ruby.innerHTML = ajt__format_new_ruby(kanji, readings.slice(0, max_inline)); } if (readings.length > max_inline && !ruby.matches(".ajt__word_info ruby")) { const content_ul = ajt__format_readings_as_list(readings); const popup = ajt__make_popup_div(content_ul); const wrapper = document.createElement("span"); ruby.replaceWith(wrapper); wrapper.appendChild(ruby); wrapper.appendChild(popup); wrapper.classList.add("ajt__furigana_list"); ajt__adjust_popup_position_on_mouse_enter(wrapper); } } catch (error) { console.error(error); } }); } function ajt__create_popups() { for (const [idx, span] of document.querySelectorAll(".ajt__word_info").entries()) { if (span.matches(".jpsentence .background *")) { continue; } if (ajt__find_word_info_popup(span)) { continue; } try { const content_ul = ajt__make_accents_list(span); const popup = ajt__make_popup_div(content_ul); popup.setAttribute("ajt__popup_idx", idx); span.setAttribute("ajt__popup_idx", idx); span.appendChild(popup); ajt__adjust_popup_position_on_mouse_enter(span); } catch (error) { console.error(error); } } } function ajt__main() { ajt__create_popups(); ajt__reformat_multi_furigana(); } if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", ajt__main); } else { ajt__main(); }
+    return resultType;
+  }
+  window.senrenGetPitchType = getPitchType;
+
+  // Format pitch accent positions and categories 
+  function cleanPitchPositions() {
+    const positionElements = document.querySelectorAll('#position');
+    const rubyElement = document.querySelector("#word > span > ruby");
+    const mainWordSpan = document.querySelector("#word > span");
+    const sentenceSpan = document.getElementById("formattedSentence");
+
+    const elementsToClean = [
+      mainWordSpan,
+      sentenceSpan,
+      rubyElement,
+      ...positionElements
+    ];
+
+    elementsToClean.forEach(element => {
+      if (!element) return;
+
+      const classList = element.classList;
+      let classToModify = "";
+
+      classList.forEach(cls => {
+        if (cls.includes(",")) {
+          classToModify = cls;
+        }
+      });
+
+      if (classToModify) {
+        const commaIndex = classToModify.indexOf(",");
+        const newClassValue = commaIndex !== -1 ? classToModify.substring(0, commaIndex).trim() : classToModify;
+        element.classList.remove(classToModify);
+        element.classList.add(newClassValue);
+      }
+    });
+    const rtElement = rubyElement?.querySelector('rt');
+
+    const updates = [];
+    let potentialFallbackClass = null;
+    let applyFallback = false;
+
+    const hasPitchClass = mainWordSpan && ['heiban', 'atamadaka', 'nakadaka', 'odaka', 'kifuku']
+      .some(cls => mainWordSpan.classList.contains(cls));
+
+    positionElements.forEach(element => {
+      if (element.dataset.cleaned || !element.innerHTML.trim()) return;
+
+      const content = element.innerHTML.trim();
+      const numbers = [...new Set(content.match(/\d+/g)?.map(n => parseInt(n, 10)) || [])];
+
+      if (numbers.length === 0) return;
+
+      if (!applyFallback && mainWordSpan && rtElement && !hasPitchClass) {
+        const calculated = getPitchType(numbers[0], rtElement);
+        if (calculated && calculated !== 'unknown') {
+          potentialFallbackClass = calculated;
+          applyFallback = true;
+        }
+      }
+
+      const categoriesElement = element.closest('.pitch')?.querySelector('#categories');
+      const pitchTypes = categoriesElement?.textContent.split(',') || [];
+
+      const resolvedTypes = [];
+      const newContentHTML = numbers.map((num, index) => {
+        let pitchType = pitchTypes[index]?.trim() || getPitchType(num, rtElement);
+        let cleanPitchType = pitchType.split(',')[0].trim();
+        resolvedTypes.push(cleanPitchType);
+        return `<span class="pitch-number ${cleanPitchType}">${num}</span>`;
+      }).join('・');
+
+      updates.push({
+        element: element,
+        newHTML: newContentHTML,
+        catElement: categoriesElement,
+        fullCat: resolvedTypes.join('<br>'),
+        shortCat: resolvedTypes[0]
+      });
+    });
+
+    updates.forEach(update => {
+      update.element.innerHTML = update.newHTML;
+      update.element.dataset.cleaned = 'true';
+
+      if (update.catElement) {
+        if (update.fullCat) {
+          update.catElement.dataset.fullCategories = update.fullCat;
+          update.catElement.innerHTML = update.shortCat;
+          update.element.addEventListener('mouseenter', () => {
+            update.catElement.innerHTML = update.catElement.dataset.fullCategories;
+          });
+        } else {
+          update.catElement.dataset.fullCategories = '';
+          update.catElement.innerHTML = '';
+        }
+      }
+    });
+
+    if (applyFallback && potentialFallbackClass) {
+      mainWordSpan.classList.add(potentialFallbackClass);
+      if (sentenceSpan) sentenceSpan.classList.add(potentialFallbackClass);
+    }
+  }
+
+  // Highlight the target word in the furigana sentence
+  function highlightFurigana() {
+    const sentence = `{{sentence}}`;
+    let sentenceFurigana = `{{furigana:sentenceFurigana}}`;
+
+    if (!sentenceFurigana.trim()) {
+      ELS.formattedSentence.innerHTML = sentence;
+      return;
+    }
+
+    sentenceFurigana = sentenceFurigana.replace(
+      /([\u3005\u4e00-\u9faf]+)\[([^\]]+)\]/g,
+      '<ruby><rb>$1</rb><rt>$2</rt></ruby>'
+    );
+
+    sentenceFurigana = sentenceFurigana.replace(
+      REGEX.RUBY_RT,
+      '<ruby><rb>$1</rb><rt>$2</rt></ruby>'
+    );
+
+    let cleanedFurigana = sentenceFurigana
+      .replace(/<ruby><rb>([。、！？！？])<\/rb><rt>.*?<\/rt><\/ruby>/g, '$1')
+      .replace(/<ruby>([。、！？！？])<rt>.*?<\/rt><\/ruby>/g, '$1');
+
+    if (
+    cleanedFurigana.includes('<span class="highlight">') ||
+    cleanedFurigana.includes('<b>')
+    ) {
+      ELS.formattedSentence.innerHTML = cleanedFurigana;
+      return;
+    }
+
+    const highlightedWords = [];
+    let match;
+    while ((match = REGEX.HIGHLIGHT.exec(sentence)) !== null) {
+      highlightedWords.push(match[1]);
+    }
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = cleanedFurigana;
+
+    const allNodes = [];
+
+    function collectTextAndRubyNodes(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (node.textContent.length > 0) {
+          allNodes.push({ type: 'text', node: node });
+        }
+      } else if (node.tagName === 'RUBY') {
+        allNodes.push({ type: 'ruby', node: node });
+      } else {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          collectTextAndRubyNodes(node.childNodes[i]);
+        }
+      }
+    }
+
+    collectTextAndRubyNodes(tempDiv);
+
+    let plainText = '';
+    const nodePositions = [];
+
+    allNodes.forEach(item => {
+      let text;
+      if (item.type === 'text') {
+        text = item.node.textContent;
+      } else {
+        const rb = item.node.querySelector('rb') || item.node.firstChild;
+        text = rb.textContent;
+      }
+
+      nodePositions.push({
+        node: item.node,
+        type: item.type,
+        start: plainText.length,
+        end: plainText.length + text.length
+      });
+
+      plainText += text;
+    });
+
+    highlightedWords.forEach(word => {
+      let searchStartIndex = 0;
+      let wordStart;
+
+      while ((wordStart = plainText.indexOf(word, searchStartIndex)) !== -1) {
+        const wordEnd = wordStart + word.length;
+
+        const affectedNodes = nodePositions.filter(pos =>
+          pos.start < wordEnd && pos.end > wordStart
+        );
+
+        affectedNodes.forEach(pos => {
+          const node = pos.node;
+          if (!node.parentNode) return;
+
+          const relativeStart = Math.max(0, wordStart - pos.start);
+          let relativeEnd = Math.min(pos.end - pos.start, wordEnd - pos.start);
+
+          if (pos.type === 'ruby') {
+            const rb = node.querySelector('rb') || node.firstChild;
+            relativeEnd = Math.min(relativeEnd, rb.textContent.length);
+          } else {
+            relativeEnd = Math.min(relativeEnd, node.textContent.length);
+          }
+
+          if (pos.start >= wordStart && pos.end <= wordEnd) {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'highlight';
+
+            if (pos.type === 'ruby') {
+              const clone = node.cloneNode(true);
+              wrapper.appendChild(clone);
+              node.parentNode.replaceChild(wrapper, node);
+            } else {
+              wrapper.textContent = node.textContent;
+              node.parentNode.replaceChild(wrapper, node);
+            }
+          }
+          else {
+            if (pos.type === 'ruby') {
+              const ruby = node;
+              const rb = ruby.querySelector('rb') || ruby.firstChild;
+              const rt = ruby.querySelector('rt');
+              if (!rb || !rt) return;
+
+              const baseText = rb.textContent;
+              const rtText = rt.textContent;
+
+              let newHTML = '';
+
+              if (relativeStart > 0) {
+                const subRb = baseText.substring(0, relativeStart);
+                const subRtLen = Math.round(rtText.length * relativeStart / baseText.length);
+                const subRt = rtText.substring(0, subRtLen);
+                newHTML += `<ruby><rb>${subRb}</rb><rt>${subRt}</rt></ruby>`;
+              }
+
+              const midRb = baseText.substring(relativeStart, relativeEnd);
+              const startRtIdx = Math.round(rtText.length * relativeStart / baseText.length);
+              const endRtIdx = Math.round(rtText.length * relativeEnd / baseText.length);
+              const midRt = rtText.substring(startRtIdx, endRtIdx);
+
+              newHTML += `<span class="highlight"><ruby><rb>${midRb}</rb><rt>${midRt}</rt></ruby></span>`;
+
+              if (relativeEnd < baseText.length) {
+                const subRb = baseText.substring(relativeEnd);
+                const subRt = rtText.substring(endRtIdx);
+                newHTML += `<ruby><rb>${subRb}</rb><rt>${subRt}</rt></ruby>`;
+              }
+
+              const span = document.createElement('span');
+              span.innerHTML = newHTML;
+              ruby.parentNode.replaceChild(span, ruby);
+
+            } else {
+              const text = node.textContent;
+              const beforeText = text.substring(0, relativeStart);
+              const highlightedText = text.substring(relativeStart, relativeEnd);
+              const afterText = text.substring(relativeEnd);
+
+              const fragment = document.createDocumentFragment();
+              if (beforeText) fragment.appendChild(document.createTextNode(beforeText));
+
+              const hlSpan = document.createElement('span');
+              hlSpan.className = 'highlight';
+              hlSpan.textContent = highlightedText;
+              fragment.appendChild(hlSpan);
+
+              if (afterText) fragment.appendChild(document.createTextNode(afterText));
+
+              node.parentNode.replaceChild(fragment, node);
+            }
+          }
+        });
+        searchStartIndex = wordEnd;
+      }
+    });
+
+    ELS.formattedSentence.innerHTML = tempDiv.innerHTML;
+  }
+
+  // Alternative pitch styling based on CSS variables
+  function alternativePitchStyle() {
+    const rootElement = document.documentElement;
+    const wordElement = document.getElementById('word');
+    if (wordElement) {
+      const pitchStyleValue = senrenConfig.pitchStyle;
+      wordElement.classList.toggle('alt', pitchStyleValue === 'alt');
+
+      const pitchColorsValue = senrenConfig.pitchColors;
+      wordElement.classList.toggle('colors', pitchColorsValue === 'false');
+    }
+
+    const sentenceElement = document.getElementById("formattedSentence");
+    if (sentenceElement) {
+      const sentenceHighlightValue = senrenConfig.sentencePitchHighlight;
+      sentenceElement.classList.toggle('alt-highlight', sentenceHighlightValue === 'true');
+    }
+  }
+
+  // Creates downstep notation for pitch accent
+  function createDownstepNotation() {
+    const wordElement = ELS.word;
+    if (!wordElement) return;
+
+    const mainSpan = wordElement.querySelector(':scope > span');
+    const rubyElement = mainSpan?.querySelector('ruby');
+    let rtElement = rubyElement?.querySelector('rt');
+
+    if ((wordElement.classList.contains('reading-is-word') || (rtElement && !rtElement.textContent.trim())) && rubyElement) {
+      const wordSpan = rubyElement.querySelector('span');
+      if (wordSpan) {
+        rtElement = wordSpan;
+      }
+    }
+
+    if (!rtElement) {
+      return;
+    }
+
+    if (rtElement.querySelector('span[style], ol, li')) {
+      return;
+    }
+
+    const readingText = rtElement.textContent.trim();
+    if (!readingText) {
+      return;
+    }
+
+    const normalizedReading = readingText.normalize("NFC");
+    const morae = normalizedReading.match(REGEX.MORA) || [];
+
+    const moraCount = morae.length;
+    if (moraCount === 0) return;
+
+    let pitchPosition = -1;
+    let pitchClass = '';
+    const positionElement = ELS.position;
+
+    const mainClasses = mainSpan.classList;
+    const isOriginallyKifuku = mainClasses.contains('kifuku');
+    if (mainClasses.contains('heiban')) pitchClass = 'heiban';
+    else if (mainClasses.contains('atamadaka')) pitchClass = 'atamadaka';
+    else if (mainClasses.contains('nakadaka')) pitchClass = 'nakadaka';
+    else if (mainClasses.contains('odaka')) pitchClass = 'odaka';
+    else if (isOriginallyKifuku) pitchClass = 'kifuku';
+
+    if (positionElement && positionElement.textContent.trim()) {
+      const firstNumMatch = positionElement.textContent.trim().match(/\d+/);
+      if (firstNumMatch) {
+        pitchPosition = parseInt(firstNumMatch[0], 10);
+      }
+    }
+
+    if (pitchPosition !== -1) {
+      if (pitchPosition === 0) pitchClass = 'heiban';
+      else if (pitchPosition === 1) pitchClass = 'atamadaka';
+      else if (moraCount > 1 && pitchPosition === moraCount) pitchClass = 'odaka';
+      else if (moraCount > 1 && pitchPosition > 1 && pitchPosition < moraCount) pitchClass = 'nakadaka';
+      else if (moraCount > 1 && pitchPosition >= moraCount) pitchClass = 'odaka';
+      else if (moraCount === 1 && pitchPosition >= 1) pitchClass = 'atamadaka';
+      else {
+        if (!pitchClass) pitchPosition = -1;
+      }
+    } else if (pitchClass && pitchClass !== 'kifuku' && pitchClass !== 'nakadaka') {
+      if (pitchClass === 'heiban') pitchPosition = 0;
+      else if (pitchClass === 'atamadaka') pitchPosition = 1;
+      else if (pitchClass === 'odaka') pitchPosition = moraCount;
+    }
+
+    if (pitchPosition === -1 && !isOriginallyKifuku && pitchClass !== 'kifuku') {
+      return;
+    }
+
+    let pitchPattern = [];
+    for (let i = 0; i < moraCount; i++) {
+      if (pitchPosition === 0) pitchPattern.push(i === 0 ? 'L' : 'H');
+      else if (pitchPosition === 1) pitchPattern.push(i === 0 ? 'H' : 'L');
+      else {
+        if (i === 0) pitchPattern.push('L');
+        else if (i < pitchPosition) pitchPattern.push('H');
+        else pitchPattern.push('L');
+      }
+    }
+
+    const fragment = document.createDocumentFragment();
+    const container = document.createElement('span');
+    container.className = 'pronunciation';
+
+    if (isOriginallyKifuku) {
+      container.classList.add('kifuku');
+    }
+    else if (pitchClass) {
+      container.classList.add(pitchClass);
+    }
+
+    const moraeSpans = morae.map((mora, i) => {
+      const currentPitch = pitchPattern[i];
+      const moraSpan = document.createElement('span');
+      moraSpan.className = 'pronunciation-mora';
+      moraSpan.textContent = mora;
+      moraSpan.dataset.pitch = currentPitch === 'H' ? 'high' : 'low';
+
+      if (currentPitch === 'H' &&
+        (
+          ((i + 1 < moraCount) && pitchPattern[i + 1] === 'L') ||
+          (pitchClass === 'odaka' && i === moraCount - 1)
+        )
+      ) {
+        moraSpan.dataset.pitchNext = 'low';
+      }
+
+      const lineSpan = document.createElement('span');
+      lineSpan.className = 'pronunciation-mora-line';
+      moraSpan.appendChild(lineSpan);
+      return moraSpan;
+    });
+
+    container.append(...moraeSpans);
+    rtElement.replaceChildren(container);
+    rtElement.style.paddingTop = '';
+    rtElement.style.marginBottom = '';
+    rtElement.style.position = '';
+    rtElement.style.overflow = 'visible';
+  }
+
+  // Merge entries from the same dictionary
+  function consolidateYomitanGlossaryEntries() {
+    const glossaryOuterDiv = ELS.glossary;
+    if (!glossaryOuterDiv) return;
+
+    const glossaryBox = glossaryOuterDiv.querySelector('.glossary-box');
+    if (!glossaryBox) return;
+
+    const glossarySpan = glossaryBox.querySelector('span');
+    if (!glossarySpan) return;
+
+    if (glossarySpan.dataset.consolidated === 'true') return;
+
+    const yomitanGlossaryDivs = glossarySpan.querySelectorAll('div.yomitan-glossary');
+    if (yomitanGlossaryDivs.length === 0) return;
+
+    let consolidationHappened = false;
+
+    yomitanGlossaryDivs.forEach(ygDiv => {
+      const olElement = ygDiv.querySelector('ol');
+      if (!olElement) return;
+
+      const listItems = Array.from(olElement.querySelectorAll('li[data-dictionary]'));
+      if (listItems.length === 0) return;
+
+      const groupedItems = {};
+      listItems.forEach(li => {
+        const dictName = li.getAttribute('data-dictionary');
+        if (!dictName) return;
+
+        if (!groupedItems[dictName]) {
+          groupedItems[dictName] = [];
+        }
+        groupedItems[dictName].push(li);
+      });
+
+      Object.keys(groupedItems).forEach(dictName => {
+        const items = groupedItems[dictName];
+
+        if (items.length > 1) {
+          const firstItem = items[0];
+          const consolidatedLi = firstItem.cloneNode(false);
+          const fragment = document.createDocumentFragment();
+
+          items.forEach((li, index) => {
+            while (li.firstChild) {
+              fragment.appendChild(li.firstChild);
+            }
+            if (index < items.length - 1) {
+              const hr = document.createElement('hr');
+              hr.className = 'consolidated-entry-separator';
+              fragment.appendChild(hr);
+            }
+          });
+
+          consolidatedLi.appendChild(fragment);
+          olElement.replaceChild(consolidatedLi, firstItem);
+
+          for (let i = 1; i < items.length; i++) {
+            olElement.removeChild(items[i]);
+          }
+
+          consolidationHappened = true;
+        }
+      });
+    });
+
+    if (consolidationHappened) {
+      glossarySpan.dataset.consolidated = 'true';
+    }
+  }
+
+  // Replaces the word with its reading when the word is written only in kana
+  function noDuplicateKana() {
+    const wordContainer = ELS.word;
+    if (!wordContainer) return;
+
+    const rubyElement = wordContainer.querySelector("ruby");
+    if (!rubyElement) return;
+
+    const substituteSetting = senrenConfig.noDuplicateKana;
+    const shouldBeEnabled = (substituteSetting === 'true');
+    const isCurrentlyEnabled = wordContainer.classList.contains('reading-is-word');
+
+    if (!shouldBeEnabled) {
+      if (isCurrentlyEnabled && rubyElement.dataset.originalHtml) {
+        rubyElement.innerHTML = rubyElement.dataset.originalHtml;
+        delete rubyElement.dataset.originalHtml;
+        wordContainer.classList.remove('reading-is-word');
+      }
+      return;
+    }
+
+    if (shouldBeEnabled && isCurrentlyEnabled) return;
+
+    let fullWordText = "";
+    let nodesToRemove = [];
+
+    for (const node of rubyElement.childNodes) {
+      if (node.nodeName === "RT" || node.nodeName === "RP") continue;
+
+      if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
+        fullWordText += node.textContent;
+        nodesToRemove.push(node);
+      }
+    }
+
+    if (!fullWordText.trim()) return;
+
+    const hasKanji = REGEX.KANJI.test(fullWordText);
+
+    if (!hasKanji) {
+      const rtElement = rubyElement.querySelector("rt");
+      if (!rtElement) return;
+
+      let readingHTML = '';
+      const firstLi = rtElement.querySelector("li");
+      readingHTML = firstLi ? firstLi.innerHTML : rtElement.innerHTML;
+
+      if (readingHTML.trim()) {
+        rubyElement.dataset.originalHtml = rubyElement.innerHTML;
+
+        const readingWrapper = document.createElement('span');
+        readingWrapper.innerHTML = readingHTML;
+
+        nodesToRemove.forEach(node => node.remove());
+
+        rubyElement.insertBefore(readingWrapper, rtElement);
+        rtElement.style.display = "none";
+
+        wordContainer.classList.add('reading-is-word');
+      }
+    }
+  }
+
+  // Collapses long dictionary entries and adds a clickable fade-out.
+  function collapseDictionary(container) {
+    const isCollapsedEnabled = senrenConfig.dictionaryCollapse;
+    if (isCollapsedEnabled !== '1') {
+      return;
+    }
+
+    if (!container || container.dataset.expanded === 'true') {
+      return;
+    }
+
+    const maxHeight = parseInt(senrenConfig.dictionaryMaxHeight, 10);
+
+    const oldFade = container.querySelector('.fade-to-show-more');
+    if (oldFade) oldFade.remove();
+    container.classList.remove('is-collapsed');
+
+    if (container.scrollHeight > maxHeight) {
+      container.classList.add('is-collapsed');
+
+      const fadeElement = document.createElement('div');
+      fadeElement.className = 'fade-to-show-more tappable';
+      container.appendChild(fadeElement);
+
+      fadeElement.addEventListener('click', (e) => {
+        e.stopPropagation();
+        container.classList.remove('is-collapsed');
+        container.dataset.expanded = 'true';
+        fadeElement.remove();
+      });
+    }
+  }
+
+  // Groups text, audio, and images into navigable scenes
+  function enableSceneSwitching() {
+    if (window.currentSceneKeyHandler) {
+      document.removeEventListener('keydown', window.currentSceneKeyHandler);
+      window.currentSceneKeyHandler = null;
+    }
+
+    const audioContainer = ELS.audioContainer;
+    const audioParts = audioContainer
+      ? Array.from(audioContainer.children).filter(el => el.tagName !== 'BR')
+      : [];
+
+    if (audioParts.length <= 1) {
+      return;
+    }
+
+    const baseWaitTime = 100;
+    const timePerChar = 150;
+
+    const readingEl = ELS.hiddenReading;
+    let charCount = 5;
+
+    if (readingEl) {
+      const targetEl = readingEl.querySelector('li') || readingEl;
+      let rawText = targetEl.textContent || "";
+
+      const kanaModifiers = window.REGEX?.KANA_MODIFIERS || /[\s\u3099\u309A\u309B\u309C]/g;
+      const narrowVowels = window.REGEX?.NARROW_VOWELS || /[いきしちにひみりぎじぢびぴイキシチニヒミリギジヂビピうくすつぬふむるぐずづぶぷウクスツヌフムルグズヅブプ]/g;
+
+      let cleanedText = rawText.replace(kanaModifiers, '');
+      cleanedText = cleanedText.replace(/[ぁぃぅぇぉゃゅょゎァィゥェォャュョヮ]/g, '');
+
+      let effectiveCount = cleanedText.length;
+      const narrowMatches = cleanedText.match(narrowVowels);
+
+      if (narrowMatches) {
+        effectiveCount -= (narrowMatches.length * 0.3);
+      }
+
+      charCount = Math.round(effectiveCount);
+      if (charCount < 1) charCount = 1;
+    }
+
+    let SENTENCE_DELAY;
+
+    const hasWordAudio = !!ELS.wordAudioBtn;
+
+    if (!hasWordAudio) {
+      SENTENCE_DELAY = 0;
+    } else {
+      if (charCount === 2) SENTENCE_DELAY = 550;
+      else if (charCount === 3) SENTENCE_DELAY = 650;
+      else if (charCount === 4) SENTENCE_DELAY = 700;
+      else if (charCount === 5) SENTENCE_DELAY = 850;
+      else if (charCount === 6) SENTENCE_DELAY = 1000;
+      else if (charCount === 7) SENTENCE_DELAY = 1080;
+      else if (charCount === 8) SENTENCE_DELAY = 1150;
+      else SENTENCE_DELAY = baseWaitTime + (charCount * timePerChar);
+    }
+
+    let initialPlayTimeout;
+
+    const backContainer = ELS.back;
+    let newArrows = [];
+
+    if (backContainer) {
+      let arrowLeft = backContainer.querySelector('.sentence-nav.left');
+      let arrowRight = backContainer.querySelector('.sentence-nav.right');
+
+      if (!arrowLeft) {
+        arrowLeft = document.createElement('div');
+        arrowLeft.className = 'sentence-nav left';
+        backContainer.appendChild(arrowLeft);
+      }
+
+      if (!arrowRight) {
+        arrowRight = document.createElement('div');
+        arrowRight.className = 'sentence-nav right';
+        backContainer.appendChild(arrowRight);
+      }
+
+      newArrows = [arrowLeft, arrowRight];
+    } else {
+      return;
+    }
+
+    // Sentence Group
+    const sentenceContainer = ELS.formattedSentence;
+    if (sentenceContainer && !sentenceContainer.getAttribute('data-split-done')) {
+      const groupWrappers = Array.from(sentenceContainer.querySelectorAll('.group'))
+        .filter(el => el.textContent.trim().length > 0);
+
+      if (groupWrappers.length > 0) {
+        const parts = groupWrappers.map(el => el.outerHTML);
+        sentenceContainer.innerHTML = '';
+        parts.forEach((partHTML) => {
+          const div = document.createElement('div');
+          div.classList.add('split-sentence');
+          div.innerHTML = partHTML;
+          div.style.display = 'none';
+          sentenceContainer.appendChild(div);
+        });
+        sentenceContainer.setAttribute('data-split-done', 'true');
+      }
+    }
+
+    // Sentence Eng Group
+    const engContainer = ELS.sentenceEng;
+    if (engContainer && !engContainer.getAttribute('data-split-done')) {
+      const allSpans = Array.from(engContainer.querySelectorAll('span'));
+      const groupWrappers = allSpans.filter(el => {
+        return el.className.split(/\s+/).some(c => /^group\d*$/.test(c));
+      });
+
+      if (groupWrappers.length > 0) {
+        engContainer.innerHTML = '';
+
+        groupWrappers.forEach((el) => {
+          const div = document.createElement('div');
+          div.classList.add('split-sentence-eng');
+          div.innerHTML = el.outerHTML;
+          div.style.display = 'none';
+
+          const match = el.className.match(/group(\d+)/);
+          if (match) {
+            div.setAttribute('data-target-index', parseInt(match[1], 10) - 1);
+          }
+
+          engContainer.appendChild(div);
+        });
+        engContainer.setAttribute('data-split-done', 'true');
+      }
+    }
+
+    // Misc Info Group
+    const miscInfoContainer = ELS.miscInfo;
+
+    if (miscInfoContainer && !miscInfoContainer.getAttribute('data-split-done')) {
+      const allSpans = Array.from(miscInfoContainer.querySelectorAll('span'));
+      const groupWrappers = allSpans.filter(el => {
+        return el.className.split(/\s+/).some(c => /^group\d*$/.test(c));
+      });
+
+      if (groupWrappers.length > 0) {
+        miscInfoContainer.innerHTML = '';
+
+        groupWrappers.forEach((el) => {
+          const div = document.createElement('div');
+          div.classList.add('split-misc-info');
+          div.innerHTML = el.outerHTML;
+          div.style.display = 'none';
+
+          const match = el.className.match(/group(\d+)/);
+          if (match) {
+            div.setAttribute('data-target-index', parseInt(match[1], 10) - 1);
+          }
+
+          miscInfoContainer.appendChild(div);
+        });
+        miscInfoContainer.setAttribute('data-split-done', 'true');
+      }
+    }
+
+    const sentenceParts = ELS.formattedSentence?.querySelectorAll('.split-sentence') || [];
+    const engParts = ELS.sentenceEng?.querySelectorAll('.split-sentence-eng') || [];
+    const miscInfoParts = ELS.miscInfo?.querySelectorAll('.split-misc-info') || [];
+
+    let totalSlides = 1;
+    if (audioParts.length > 0) {
+      totalSlides = audioParts.length;
+    }
+
+    let currentIndex = 0;
+
+    const isPartEmptyGroup = (part) => {
+      if (!part || part.tagName !== 'SPAN') return false;
+      const isGroup = part.className.split(/\s+/).some(c => /^group\d*$/.test(c));
+      return isGroup && part.textContent.trim().length === 0;
+    };
+
+    function playActiveAudio() {
+      if (senrenConfig.muteSentenceAudio === 'true') return;
+      if (audioParts.length === 0) return;
+
+      document.querySelectorAll('audio').forEach(a => {
+        try { a.pause(); a.currentTime = 0; } catch (e) { }
+      });
+
+      let audioToPlay = null;
+      if (audioParts.length === 1) {
+        audioToPlay = audioParts[0];
+      } else if (audioParts[currentIndex]) {
+        audioToPlay = audioParts[currentIndex];
+      }
+
+      if (audioToPlay) {
+        audioToPlay.click();
+      }
+    }
+
+    let replayTimeout;
+
+    window.senrenToggleScene = (direction) => {
+      if (typeof initialPlayTimeout !== 'undefined') clearTimeout(initialPlayTimeout);
+
+      if (direction === 'left') {
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = totalSlides - 1;
+      } else {
+        currentIndex++;
+        if (currentIndex >= totalSlides) currentIndex = 0;
+      }
+      updateDisplay(true);
+      updatePictureCounter();
+      updateSceneIndicator();
+    };
+
+    const handleSceneShortcuts = (e) => {
+      if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+      const cssVal = senrenConfig.sceneReplayShortcutKey;
+
+      const replayConfig = parseKeyConfig(cssVal) || { key: 'w', ctrl: false, alt: false, shift: false, meta: false };
+
+      if (isKeyMatch(e, replayConfig)) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (replayTimeout) clearTimeout(replayTimeout);
+        if (typeof initialPlayTimeout !== 'undefined') clearTimeout(initialPlayTimeout);
+
+        document.querySelectorAll('audio').forEach(a => {
+          try { a.pause(); a.currentTime = 0; } catch (e) { }
+        });
+
+        const wordAudioBtn = ELS.wordAudioBtn;
+        if (wordAudioBtn) {
+          wordAudioBtn.click();
+        }
+
+        const currentPart = (audioParts.length === 1) ? audioParts[0] : audioParts[currentIndex];
+        const isEmpty = isPartEmptyGroup(currentPart);
+
+        const replayLoadOffset = 200;
+        const delay = (wordAudioBtn && !isEmpty) ? (SENTENCE_DELAY + replayLoadOffset) : 0;
+
+        replayTimeout = setTimeout(() => {
+          updateDisplay(true);
+        }, delay);
+      }
+    };
+
+    window.currentSceneKeyHandler = handleSceneShortcuts;
+    document.addEventListener('keydown', handleSceneShortcuts);
+
+    function updateDisplay(shouldPlayAudio = false) {
+      const pictureContainer = ELS.pictureContainer;
+      if (pictureContainer) {
+        const pictureParts = Array.from(pictureContainer.children).filter(el =>
+          el.tagName !== 'BR' &&
+          !el.classList.contains('nav-arrow') &&
+          !el.classList.contains('toggle-image-visibility')
+        );
+
+        if (pictureParts.length > 0) {
+          pictureParts.forEach((part, i) => {
+            const shouldShow = (i === currentIndex);
+            part.style.setProperty('display', shouldShow ? 'block' : 'none', 'important');
+          });
+        }
+      }
+
+      if (sentenceParts.length > 0) {
+        sentenceParts.forEach((part, i) => {
+          const shouldShow = (sentenceParts.length === 1) || (i === currentIndex);
+          part.style.display = shouldShow ? 'block' : 'none';
+        });
+      }
+
+      const mainMiscContainer = ELS.miscInfo;
+      if (miscInfoParts.length > 0) {
+        let isAnyChildVisible = false;
+
+        miscInfoParts.forEach((part, i) => {
+          let shouldShow = false;
+
+          if (part.hasAttribute('data-target-index')) {
+            const targetIndex = parseInt(part.getAttribute('data-target-index'), 10);
+            shouldShow = (targetIndex === currentIndex);
+          }
+          else {
+            if (miscInfoParts.length === 1) {
+              shouldShow = (currentIndex === 0);
+            } else {
+              shouldShow = (i === currentIndex);
+            }
+          }
+
+          if (shouldShow) {
+            part.style.setProperty('display', 'flex', 'important');
+            isAnyChildVisible = true;
+          } else {
+            part.style.setProperty('display', 'none', 'important');
+          }
+        });
+
+        if (mainMiscContainer) {
+          const displayValue = isAnyChildVisible ? 'flex' : 'none';
+          mainMiscContainer.style.setProperty('display', displayValue, 'important');
+        }
+
+      } else if (mainMiscContainer) {
+        if (currentIndex === 0) {
+          mainMiscContainer.style.setProperty('display', 'flex', 'important');
+        } else {
+          mainMiscContainer.style.setProperty('display', 'none', 'important');
+        }
+      }
+
+      const mainEngContainer = ELS.sentenceEng;
+      if (engParts.length > 0) {
+        engParts.forEach((part, i) => {
+          let shouldShow = false;
+
+          if (part.hasAttribute('data-target-index')) {
+            const targetIndex = parseInt(part.getAttribute('data-target-index'), 10);
+            shouldShow = (targetIndex === currentIndex);
+          }
+          else {
+            if (engParts.length === 1) {
+              shouldShow = (currentIndex === 0);
+            } else {
+              shouldShow = (i === currentIndex);
+            }
+          }
+
+          part.style.display = shouldShow ? 'flex' : 'none';
+        });
+
+        if (mainEngContainer) mainEngContainer.style.display = 'flex';
+
+      } else if (mainEngContainer) {
+        mainEngContainer.style.display = (currentIndex === 0) ? 'flex' : 'none';
+      }
+
+      if (audioParts.length > 0) {
+        audioParts.forEach((btn, i) => {
+          const shouldShow = (audioParts.length === 1) || (i === currentIndex);
+          if (shouldShow) {
+            btn.style.setProperty('display', 'inline-block', 'important');
+          } else {
+            btn.style.setProperty('display', 'none', 'important');
+          }
+        });
+      }
+
+      if (shouldPlayAudio) {
+        playActiveAudio();
+      }
+
+      updatePictureCounter();
+      updateSceneIndicator();
+    }
+
+    newArrows.forEach(arrow => {
+      if (arrow.dataset.hasSceneListener) return;
+      arrow.dataset.hasSceneListener = 'true';
+
+      arrow.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (initialPlayTimeout) clearTimeout(initialPlayTimeout);
+
+        const direction = arrow.classList.contains('left') ? -1 : 1;
+        currentIndex += direction;
+
+        if (currentIndex >= totalSlides) {
+          currentIndex = 0;
+        } else if (currentIndex < 0) {
+          currentIndex = totalSlides - 1;
+        }
+
+        updateDisplay(true);
+      });
+    });
+
+    window.senrenRefreshScenes = () => updateDisplay(false);
+
+    function updateSceneIndicator() {
+      const indicator = ELS.sceneIndicator;
+      if (!indicator) return;
+
+      indicator.style.display = (totalSlides > 1) ? 'block' : 'none';
+    }
+
+    updateDisplay(false);
+
+    const muteNsfw = senrenConfig.muteNsfwAudio;
+
+    if (muteNsfw !== 'true' || !window.IS_NSFW) {
+      if (isPartEmptyGroup(audioParts[0])) {
+        if (senrenConfig.muteSentenceAudio !== 'true' && ELS.wordAudioBtn) {
+          ELS.wordAudioBtn.click();
+        }
+        updateDisplay(true);
+      } else {
+        initialPlayTimeout = setTimeout(() => {
+          updateDisplay(true);
+        }, SENTENCE_DELAY);
+      }
+    }
+  }
+
+  // Toggle Image
+  function enableImageToggle() {
+    const hideBtn = ELS.pictureContainer?.querySelector('.hide-btn');
+    const showBtn = document.querySelector('.header .show-btn');
+    const backWrapper = ELS.back;
+
+    if (!hideBtn || !showBtn || !backWrapper) return;
+
+    const savedState = localStorage.getItem("senrenImageHidden");
+
+    if (savedState === "true") {
+      backWrapper.classList.add('image-removed');
+      showBtn.style.setProperty('display', 'flex', 'important');
+    } else {
+      backWrapper.classList.remove('image-removed');
+      showBtn.style.setProperty('display', 'none', 'important');
+    }
+
+    const toggle = () => {
+      backWrapper.classList.toggle('image-removed');
+      const isHidden = backWrapper.classList.contains('image-removed');
+
+      localStorage.setItem("senrenImageHidden", isHidden ? "true" : "false");
+
+      if (isHidden) {
+        showBtn.style.setProperty('display', 'flex', 'important');
+      } else {
+        showBtn.style.setProperty('display', 'none', 'important');
+      }
+
+      dynamicCardHeight();
+    };
+
+    hideBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      toggle();
+    });
+
+    showBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      toggle();
+    });
+  }
+
+  // Adjusts the height of the card to match the picture in Backdrop Layout (BG Card mode)
+  function dynamicCardHeight() {
+    const back = ELS.back;
+    const img = ELS.pictureContainer?.querySelector('img');
+
+    if (!back || !img) return;
+
+    const applyHeight = () => {
+      if (back.classList.contains('image-removed')) {
+        back.style.removeProperty('min-height');
+        return;
+      }
+
+      const enabled = senrenConfig.enableBackdropLayout;
+      const dynamicHeight = senrenConfig.backdropDynamicHeight;
+      const backdropStyle = senrenConfig.backdropStyle;
+
+      const isActive = (enabled === '1' && dynamicHeight === '1' && backdropStyle === '0');
+
+      if (!isActive) {
+        back.style.removeProperty('min-height');
+        return;
+      }
+
+      if (img.offsetHeight > 0) {
+        const style = window.getComputedStyle(back);
+        const paddingTop = parseFloat(style.paddingTop) || 0;
+        const paddingBottom = parseFloat(style.paddingBottom) || 0;
+        const totalPadding = paddingTop + paddingBottom;
+
+        const targetHeight = (img.offsetHeight - totalPadding) + "px";
+
+        back.style.setProperty('min-height', targetHeight, 'important');
+      } else if (img.complete) {
+        requestAnimationFrame(() => applyHeight());
+      }
+    };
+
+    requestAnimationFrame(() => applyHeight());
+
+    if (!window._senren_height_init) {
+      window.addEventListener('resize', dynamicCardHeight);
+      window._senren_height_init = true;
+    }
+  }
+
+  // Updates the picture counter
+  function updatePictureCounter() {
+    const images = document.querySelectorAll('.picture-container img');
+    const counters = document.querySelectorAll('.picture-counter');
+    const back = document.querySelector('.back');
+    const visibility = senrenConfig.pictureCounterVisibility;
+
+    if (counters.length === 0) return;
+
+    if (images.length === 0 || (images.length === 1 && visibility === '3')) {
+      counters.forEach(counter => {
+        counter.textContent = '';
+        counter.style.display = 'none';
+      });
+      if (back) back.classList.remove('has-multiple-images');
+      return;
+    }
+    
+    if (back) {
+      if (images.length > 1) back.classList.add('has-multiple-images');
+      else back.classList.remove('has-multiple-images');
+    }
+
+    const visibleIndex = Array.from(images).findIndex(img => {
+      return window.getComputedStyle(img).display !== 'none';
+    });
+
+    const actualIndex = visibleIndex !== -1 ? visibleIndex : 0;
+    counters.forEach(counter => {
+      counter.textContent = `${actualIndex + 1} / ${images.length}`;
+      counter.style.display = 'block';
+    });
+  }
+
+  function initPOSHeader() {
+    const enabled = senrenConfig.posHeader === '1';
+    
+    if (!enabled) {
+      const existing = document.querySelectorAll('.pos-info-header');
+      if (existing.length > 0) existing.forEach(h => h.remove());
+      return;
+    }
+
+    const boxes = document.querySelectorAll('.glossary-box, .definition-box');
+    boxes.forEach(box => {
+      const posInfoSpans = box.querySelectorAll('span [data-sc-content="part-of-speech-info"]');
+      let header = box.querySelector('.pos-info-header');
+
+      if (posInfoSpans.length === 0) {
+        if (header) header.remove();
+        return;
+      }
+
+      if (!header) {
+        header = document.createElement('div');
+        header.className = 'pos-info-header';
+        box.prepend(header);
+      } else {
+        header.replaceChildren();
+      }
+
+      const uniqueTags = new Map();
+      posInfoSpans.forEach(span => {
+        const text = span.textContent.trim();
+        if (text && !uniqueTags.has(text)) {
+          uniqueTags.set(text, span.cloneNode(true));
+        }
+      });
+
+      uniqueTags.forEach(clone => {
+        header.appendChild(clone);
+      });
+    });
+  }
+
+  (function () {
+    // Auto Advance Logic
+    window.senrenAutoAdvance = function() {
+      if (window.autoAdvanceTimer) clearTimeout(window.autoAdvanceTimer);
+      if (senrenConfig.autoAdvance === 'true' && typeof pycmd !== 'undefined') {
+        const delay = (senrenConfig.autoAdvanceDelay || 0) * 1000;
+        const ease = senrenConfig.autoAdvanceEase || '3';
+        window.autoAdvanceTimer = setTimeout(() => {
+          pycmd(`ease${ease}`);
+        }, delay);
+      }
+    };
+
+    window.senrenUpdateConfig = function (runLogic = false) {
+      // Regex Cache
+      window.REGEX = {
+        MORA: /[きしちにひみりぎじぢびぴゔ][ゃゅょ]|[うくすつぬふむゆるぐずづぶゔ][ぁぃぅぇぉ]|[てで][ぃ]|[とど][ぅ]|[キシチニヒミリギジヂビピヴ][ャュョ]|[ウクスツヌフムユルグズヅブプヴ][ァィゥェォ]|[テデ][ィ]|[トド][ぅ]|[クグ][ヮ]|[フ][ォ]|[っッ]|ー|[んン]|[\u3041-\u3096\u30A1-\u4DBF\u3005\u3007]|[\u3041-\u3096\u30A1-\u30F6\u30FD\u30FE]|\S/g,
+        KANJI: /[\u4E00-\u9FFF\u3400-\u4DBF\u3005\u3007]/,
+        KANA_MODIFIERS: /[\s\u3099\u309A\u309B\u309C]/g,
+        NARROW_VOWELS: /[いきしちにひみりぎじぢびぴイキシチニヒミリギジヂビピうくすつぬふむるぐずづぶぷウクスツヌフムルグズヅブプ]/g,
+        DIGITS: /\d+/g,
+        RUBY_RT: /<ruby>([^<]+?)<rt>(.*?)<\/rt><\/ruby>/g,
+        HIGHLIGHT: /<(?:span class="highlight"|b)>(.*?)<\/(?:span|b)>/g,
+        KANA_ONLY: /^[ぁ-ゖァ-ヺ゙゚ー\s]+$/,
+        COMBINING_MARK: /([ぁ-ゖァ-ヺ])[\u3099\u309A]/g,
+        SMALL_KANA: /[ぁぃぅぇぉゃゅょゎァィゥェォャゅョヮ]/g
+      };
+
+      // NSFW Cache
+      window.IS_NSFW = `{{Tags}}`.toLowerCase().includes('nsfw');
+
+      // DOM Cache
+      window.ELS = {
+        back: document.querySelector('.back'),
+        word: document.getElementById('word'),
+        sentence: document.getElementById('sentence'),
+        formattedSentence: document.getElementById('formattedSentence'),
+        sentenceEng: document.getElementById('sentenceEng'),
+        glossary: document.getElementById('glossary'),
+        definition: document.getElementById('definition'),
+        selectionText: document.getElementById('selectionText'),
+        miscInfo: document.querySelector('.misc-info'),
+        pictureContainer: document.querySelector('.picture-container'),
+        tagsContainer: document.querySelector('.tags-container'),
+        audioContainer: document.querySelector('.sentenceaudio'),
+        hiddenReading: document.getElementById('hiddenReading'),
+        position: document.getElementById('position'),
+        wordAudioBtn: document.querySelector('.audio .soundLink, .audio .replaybutton'),
+        sceneIndicator: document.querySelector('.scene-indicator')
+      };
+
+      const style = getComputedStyle(document.documentElement);
+      const getVar = (prop) => style.getPropertyValue(prop).trim().toLowerCase();
+
+      // Notes
+      senrenConfig.notesDefaultExpanded = getVar('--notes-default-expanded');
+
+      // Translation
+      senrenConfig.translationDefaultExpanded = getVar('--translation-default-expanded');
+
+      // Collect Glossary Images
+      senrenConfig.collectGlossaryImages = getVar('--collect-glossary-images');
+
+      // Backdrop Layout
+      senrenConfig.enableBackdropLayout = getVar('--enable-backdrop-layout');
+      senrenConfig.backdropStyle = getVar('--backdrop-style');
+      senrenConfig.backdropDynamicHeight = getVar('--backdrop-dynamic-height');
+
+      // Misc Info
+      senrenConfig.miscInfoDefaultExpanded = getVar('--misc-info-default-expanded');
+
+      // Audio
+      senrenConfig.muteNsfwAudio = getVar('--mute-nsfw-audio');
+      senrenConfig.muteSentenceAudio = getVar('--mute-sentence-audio');
+      senrenConfig.blurNsfwPicture = getVar('--blur-nsfw-picture');
+
+      // Kanji
+      senrenConfig.enableKanjiHover = getVar('--enable-kanji-hover');
+      senrenConfig.kanjiHoverAutoQuote = getVar('--kanji-hover-auto-quote');
+      senrenConfig.noDuplicateKana = getVar('--no-duplicate-kana');
+
+      // Dictionary
+      senrenConfig.dictionaryCollapse = getVar('--dictionary-collapse');
+      senrenConfig.dictionaryMaxHeight = getVar('--dictionary-max-height');
+      senrenConfig.posHeader = getVar('--pos-header');
+
+      // Keys
+      senrenConfig.sceneReplayShortcutKey = getVar('--scene-replay-shortcut-key');
+      senrenConfig.toggleSettingsKey = getVar('--toggle-settings-key');
+      senrenConfig.togglePictureLightboxGridKey = getVar('--toggle-picture-lightbox-grid-key');
+      senrenConfig.togglePictureLightboxKey = getVar('--toggle-picture-lightbox-key');
+      senrenConfig.toggleCustomDarkModeKey = getVar('--toggle-custom-dark-mode-key');
+      senrenConfig.toggleImageKey = getVar('--toggle-image-key');
+      senrenConfig.toggleImageSwitchKey = getVar('--toggle-image-switch-key');
+      senrenConfig.toggleSceneSwitchKey = getVar('--toggle-scene-switch-key');
+      senrenConfig.toggleDictionarySwitchKey = getVar('--toggle-dictionary-switch-key');
+
+      // Pitch
+      senrenConfig.pitchStyle = getVar('--pitch-style');
+      senrenConfig.pitchColors = getVar('--pitch-colors');
+      senrenConfig.sentencePitchHighlight = getVar('--sentence-pitch-highlight');
+
+      // Picture Counter
+      senrenConfig.pictureCounterVisibility = getVar('--picture-counter-visibility');
+
+      // Auto Advance
+      senrenConfig.autoAdvance = getVar('--auto-advance');
+      senrenConfig.autoAdvanceDelay = parseFloat(getVar('--auto-advance-delay')) || 0;
+      senrenConfig.autoAdvanceEase = getVar('--auto-advance-ease');
+      senrenConfig.enableFadeIn = getVar('--enable-fade-in');
+
+      // Apply Fade-in class
+      if (ELS.back) {
+        if (senrenConfig.enableFadeIn === 'true') {
+          ELS.back.classList.add('fade-in');
+        } else {
+          ELS.back.classList.remove('fade-in');
+        }
+      }
+
+      if (!runLogic) return;
+
+      senrenAutoAdvance();
+
+      if (typeof window.dynamicCardHeight === 'function') {
+        window.dynamicCardHeight();
+      }
+      if (typeof window.alternativePitchStyle === 'function') {
+        window.alternativePitchStyle();
+      }
+      if (typeof window.updatePictureCounter === 'function') {
+        window.updatePictureCounter();
+      }
+    };
+
+    // Initial load
+    window.senrenUpdateConfig();
+
+    window.IS_MOBILE = document.documentElement.classList.contains('mobile') ||
+      document.body.classList.contains('mobile');
+
+    const delayedFunctions = window.requestIdleCallback ||
+      function (cb) { return setTimeout(cb, 200); };
+
+    // Initializes immediate functions
+    function init() {
+      darkMode();
+      nsfw();
+      muteSentence();
+      noDuplicateKana();
+      splitTags();
+      highlightFurigana();
+      cleanPitchPositions();
+      createDownstepNotation();
+      dynamicWordSize();
+      alternativePitchStyle();
+      dictionaryTitle();
+      collectGlossaryImages();
+      consolidateYomitanGlossaryEntries();
+      toggleDefinition();
+      enableInteractions();
+      enableSceneSwitching();
+      enableImageToggle();
+      updatePictureCounter();
+
+      if (!window.IS_MOBILE) {
+        dynamicCardHeight();
+      }
+    }
+
+    // initializes deferred functions
+    function initDeferred() {
+      delayedFunctions(() => {
+        collectGlossaryImages(true);
+        initPOSHeader()
+        senrenAutoAdvance();
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              // External deferred functions
+              if (window.senrenInitDeferred) {
+                window.senrenInitDeferred();
+              } else {
+                const script = document.createElement('script');
+                script.src = "_senren_deferred_v5.1.0.js";
+                document.body.appendChild(script);
+              }
+
+              // Kanji hover
+              if (!window.IS_MOBILE) {
+                if (window.senrenInitKanjiHover) {
+                  window.senrenInitKanjiHover();
+                } else {
+                  const script = document.createElement('script');
+                  script.src = "_senren_kanji_hover_v5.1.0.js";
+                  document.body.appendChild(script);
+                }
+              }
+
+              // Settings
+              if (window.senrenBuildMenu) {
+                window.senrenBuildMenu();
+              } else {
+                const script = document.createElement('script');
+                script.src = "_senren_settings_v5.1.0.js";
+                document.body.appendChild(script);
+              }
+            }, 50);
+          });
+        });
+      });
+    }
+
+    init();
+    initDeferred();
+  })();
 </script>

@@ -1,80 +1,827 @@
-<!---------- Header ------------->
-<header style="visibility: hidden"></header>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<main>
-    <!--------- Vocab card ---------->
-    {{^IsSentenceCard}} {{^IsWordAndSentenceCard}} {{^IsClickCard}}
-    <div lang="ja" class="front-vocab">{{Expression}}</div>
-    {{/IsClickCard}} {{/IsWordAndSentenceCard}} {{/IsSentenceCard}}
+<!-- FRONT -->
+<div id="senren-metadata" data-deck="{{Deck}}"></div>
+<div class="front">
 
-    <!------- Sentence card --------->
-    {{#IsSentenceCard}}
-    <div lang="ja" class="front-sentence">
-        {{#SentenceFurigana}} {{kanji:SentenceFurigana}} {{/SentenceFurigana}}
-        {{^SentenceFurigana}} {{kanji:Sentence}} {{/SentenceFurigana}}
+  <!-- HEADER -->
+  <div class="header">
+
+    <!-- Custom Dark Mode Toggle -->
+    <span class="toggle-custom-dark-mode tappable">
+      <i class="fas fa-sun sun-icon"></i>
+      <i class="fas fa-moon moon-icon"></i>
+    </span>
+
+    {{#audioCard}}
+    <span class="audio-hint toggle-trigger tappable" onclick="toggleVisibility('sentence-wrapper-audio', 'sentence-audio')">
+      <i class="fas fa-lightbulb"></i>
+    </span>
+    {{/audioCard}}
+
+    <!-- Settings Toggle -->
+    <span class="toggle-settings-btn tappable">
+      <i class="fas fa-cog"></i>
+    </span>
+
+    {{#hint}}
+    <span class="hint-btn toggle-trigger tappable" onclick="toggleVisibility('hint-wrapper', 'hint-content')">
+      <i class="fas fa-question"></i>
+    </span>
+    {{/hint}}
+    <!-- /HEADER -->
+  </div>
+
+  <!-- Audio Card -->
+  {{#audioCard}}{{#wordAudio}}
+  <div id="wordAudio">
+    {{wordAudio}}
+  </div>
+  {{/wordAudio}}{{#sentenceAudio}}
+
+  <div id="sentenceAudio">
+    {{sentenceAudio}}
+  </div>
+  {{/sentenceAudio}}{{/audioCard}}
+
+  <div id="sentence-wrapper-audio">
+    <div id="sentence-audio">
+      {{sentence}}
     </div>
-    {{/IsSentenceCard}}
+  </div>
 
-    <!--------- Hint card ----------->
-    {{#IsWordAndSentenceCard}}
-    <div lang="ja" class="front-vocab">{{Expression}}</div>
-    <div id="hint">
-        {{#SentenceFurigana}} {{kanji:SentenceFurigana}} {{/SentenceFurigana}}
-        {{^SentenceFurigana}} {{kanji:Sentence}} {{/SentenceFurigana}}
+  <!-- Sentence Card -->
+  {{^audioCard}}{{#sentenceCard}}
+  <div id="word-wrapper">
+    <div id="word">
+      {{word}}
     </div>
-    {{/IsWordAndSentenceCard}}
+  </div>
 
-    <!-------- Click card ----------->
-    {{#IsClickCard}}
-    <div id="click" class="tappable">
-        <div lang="ja" class="front-vocab">{{Expression}}</div>
+  <div id="sentence" class="toggle-trigger tappable" onclick="toggleVisibility('word-wrapper', 'word')">
+    {{sentence}}
+  </div>
+  {{/sentenceCard}}{{^sentenceCard}}
+
+  <!-- Word Card (Default) -->
+  <div class="desktop-word-layout">
+    <div id="word" class="toggle-trigger tappable" onclick="toggleVisibility('sentence-wrapper', 'sentence')">
+      {{word}}
     </div>
-    {{/IsClickCard}}
+  </div>
 
-    <!-- Hint -->
-    {{#Hint}}
-    <div id="hint">{{Hint}}</div>
-    {{/Hint}}
-</main>
+  <div class="mobile-word-layout">
+    <div class="background-box">
+      <div id="word" class="toggle-trigger tappable" onclick="toggleVisibility('sentence-wrapper', 'sentence')">
+        {{word}}
+      </div>
+    </div>
+  </div>
+
+  <div id="sentence-wrapper">
+    <div id="sentence" class="sentence-front">
+      {{sentence}}
+    </div>
+  </div>
+  {{/sentenceCard}}{{/audioCard}}
+
+  {{#hint}}
+  <div id="hint-wrapper">
+    <div id="hint-content">
+      {{hint}}
+    </div>
+  </div>
+  {{/hint}}
+</div>
+<!-- /FRONT -->
+
+<!-- Hidden field to let JS calculate audio delay based on reading length -->
+<div id="hiddenReading" style="display: none;">{{#pitchAccents}}{{pitchAccents}}{{/pitchAccents}}{{^pitchAccents}}{{reading}}{{/pitchAccents}}</div>
 
 <script>
-    function ClickCard() {
-        const clickElement = document.getElementById('click');
+  var senrenConfig = {};
 
-        // Store original content so that we can click back to it
-        const originalContent = clickElement.innerHTML;
+  // Deck Presets
+  (function () {
+    // Apply cached settings
+    const meta = document.getElementById('senren-metadata');
+    const currentDeck = meta ? meta.getAttribute('data-deck') : null;
 
-        // This is what it is going to click to
-        const clickedContent = `
-            <div lang="ja" class="front-sentence">
-            {{#SentenceFurigana}} {{kanji:SentenceFurigana}} {{/SentenceFurigana}}
-            {{^SentenceFurigana}} {{kanji:Sentence}} {{/SentenceFurigana}}
-            </div>
-        `;
+    if (!currentDeck) return;
 
-        function toggleContent() {
-            if (clickElement.innerHTML === originalContent) {
-                clickElement.innerHTML = clickedContent;
-            } else {
-                clickElement.innerHTML = originalContent;
+    try {
+      const linksJson = localStorage.getItem('senren_deck_presets_cache');
+      const presetsJson = localStorage.getItem('senren_presets_cache');
+
+      if (linksJson && presetsJson) {
+        const links = JSON.parse(linksJson);
+        const presets = JSON.parse(presetsJson);
+        const targetPresetName = links[currentDeck];
+
+        if (targetPresetName && presets[targetPresetName]) {
+          const settings = presets[targetPresetName];
+          for (const [key, val] of Object.entries(settings)) {
+            if (key.startsWith('--')) {
+              document.documentElement.style.setProperty(key, val);
+              localStorage.setItem("senren_" + key, val);
             }
+          }
+        } else if (sessionStorage.getItem('senren_deck_preset_applied') === 'true') {
+          const activeName = presets["_active"] || "Default";
+          if (presets[activeName]) {
+            const settings = presets[activeName];
+            for (const [key, val] of Object.entries(settings)) {
+              if (key.startsWith('--')) {
+                document.documentElement.style.setProperty(key, val);
+                localStorage.setItem("senren_" + key, val);
+              }
+            }
+          }
         }
-        // Implement the clicking mechanism
-        clickElement.addEventListener('click', (e) => toggleContent());
-        document.addEventListener('keydown', (e) => {
-            if (event.key === 'c' | event.key === 'C') toggleContent();
+      }
+    } catch (e) { console.error("Sync deck style error:", e); }
+
+    // Update cache if deck changed
+    (async function () {
+      const lastDeck = sessionStorage.getItem('senren_last_deck');
+      if (currentDeck === lastDeck) return;
+
+      try {
+        const linksRes = await fetch(`_senren_deck_presets.js?t=${Date.now()}`);
+        const presetsRes = await fetch(`_senren_presets.js?t=${Date.now()}`);
+
+        if (linksRes.ok && presetsRes.ok) {
+          const links = await linksRes.json();
+          const presets = await presetsRes.json();
+
+          localStorage.setItem('senren_deck_presets_cache', JSON.stringify(links));
+          localStorage.setItem('senren_presets_cache', JSON.stringify(presets));
+
+          const targetPresetName = links[currentDeck];
+          if (targetPresetName && presets[targetPresetName]) {
+            sessionStorage.setItem('senren_deck_preset_applied', 'true');
+          } else {
+            sessionStorage.removeItem('senren_deck_preset_applied');
+          }
+        }
+      } catch (e) { console.error("Async deck sync error:", e); }
+      sessionStorage.setItem('senren_last_deck', currentDeck);
+    })();
+  })();
+
+  // Remove duplicate listeners
+  if (window.senrenFrontSettingsHandler) {
+    document.removeEventListener('keydown', window.senrenFrontSettingsHandler);
+    window.senrenFrontSettingsHandler = null;
+  }
+  if (window.senrenBackKeyHandler) {
+    document.removeEventListener('keydown', window.senrenBackKeyHandler);
+    window.senrenBackKeyHandler = null;
+  }
+
+  // Helper functions for shortcuts
+  function parseKeyConfig(configStr) {
+    if (!configStr) return null;
+    const parts = configStr.toLowerCase().split(/[\s+]+/).filter(p => p);
+    if (parts.length === 0) return null;
+
+    const key = parts.pop();
+    return {
+      key: key,
+      ctrl: parts.includes('ctrl') || parts.includes('control'),
+      alt: parts.includes('alt'),
+      shift: parts.includes('shift'),
+      meta: parts.includes('meta') || parts.includes('cmd')
+    };
+  }
+
+  function isKeyMatch(event, config) {
+    if (!config) return false;
+    return (
+      event.key.toLowerCase() === config.key &&
+      event.ctrlKey === config.ctrl &&
+      event.altKey === config.alt &&
+      event.shiftKey === config.shift &&
+      event.metaKey === config.meta
+    );
+  }
+
+  // Custom dark mode
+  function darkMode() {
+    const button = document.querySelector(".toggle-custom-dark-mode");
+    const body = document.querySelector("html");
+    const sunIcon = document.querySelector(".sun-icon");
+    const moonIcon = document.querySelector(".moon-icon");
+
+    const applyDarkMode = () => {
+      const isDarkMode = localStorage.getItem("darkMode") === "enabled";
+      body.classList.toggle("custom-dark-mode", isDarkMode);
+      button.classList.toggle("dark-mode", isDarkMode);
+
+      sunIcon.style.display = isDarkMode ? "inline" : "none";
+      moonIcon.style.display = isDarkMode ? "none" : "inline";
+    };
+
+    requestAnimationFrame(applyDarkMode);
+
+    if (button && !button.dataset.hasClickListener) {
+      button.addEventListener("click", () => {
+        const isCurrentlyDark = body.classList.contains("custom-dark-mode");
+        localStorage.setItem("darkMode", isCurrentlyDark ? "disabled" : "enabled");
+        requestAnimationFrame(applyDarkMode);
+      });
+      button.dataset.hasClickListener = 'true';
+    }
+  }
+
+  // Toggles visibility of word/sentence
+  function toggleVisibility(wrapperId, innerElementId) {
+    const wrapper = document.getElementById(wrapperId);
+    const innerElement = document.getElementById(innerElementId);
+
+    if (wrapper && innerElement) {
+      const isExpanded = wrapper.classList.contains('expanded');
+
+      if (!isExpanded) {
+        const scrollHeight = innerElement.scrollHeight + 'px';
+        wrapper.style.maxHeight = scrollHeight;
+        wrapper.classList.add('expanded');
+      } else {
+        wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+          wrapper.classList.remove('expanded');
+          wrapper.style.maxHeight = '0px';
         });
+      }
+    }
+  }
+
+  // Shows or hides the audio card sentence based on CSS variables
+  function initializeAudioSentenceState() {
+    const isAudioCard = "{{#audioCard}}true{{/audioCard}}{{^audioCard}}false{{/audioCard}}" === "true";
+    if (!isAudioCard) {
+      return;
     }
 
-    function initialize() {
-        // Check what card type it is
-        if (`{{IsClickCard}}`) ClickCard();
+    const wrapper = ELS.sentenceWrapperAudio;
+    const innerElement = ELS.sentenceAudio;
+
+    if (wrapper && innerElement) {
+      const expandByDefault = senrenConfig.audioSentenceDefaultExpanded;
+
+      if (expandByDefault === 'true') {
+        const originalWrapperTransition = wrapper.style.transition;
+        const originalInnerElementTransition = innerElement.style.transition;
+
+        wrapper.style.transition = 'none';
+        innerElement.style.transition = 'none';
+
+        requestAnimationFrame(() => {
+          const scrollHeight = innerElement.scrollHeight + 'px';
+          wrapper.style.maxHeight = scrollHeight;
+          wrapper.classList.add('expanded');
+
+          requestAnimationFrame(() => {
+            wrapper.style.transition = originalWrapperTransition;
+            innerElement.style.transition = originalInnerElementTransition;
+          });
+        });
+      }
+    }
+  }
+
+  // Shows or hides the word card sentence based on CSS variables
+  function initializeSentenceState() {
+    const wrapper = ELS.sentenceWrapper;
+    const innerElement = ELS.sentence;
+
+    if (wrapper && innerElement) {
+      const expandByDefault = senrenConfig.wordSentenceDefaultExpanded;
+
+      if (expandByDefault === 'true') {
+        const originalWrapperTransition = wrapper.style.transition;
+        const originalInnerElementTransition = innerElement.style.transition;
+
+        wrapper.style.transition = 'none';
+        innerElement.style.transition = 'none';
+
+        requestAnimationFrame(() => {
+          const scrollHeight = innerElement.scrollHeight + 'px';
+          wrapper.style.maxHeight = scrollHeight;
+          wrapper.classList.add('expanded');
+
+          requestAnimationFrame(() => {
+            wrapper.style.transition = originalWrapperTransition;
+            innerElement.style.transition = originalInnerElementTransition;
+          });
+        });
+      }
+    }
+  }
+
+  // Shows or hides the hint based on CSS variables
+  function initializeHintState() {
+    const wrapper = ELS.hintWrapper;
+    const innerElement = ELS.hintContent;
+
+    if (wrapper && innerElement) {
+      const expandByDefault = senrenConfig.hintDefaultExpanded;
+
+      if (expandByDefault === 'true') {
+        const originalWrapperTransition = wrapper.style.transition;
+        const originalInnerElementTransition = innerElement.style.transition;
+
+        wrapper.style.transition = 'none';
+        innerElement.style.transition = 'none';
+
+        requestAnimationFrame(() => {
+          const scrollHeight = innerElement.scrollHeight + 'px';
+          wrapper.style.maxHeight = scrollHeight;
+          wrapper.classList.add('expanded');
+
+          requestAnimationFrame(() => {
+            wrapper.style.transition = originalWrapperTransition;
+            innerElement.style.transition = originalInnerElementTransition;
+          });
+        });
+      }
+    }
+  }
+
+  // Groups text and audio into navigable scenes
+  function enableFrontSceneSwitching() {
+    let initialPlayTimeout;
+    let replayTimeout;
+
+    const isPartEmptyGroup = (part) => {
+      if (!part || part.tagName !== 'SPAN') return false;
+      const isGroup = part.className.split(/\s+/).some(c => /^group\d*$/.test(c));
+      return isGroup && part.textContent.trim().length === 0;
+    };
+
+    const textContainers = [ELS.sentence, ELS.sentenceAudio].filter(Boolean);
+
+    const audioWrapper = ELS.sentenceAudioContainer;
+    let audioParts = audioWrapper
+      ? Array.from(audioWrapper.children).filter(el => el.tagName !== 'BR')
+      : [];
+
+    let hasSplitText = false;
+    let textSlideCount = 0;
+
+    textContainers.forEach(container => {
+      if (container.getAttribute('data-split-done')) {
+        const existingParts = container.querySelectorAll('.split-sentence-part');
+        if (existingParts.length > 0) {
+          hasSplitText = true;
+          textSlideCount = Math.max(textSlideCount, existingParts.length);
+        }
+        return;
+      }
+
+      const groupWrappers = Array.from(container.querySelectorAll('.group'))
+        .filter(el => el.textContent.trim().length > 0);
+
+      if (groupWrappers.length > 0) {
+        const parts = groupWrappers.map(el => el.outerHTML);
+        container.innerHTML = '';
+        parts.forEach((partHTML, index) => {
+          const div = document.createElement('div');
+          div.classList.add('split-sentence-part');
+          div.innerHTML = partHTML;
+          div.style.display = (index === 0) ? 'block' : 'none';
+          container.appendChild(div);
+        });
+        container.setAttribute('data-split-done', 'true');
+        hasSplitText = true;
+        textSlideCount = Math.max(textSlideCount, parts.length);
+      }
+    });
+
+    let totalSlides = Math.max(textSlideCount, audioParts.length);
+
+    if (totalSlides <= 1) {
+      return;
     }
 
-    initialize();
-</script>
-<script>
-/* AJT Japanese JS 24.10.8.1 */
-/* DO NOT EDIT! This code will be overwritten by AJT Japanese. */
-function ajt__kana_to_moras(text) { return text.match(/.[°゚]?[ァィゥェォャュョぁぃぅぇぉゃゅょ]?/gu); } function ajt__norm_handakuten(text) { return text.replace(/\u{b0}/gu, "\u{309a}"); } function ajt__make_pattern(kana, pitch_type, pitch_num) { const moras = ajt__kana_to_moras(ajt__norm_handakuten(kana)); switch (pitch_type) { case "atamadaka": return ( `<span class="ajt__HL">${moras[0]}</span>` + `<span class="ajt__L">${moras.slice(1).join("")}</span>` + `<span class="ajt__pitch_number_tag">1</span>` ); break; case "heiban": return ( `<span class="ajt__LH">${moras[0]}</span>` + `<span class="ajt__H">${moras.slice(1).join("")}</span>` + `<span class="ajt__pitch_number_tag">0</span>` ); break; case "odaka": return ( `<span class="ajt__LH">${moras[0]}</span>` + `<span class="ajt__HL">${moras.slice(1).join("")}</span>` + `<span class="ajt__pitch_number_tag">${moras.length}</span>` ); break; case "nakadaka": return ( `<span class="ajt__LH">${moras[0]}</span>` + `<span class="ajt__HL">${moras.slice(1, Number(pitch_num)).join("")}</span>` + `<span class="ajt__L">${moras.slice(Number(pitch_num)).join("")}</span>` + `<span class="ajt__pitch_number_tag">${pitch_num}</span>` ); break; } } function ajt__format_new_ruby(kanji, readings) { if (readings.length > 1) { return `<ruby>${ajt__format_new_ruby(kanji, readings.slice(0, -1))}</ruby><rt>${readings.slice(-1)}</rt>`; } else { return `${kanji}<rt>${readings.join("")}</rt>`; } } function ajt__zip(array1, array2) { let zipped = []; const size = Math.min(array1.length, array2.length); for (let i = 0; i < size; i++) { zipped.push([array1[i], array2[i]]); } return zipped; } function ajt__make_accent_list_item(kana_reading, pitch_accent) { const list_item = document.createElement("li"); for (const [reading_part, pitch_part] of ajt__zip(kana_reading.split("・"), pitch_accent.split(","))) { const [pitch_type, pitch_num] = pitch_part.split("-"); const pattern = ajt__make_pattern(reading_part, pitch_type, pitch_num); list_item.insertAdjacentHTML("beforeend", `<span class="ajt__downstep_${pitch_type}">${pattern}</span>`); } return list_item; } function ajt__make_accents_list(ajt_span) { const accents = document.createElement("ul"); for (const accent_group of ajt_span.getAttribute("pitch").split(" ")) { accents.appendChild(ajt__make_accent_list_item(...accent_group.split(":"))); } return accents; } function ajt__make_popup_div(content) { const frame_top = document.createElement("div"); frame_top.classList.add("ajt__frame_title"); frame_top.innerText = "Information"; const frame_bottom = document.createElement("div"); frame_bottom.classList.add("ajt__frame_content"); frame_bottom.appendChild(content); const popup = document.createElement("div"); popup.classList.add("ajt__info_popup"); popup.appendChild(frame_top); popup.appendChild(frame_bottom); return popup; } function ajt__find_word_info_popup(word_span) { return word_span.querySelector(".ajt__info_popup"); } function ajt__find_popup_x_corners(popup_div) { const elem_rect = popup_div.getBoundingClientRect(); const right_corner_x = elem_rect.x + elem_rect.width; return { x_start: elem_rect.x, x_end: right_corner_x, shifted_x_start: elem_rect.x + elem_rect.width / 2, shifted_x_end: right_corner_x + elem_rect.width / 2, }; } function ajt__word_info_on_mouse_enter(word_span) { const popup_div = ajt__find_word_info_popup(word_span); if (popup_div) { ajt__word_info_on_mouse_leave(word_span); const x_pos = ajt__find_popup_x_corners(popup_div); if (x_pos.x_start < 0) { popup_div.classList.add("ajt__left-corner"); popup_div.style.setProperty("--shift-x", `${Math.ceil(-x_pos.x_start)}px`); } else if (x_pos.shifted_x_end < window.innerWidth) { popup_div.classList.add("ajt__in-middle"); } } } function ajt__word_info_on_mouse_leave(word_span) { const popup_div = ajt__find_word_info_popup(word_span); if (popup_div) { popup_div.classList.remove("ajt__left-corner", "ajt__in-middle"); } } function ajt__adjust_popup_position_on_mouse_enter(word_info_span) { word_info_span.addEventListener("mouseenter", (event) => ajt__word_info_on_mouse_enter(event.currentTarget)); word_info_span.addEventListener("mouseleave", (event) => ajt__word_info_on_mouse_leave(event.currentTarget)); } function ajt__format_readings_as_list(readings) { const readings_items = readings.map((reading) => `<li>${reading}</li>`).join(""); const list_elem = document.createElement("ol"); list_elem.classList.add("ajt__readings_list"); list_elem.insertAdjacentHTML("beforeend", readings_items); return list_elem; } function ajt__find_kanji_readings(ruby_tag) { const separators = /[\s;,.、・。]+/iu; const kanji = (ruby_tag.querySelector("rb") || ruby_tag.firstChild).textContent.trim(); const readings = ruby_tag .querySelector("rt") .textContent.split(separators) .map((str) => str.trim()) .filter((str) => str.length); return { kanji: kanji, readings: readings }; } function ajt__reformat_multi_furigana() { const max_inline = 2; document.querySelectorAll("ruby:not(ruby ruby):not(.ajt__furigana_list ruby)").forEach((ruby) => { try { const { kanji, readings } = ajt__find_kanji_readings(ruby); if (readings.length > 1) { ruby.innerHTML = ajt__format_new_ruby(kanji, readings.slice(0, max_inline)); } if (readings.length > max_inline && !ruby.matches(".ajt__word_info ruby")) { const content_ul = ajt__format_readings_as_list(readings); const popup = ajt__make_popup_div(content_ul); const wrapper = document.createElement("span"); ruby.replaceWith(wrapper); wrapper.appendChild(ruby); wrapper.appendChild(popup); wrapper.classList.add("ajt__furigana_list"); ajt__adjust_popup_position_on_mouse_enter(wrapper); } } catch (error) { console.error(error); } }); } function ajt__create_popups() { for (const [idx, span] of document.querySelectorAll(".ajt__word_info").entries()) { if (span.matches(".jpsentence .background *")) { continue; } if (ajt__find_word_info_popup(span)) { continue; } try { const content_ul = ajt__make_accents_list(span); const popup = ajt__make_popup_div(content_ul); popup.setAttribute("ajt__popup_idx", idx); span.setAttribute("ajt__popup_idx", idx); span.appendChild(popup); ajt__adjust_popup_position_on_mouse_enter(span); } catch (error) { console.error(error); } } } function ajt__main() { ajt__create_popups(); ajt__reformat_multi_furigana(); } if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", ajt__main); } else { ajt__main(); }
+    const frontContainer = ELS.front;
+    if (frontContainer && !frontContainer.querySelector('.sentence-nav')) {
+      const arrowLeft = document.createElement('div');
+      arrowLeft.className = 'sentence-nav left';
+      frontContainer.appendChild(arrowLeft);
+      const arrowRight = document.createElement('div');
+      arrowRight.className = 'sentence-nav right';
+      frontContainer.appendChild(arrowRight);
+
+      [arrowLeft, arrowRight].forEach(arrow => {
+        arrow.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (initialPlayTimeout) clearTimeout(initialPlayTimeout);
+          const direction = arrow.classList.contains('left') ? -1 : 1;
+          changeScene(direction);
+        });
+      });
+    }
+
+    let currentIndex = 0;
+
+    function changeScene(direction) {
+      currentIndex += direction;
+      if (currentIndex >= totalSlides) currentIndex = 0;
+      else if (currentIndex < 0) currentIndex = totalSlides - 1;
+      updateDisplay(true);
+    }
+
+    const baseWaitTime = 100;
+    const timePerChar = 150;
+
+    const readingEl = ELS.hiddenReading;
+    let charCount = 5;
+
+    if (readingEl) {
+      const targetEl = readingEl.querySelector('li') || readingEl;
+      let rawText = targetEl.textContent || "";
+
+      const kanaModifiers = window.REGEX?.KANA_MODIFIERS || /[\s\u3099\u309A\u309B\u309C]/g;
+      const narrowVowels = window.REGEX?.NARROW_VOWELS || /[いきしちにひみりぎじぢびぴイキシチニヒミリギジヂビピうくすつぬふむるぐずづぶぷウクスツヌフムルグズヅブプ]/g;
+
+      let cleanedText = rawText.replace(kanaModifiers, '');
+      cleanedText = cleanedText.replace(/[ぁぃぅぇぉゃゅょゎァィゥェォャュョヮ]/g, '');
+
+      let effectiveCount = cleanedText.length;
+      const narrowMatches = cleanedText.match(narrowVowels);
+
+      if (narrowMatches) {
+        effectiveCount -= (narrowMatches.length * 0.3);
+      }
+
+      charCount = Math.round(effectiveCount);
+      if (charCount < 1) charCount = 1;
+    }
+
+    let SENTENCE_DELAY;
+
+    const hasWordAudio = !!ELS.wordAudio?.querySelector('.soundLink, .replaybutton, audio');
+
+    if (!hasWordAudio) {
+      SENTENCE_DELAY = 0;
+    } else {
+      if (charCount === 2) SENTENCE_DELAY = 550;
+      else if (charCount === 3) SENTENCE_DELAY = 650;
+      else if (charCount === 4) SENTENCE_DELAY = 700;
+      else if (charCount === 5) SENTENCE_DELAY = 850;
+      else if (charCount === 6) SENTENCE_DELAY = 1000;
+      else if (charCount === 7) SENTENCE_DELAY = 1080;
+      else if (charCount === 8) SENTENCE_DELAY = 1150;
+      else SENTENCE_DELAY = baseWaitTime + (charCount * timePerChar);
+    }
+
+    const handleFrontShortcuts = (e) => {
+      if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+      const cssVal = senrenConfig.sceneReplayShortcutKey;
+      const replayConfig = parseKeyConfig(cssVal) || { key: 'w', ctrl: false, alt: false, shift: false, meta: false };
+
+      if (isKeyMatch(e, replayConfig)) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (initialPlayTimeout) clearTimeout(initialPlayTimeout);
+        if (replayTimeout) clearTimeout(replayTimeout);
+
+        document.querySelectorAll('audio').forEach(a => {
+          try { a.pause(); a.currentTime = 0; } catch (e) { }
+        });
+
+        const wordAudioContainer = ELS.wordAudio;
+        const wordAudioBtn = wordAudioContainer ? wordAudioContainer.querySelector('.soundLink, .replaybutton') : null;
+
+        if (wordAudioBtn) {
+          wordAudioBtn.click();
+        }
+
+        const currentPart = (audioParts.length === 1) ? audioParts[0] : audioParts[currentIndex];
+        const isEmpty = isPartEmptyGroup(currentPart);
+
+        const replayLoadOffset = 200;
+        const delay = (wordAudioBtn && !isEmpty) ? (SENTENCE_DELAY + replayLoadOffset) : 0;
+
+        replayTimeout = setTimeout(() => {
+          updateDisplay(true);
+        }, delay);
+
+        return;
+      }
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault(); e.stopPropagation();
+        if (initialPlayTimeout) clearTimeout(initialPlayTimeout);
+        if (replayTimeout) clearTimeout(replayTimeout);
+        changeScene(-1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault(); e.stopPropagation();
+        if (initialPlayTimeout) clearTimeout(initialPlayTimeout);
+        if (replayTimeout) clearTimeout(replayTimeout);
+        changeScene(1);
+      }
+    };
+
+    if (window.currentSceneKeyHandler) {
+      document.removeEventListener('keydown', window.currentSceneKeyHandler);
+      window.currentSceneKeyHandler = null;
+    }
+    window.currentSceneKeyHandler = handleFrontShortcuts;
+    document.addEventListener('keydown', handleFrontShortcuts);
+
+    function updateDisplay(playAudio) {
+      textContainers.forEach(container => {
+        const parts = container.querySelectorAll('.split-sentence-part');
+        if (parts.length > 0) {
+          parts.forEach((part, i) => {
+            part.style.display = (i === currentIndex) ? 'block' : 'none';
+          });
+          const wrapper = container.closest('.expanded');
+          if (wrapper) wrapper.style.maxHeight = container.scrollHeight + 'px';
+        }
+      });
+
+      if (audioParts.length > 0) {
+        audioParts.forEach((btn, i) => {
+          const shouldShow = (i === currentIndex) || (audioParts.length === 1);
+          if (shouldShow) {
+            btn.style.setProperty('display', 'inline-flex', 'important');
+          } else {
+            btn.style.setProperty('display', 'none', 'important');
+          }
+        });
+      }
+
+      if (playAudio && audioParts.length > 0) {
+        if (senrenConfig.muteSentenceAudio === 'true') return;
+        
+        let target = audioParts[currentIndex];
+        if (!target && audioParts.length === 1) target = audioParts[0];
+
+        if (target) {
+          if (typeof target.click === 'function') target.click();
+          else {
+            const trigger = target.querySelector('.soundLink, .replaybutton');
+            if (trigger) trigger.click();
+          }
+        }
+      }
+    }
+
+    updateDisplay(false);
+
+    const muteNsfw = senrenConfig.muteNsfwAudio;
+
+    if (muteNsfw !== 'true' || !window.IS_NSFW) {
+      if (isPartEmptyGroup(audioParts[0])) {
+        if (senrenConfig.muteSentenceAudio !== 'true' && ELS.wordAudioBtn) {
+          ELS.wordAudioBtn.click();
+        }
+        updateDisplay(true);
+      } else {
+        initialPlayTimeout = setTimeout(() => {
+          updateDisplay(true);
+        }, SENTENCE_DELAY);
+      }
+    }
+  }
+
+  // Enables custom shortcuts
+  function enableCustomShortcuts() {
+    ['senrenFrontSettingsHandler', 'senrenBackKeyHandler'].forEach(h => {
+      if (window[h]) document.removeEventListener('keydown', window[h]);
+      window[h] = null;
+    });
+
+    const utils = {
+      isTyping: () => {
+        const active = document.activeElement;
+        return active && ['INPUT', 'TEXTAREA'].includes(active.tagName);
+      },
+
+      getVar: (name) => {
+        const map = {
+          '--toggle-settings-key': 'toggleSettingsKey',
+          '--toggle-custom-dark-mode-key': 'toggleCustomDarkModeKey'
+        };
+        const key = map[name];
+        return key ? senrenConfig[key] : '';
+      }
+    };
+
+    const actions = {
+      settings: () => {
+        const modal = document.getElementById('senren-settings-modal');
+        const btn = document.querySelector('.toggle-settings-btn');
+
+        if (modal) {
+          modal.classList.toggle('active');
+        } else if (btn) {
+          btn.click();
+        }
+      },
+
+      customDarkMode: () => {
+        const dmBtn = document.querySelector(".toggle-custom-dark-mode");
+
+        if (dmBtn) dmBtn.click();
+      }
+    };
+
+    window.senrenFrontSettingsHandler = (e) => {
+      if (utils.isTyping()) return;
+
+      const shortcuts = [
+        { key: senrenConfig.toggleSettingsKey, action: actions.settings },
+        { key: senrenConfig.toggleCustomDarkModeKey, action: actions.customDarkMode }
+      ];
+
+      for (const item of shortcuts) {
+        const keyStr = item.key;
+
+        if (!keyStr) continue;
+
+        const config = parseKeyConfig(keyStr);
+
+        if (isKeyMatch(e, config)) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          item.action();
+          break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', window.senrenFrontSettingsHandler);
+  }
+
+  // Mutes the sentence audio playback based on CSS variables
+  function muteSentence() {
+    if (senrenConfig.muteSentenceAudio !== 'true') return;
+
+    const wordAudioContainer = ELS.wordAudio;
+    const wordAudioBtn = wordAudioContainer ? wordAudioContainer.querySelector('.soundLink, .replaybutton') : null;
+
+    if (wordAudioBtn) {
+      wordAudioBtn.click();
+    }
+  }
+
+  // Adjusts word size based on character length
+  function dynamicWordSize() {
+    const wordElements = ELS.words;
+
+    wordElements.forEach(wordElement => {
+      if (wordElement) {
+        const rubyElement = wordElement.querySelector('ruby');
+        let content = "";
+
+        if (rubyElement) {
+          content = rubyElement.childNodes[0].textContent.trim();
+        } else {
+          content = wordElement.textContent.trim();
+        }
+
+        const contentLength = content.length;
+        const classNumber = Math.min(contentLength, 9);
+
+        wordElement.classList.add(`length-${classNumber}`);
+      }
+    });
+  }
+
+  (function () {
+    // Auto Show Answer Logic
+    window.senrenAutoShowAnswer = function() {
+      if (window.autoShowAnswerTimer) clearTimeout(window.autoShowAnswerTimer);
+      if (senrenConfig.autoShowAnswer === 'true' && typeof pycmd !== 'undefined') {
+        const delay = (senrenConfig.showAnswerDelay || 0) * 1000;
+        window.autoShowAnswerTimer = setTimeout(() => {
+          pycmd('ans');
+        }, delay);
+      }
+    };
+
+    window.senrenUpdateConfig = function (runLogic = false) {
+      // Regex Cache
+      window.REGEX = {
+        KANA_MODIFIERS: /[\s\u3099\u309A\u309B\u309C]/g,
+        NARROW_VOWELS: /[いきしちにひみりぎじぢびぴイキシチニヒミリギジヂビピうくすつぬふむるぐずづぶぷウクスツヌフムルグズヅブプ]/g
+      };
+
+      // NSFW Cache
+      window.IS_NSFW = `{{Tags}}`.toLowerCase().includes('nsfw');
+
+      // DOM Cache
+      window.ELS = {
+        word: document.getElementById('word'),
+        sentence: document.getElementById('sentence'),
+        sentenceAudio: document.getElementById('sentence-audio'),
+        sentenceWrapper: document.getElementById('sentence-wrapper'),
+        sentenceWrapperAudio: document.getElementById('sentence-wrapper-audio'),
+        hiddenReading: document.getElementById('hiddenReading'),
+        sentenceAudioContainer: document.getElementById('sentenceAudio'),
+        wordAudio: document.getElementById('wordAudio'),
+        words: document.querySelectorAll("#word"),
+        front: document.querySelector('.front'),
+        hintWrapper: document.getElementById('hint-wrapper'),
+        hintContent: document.getElementById('hint-content'),
+        wordAudioBtn: document.querySelector('.audio .soundLink, .audio .replaybutton')
+      };
+
+      const style = getComputedStyle(document.documentElement);
+      const getVar = (prop) => style.getPropertyValue(prop).trim().toLowerCase();
+
+      // Sentence
+      senrenConfig.audioSentenceDefaultExpanded = getVar('--audio-sentence-default-expanded');
+      senrenConfig.wordSentenceDefaultExpanded = getVar('--word-sentence-default-expanded');
+
+      // Hint
+      senrenConfig.hintDefaultExpanded = getVar('--hint-default-expanded');
+
+      // Audio
+      senrenConfig.muteNsfwAudio = getVar('--mute-nsfw-audio');
+      senrenConfig.muteSentenceAudio = getVar('--mute-sentence-audio');
+
+      // Keys
+      senrenConfig.sceneReplayShortcutKey = getVar('--scene-replay-shortcut-key');
+      senrenConfig.toggleSettingsKey = getVar('--toggle-settings-key');
+      senrenConfig.toggleCustomDarkModeKey = getVar('--toggle-custom-dark-mode-key');
+
+      // Auto Advance
+      senrenConfig.autoShowAnswer = getVar('--auto-show-answer');
+      senrenConfig.showAnswerDelay = parseFloat(getVar('--show-answer-delay')) || 0;
+      senrenConfig.enableFadeIn = getVar('--enable-fade-in');
+
+      // Apply Fade-in class
+      if (ELS.front) {
+        if (senrenConfig.enableFadeIn === 'true') {
+          ELS.front.classList.add('fade-in');
+        } else {
+          ELS.front.classList.remove('fade-in');
+        }
+      }
+
+      if (!runLogic) return;
+
+      senrenAutoShowAnswer();
+    };
+
+    // Initial load
+    window.senrenUpdateConfig();
+
+    window.IS_MOBILE = document.documentElement.classList.contains('mobile') ||
+      document.body.classList.contains('mobile');
+
+    const delayedFunctions = window.requestIdleCallback ||
+      function (cb) { return setTimeout(cb, 1); };
+
+    // Initializes immediate functions
+    function init() {
+      darkMode();
+      muteSentence();
+      dynamicWordSize();
+      initializeAudioSentenceState();
+      initializeSentenceState();
+      initializeHintState();
+      enableFrontSceneSwitching();
+      senrenAutoShowAnswer();
+    }
+
+    // initializes deferred functions
+    function initDeferred() {
+      delayedFunctions(() => {
+        if (!window.IS_MOBILE) {
+          enableCustomShortcuts();
+        }
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              if (window.senrenBuildMenu) {
+                window.senrenBuildMenu();
+              } else {
+                const script = document.createElement('script');
+                script.src = "_senren_settings_v5.1.0.js";
+                document.body.appendChild(script);
+              }
+            }, 50);
+          });
+        });
+      });
+    }
+
+    init();
+    initDeferred();
+  })();
+
+  void "_senren_settings_v5.1.0.css";
+  void "_senren_defaults_v5.1.0.css";
+  void "_senren_deck_presets.js";
+  void "_senren_presets.js";
 </script>
